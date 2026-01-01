@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ouroboros Downloads</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <div class="brand">Ouroboros</div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="getting_started.html">Get Started</a>
+        <a href="stdlib.html">Std Lib</a>
+        <a href="arrows.html">Arrows</a>
+        <a href="tokens.html">Tokens</a>
+        <a href="downloads.html">Downloads</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-card">
+      <div class="badge">Compiler Builds</div>
+      <h1>Download Ouroboros Compiler</h1>
+      <p class="lead">Pick a platform build or grab the source archive. Links assume binaries or zips live under a /downloads directoryâ€”replace the targets with your release artifacts when you publish.</p>
+      <div class="button-row">
+        <a class="btn secondary" href="index.html">Back to home</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h2>What you get</h2>
+      <ul class="list">
+        <li>Compiler executable (chimera) ready to run.</li>
+        <li>Standard library definitions bundled (.var, .comp, .ent).</li>
+        <li>Example scripts demonstrating arrows, flows, and bindings.</li>
+      </ul>
+      <div class="notice">Install instructions live elsewhere; this page focuses on distribution links.</div>
+    </div>
+  </section>
+
+  <section class="section" id="releases">
+    <h2>Platform Builds</h2>
+    <div class="grid">
+      <div class="card">
+        <strong>Windows (x64)</strong>
+        <p>Portable zip with chimera.exe and starter examples.</p>
+        <a class="btn primary" href="downloads/ouroboros-windows-x64.zip">Download Windows</a>
+        <div class="notice">Replace with your real zip path in /downloads.</div>
+      </div>
+      <div class="card" style="opacity: 0.6;">
+        <strong>Linux (x64)</strong>
+        <p style="color: var(--muted);">Not currently supported.</p>
+        <div class="notice">Linux builds coming in a future release.</div>
+      </div>
+      <div class="card" style="opacity: 0.6;">
+        <strong>macOS (Apple/Intel)</strong>
+        <p style="color: var(--muted);">Not currently supported.</p>
+        <div class="notice">macOS builds coming in a future release.</div>
+      </div>
+    </div>
+    <div class="notice">Hosting on GitHub Pages? Commit the archives under docs/site/downloads/ or point these links to GitHub Releases URLs.</div>
+  </section>
+
+  <section class="section">
+    <h2>Whatâ€™s in a release?</h2>
+    <div class="grid">
+      <div class="card">
+        <strong>Compiler</strong>
+        <p>Platform binary (chimera) with lexer/parser/runtime for arrows, flows, and bindings.</p>
+      </div>
+      <div class="card">
+        <strong>Standard types</strong>
+        <p>Bundled .var, .comp, .ent definitions (Vector types, common components) for immediate use.</p>
+      </div>
+      <div class="card">
+        <strong>Examples</strong>
+        <p>Fresh scripts showcasing forward/pull/sync arrows, multi-return flows, field bindings, and arrays/matrices.</p>
+      </div>
+      <div class="card">
+        <strong>Editor support</strong>
+        <p>VS Code grammar/theme for syntax highlighting in ouro files.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Replace download targets with your release artifacts before publishing.
+  </footer>
+</body>
+</html>

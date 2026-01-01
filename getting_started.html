@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting Started - Ouroboros</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <div class="brand">Ouroboros</div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="getting_started.html">Get Started</a>
+        <a href="stdlib.html">Std Lib</a>
+        <a href="arrows.html">Arrows</a>
+        <a href="tokens.html">Tokens</a>
+        <a href="downloads.html">Downloads</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="doc-layout">
+    <aside class="doc-panel toc">
+      <h3>Steps</h3>
+      <ul>
+        <li><a href="#install">1. Installation</a></li>
+        <li><a href="#hello-world">2. Hello World</a></li>
+        <li><a href="#first-flow">3. Your First Flow</a></li>
+        <li><a href="#running">4. Running Code</a></li>
+      </ul>
+    </aside>
+
+    <main class="doc-panel doc-content">
+      <div class="doc-header">
+        <div class="badge">Tutorial</div>
+        <h1>Getting Started</h1>
+        <p>From zero to running code in minutes.</p>
+      </div>
+
+      <div class="doc-section" id="install">
+        <h2>1. Installation</h2>
+        <p>Ouroboros is a compiled language. You'll need the <code>chimera</code> compiler.</p>
+        <ol class="list">
+            <li>Go to the <a href="downloads.html">Downloads page</a>.</li>
+            <li>Download the latest <code>chimera.exe</code> for your platform.</li>
+            <li>Place it in a folder included in your system's PATH, or keep it in your project folder.</li>
+        </ol>
+      </div>
+
+      <div class="doc-section" id="hello-world">
+        <h2>2. Hello World</h2>
+        <p>Create a new file named <code>hello.ouro</code> and open it in your text editor.</p>
+        <p>In Ouroboros, data flows from left to right. To print text, we send a string into the <code>Print</code> flow.</p>
+        
+        <div class="code-block">// hello.ouro
+"Hello, Ouroboros!" -> Print</div>
+      </div>
+
+      <div class="doc-section" id="first-flow">
+        <h2>3. Your First Flow</h2>
+        <p>Flows are the building blocks of Ouroboros (similar to functions in other languages). Let's define a flow that adds two numbers.</p>
+        
+        <div class="code-block">// math.ouro
+
+// Define a flow named 'Add' that takes inputs 'a' and 'b'
+Flow Add -> a, b
+    result := a + b
+    return result
+
+// Call the flow
+sum <- Add -> 10, 5
+
+// Print the result
+"The sum is: " -> Print
+sum -> Print</div>
+
+        <p>Notice the syntax:</p>
+        <ul class="list">
+            <li><code>Flow Name -> params</code> defines the flow.</li>
+            <li><code>:=</code> assigns a value to a variable.</li>
+            <li><code><-</code> (Pull Arrow) captures the return value.</li>
+            <li><code>-></code> (Forward Arrow) passes arguments to the flow.</li>
+        </ul>
+      </div>
+
+      <div class="doc-section" id="running">
+        <h2>4. Running Code</h2>
+        <p>Open your terminal or command prompt and run the compiler with your script file:</p>
+        
+        <div class="code-block">chimera.exe hello.ouro</div>
+        
+        <p>You should see the output:</p>
+        <div class="code-block">Hello, Ouroboros!</div>
+      </div>
+
+    </main>
+  </div>
+</body>
+</html>

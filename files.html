@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ouroboros File Types</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <div class="brand">Ouroboros</div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="getting_started.html">Get Started</a>
+        <a href="stdlib.html">Std Lib</a>
+        <a href="arrows.html">Arrows</a>
+        <a href="tokens.html">Tokens</a>
+        <a href="downloads.html">Downloads</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="doc-layout">
+    <aside class="doc-panel toc">
+      <h3>On this page</h3>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#map">File type map</a></li>
+        <li><a href="#preload">Preloading</a></li>
+      </ul>
+    </aside>
+
+    <main class="doc-panel doc-content">
+      <div class="doc-header">
+        <div class="badge">Project Anatomy</div>
+        <h1>How files fit together</h1>
+        <p>Ouroboros separates runtime scripts from type declarations so flows, components, and entities can be preloaded and reused across projects.</p>
+      </div>
+
+      <div class="doc-section" id="overview">
+        <h2>Key ideas</h2>
+        <ul class="list">
+          <li>.var defines variable blueprints (fields + defaults).</li>
+          <li>.comp groups related fields into reusable components.</li>
+          <li>.ent composes components into entities or templates.</li>
+          <li>.ouro scripts orchestrate logic, flows, and bindings.</li>
+        </ul>
+      </div>
+
+      <div class="doc-section" id="map">
+        <h2>File Type Map</h2>
+        <div class="grid">
+          <div class="card">
+            <strong>.ouro</strong>
+            <p>Executable scripts and flow definitions. Use arrows, control flow, and bindings here.</p>
+            <div class="code-block">Flow FireWeapon -> shooter, target
+    damage := shooter.power - target.armour
+    return damage
+
+dealt <- FireWeapon -> player, enemy</div>
+          </div>
+          <div class="card">
+            <strong>.var</strong>
+            <p>Variable prototypes (mutable or immutable fields). Parsed only when the file extension matches.</p>
+            <div class="code-block">Variable Stats
+    Strength := 0
+    Agility =: 0  // immutable field</div>
+          </div>
+          <div class="card">
+            <strong>.comp</strong>
+            <p>Component definitions (field lists) for composition.</p>
+            <div class="code-block">Component Inventory
+    Slots := 20
+    WeightLimit := 120</div>
+          </div>
+          <div class="card">
+            <strong>.ent</strong>
+            <p>Entities and templates; aggregate components by name.</p>
+            <div class="code-block">Entity Player
+    HealthBase
+    Inventory
+
+Template Boss
+    HealthBase
+    Transform</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="usage">
+        <h2>How these files work together</h2>
+        <ul class="list">
+          <li>Define data shapes in .var; promote reusable sets in .comp; compose them in .ent.</li>
+          <li>Reference those types in .ouro scripts directly after preload—no imports needed.</li>
+          <li>Bind fields with arrows to keep entities/components synchronized with scalar logic.</li>
+          <li>Organize shared types at the repo root; keep scenario scripts in subfolders.</li>
+        </ul>
+      </div>
+
+      <div class="doc-section" id="preload">
+        <h2>Preloading Behavior</h2>
+        <p class="lead">The interpreter preloads .var, .comp, .ent, and flow definitions from the working directory and its parent, so shared types are available across scripts.</p>
+        <div class="card">
+          <strong>Practical tips</strong>
+          <ul class="list">
+            <li>Keep shared types at the project root; scripts under subfolders can still resolve them.</li>
+            <li>Use immutable fields (=: ) in type files when you want defaults to stay constant.</li>
+            <li>Store examples alongside scripts; they can call flows and types immediately after preload.</li>
+          </ul>
+        </div>
+      </div>
+
+      <footer>
+        Keep file extensions correct—parsing rules enforce where Variable, Component, Entity, and Template can appear.
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arrow Semantics - Ouroboros</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <div class="brand">Ouroboros</div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="getting_started.html">Get Started</a>
+        <a href="stdlib.html">Std Lib</a>
+        <a href="arrows.html">Arrows</a>
+        <a href="tokens.html">Tokens</a>
+        <a href="downloads.html">Downloads</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="doc-layout">
+    <aside class="doc-panel toc">
+      <h3>Arrow Types</h3>
+      <ul>
+        <li><a href="#forward">Forward (->)</a></li>
+        <li><a href="#pull">Pull (<-)</a></li>
+        <li><a href="#fork">Fork (-<)</a></li>
+        <li><a href="#sync">Sync (<->)</a></li>
+        <li><a href="#variants">Variants</a></li>
+      </ul>
+    </aside>
+
+    <main class="doc-panel doc-content">
+      <div class="doc-header">
+        <div class="badge">Language Guide</div>
+        <h1>Arrow Semantics</h1>
+        <p>Ouroboros is defined by its arrows. Each direction and style conveys a specific data flow intent.</p>
+      </div>
+
+      <div class="doc-section" id="forward">
+        <h2>Forward Arrow (->)</h2>
+        <p><strong>"Pass data to..."</strong></p>
+        <p>The most common arrow. It moves data from left to right. Use it to pass arguments to a flow or to chain operations.</p>
+        <div class="code-block">Value -> Flow
+10 -> Print</div>
+      </div>
+
+      <div class="doc-section" id="pull">
+        <h2>Pull Arrow (<-)</h2>
+        <p><strong>"Get data from..."</strong></p>
+        <p>Used for assignment and capturing return values. It pulls the result of the expression on the right into the variable on the left.</p>
+        <div class="code-block">result <- Calculate -> input
+x <- 10</div>
+        <p>In reactive contexts (future), this establishes a dependency where the left side updates whenever the right side changes.</p>
+      </div>
+
+      <div class="doc-section" id="fork">
+        <h2>Fork Arrow (-<)</h2>
+        <p><strong>"Broadcast to..."</strong></p>
+        <p>Takes a single input on the left and sends it to multiple flows on the right simultaneously (or sequentially, depending on the runtime). It returns a sequence of results from all targets.</p>
+        <div class="code-block">event_data -< LogEvent, UpdateUI, PlaySound</div>
+        <p>Use this for event handling, broadcasting state changes, or parallel processing.</p>
+      </div>
+
+      <div class="doc-section" id="sync">
+        <h2>Sync Arrow (<->)</h2>
+        <p><strong>"Keep in sync with..."</strong></p>
+        <p>Establishes a bidirectional binding. If either side changes, the other is updated to match. This is powerful for UI development (Model-View binding) or synchronizing game state.</p>
+        <div class="code-block">Slider.value <-> Player.health</div>
+      </div>
+
+      <div class="doc-section" id="variants">
+        <h2>Arrow Variants</h2>
+        <p>Arrows can be modified to express specific timing or ownership semantics. While the current compiler may treat some of these identically, using the correct variant makes your code self-documenting.</p>
+        
+        <table class="table">
+          <thead><tr><th>Symbol</th><th>Name</th><th>Intent</th></tr></thead>
+          <tbody>
+            <tr><td><code>->></code></td><td>Async</td><td>Fire-and-forget. Start a task and don't wait for it to finish.</td></tr>
+            <tr><td><code>->|</code></td><td>Await</td><td>Pause execution until the task completes and returns a value.</td></tr>
+            <tr><td><code>-|-></code></td><td>Transfer</td><td>Move ownership of the data. The source variable becomes invalid.</td></tr>
+            <tr><td><code>-||-></code></td><td>Sever</td><td>Break a connection or stop a continuous flow.</td></tr>
+            <tr><td><code>-▷</code></td><td>Continuous</td><td>Stream data continuously (like a pipe).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+</body>
+</html>

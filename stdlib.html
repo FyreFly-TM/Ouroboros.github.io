@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Standard Library - Ouroboros</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <div class="brand">Ouroboros</div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="getting_started.html">Get Started</a>
+        <a href="stdlib.html">Std Lib</a>
+        <a href="arrows.html">Arrows</a>
+        <a href="tokens.html">Tokens</a>
+        <a href="downloads.html">Downloads</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="doc-layout">
+    <aside class="doc-panel toc">
+      <h3>Contents</h3>
+      <ul>
+        <li><a href="#io">I/O Functions</a></li>
+        <li><a href="#flow-control">Flow Control</a></li>
+        <li><a href="#math">Math & Logic</a></li>
+      </ul>
+    </aside>
+
+    <main class="doc-panel doc-content">
+      <div class="doc-header">
+        <div class="badge">Library Reference</div>
+        <h1>Standard Library</h1>
+        <p>The core set of built-in flows and functions available in the Ouroboros runtime.</p>
+      </div>
+
+      <div class="doc-section" id="io">
+        <h2>I/O Functions</h2>
+        <p>Basic input/output operations.</p>
+        
+        <div class="card">
+          <h3>Print</h3>
+          <p>Prints one or more values to the standard output (console), followed by a newline.</p>
+          <div class="code-block">"Hello World" -> Print
+Print("Value is:", 42)</div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="flow-control">
+        <h2>Flow Control</h2>
+        <p>Utilities for managing flow execution.</p>
+
+        <div class="card">
+          <h3>Call</h3>
+          <p>Executes a flow or a chain of flows. Useful when you want to trigger a flow for its side effects without capturing a return value, or as the terminator of a forward chain.</p>
+          <div class="code-block">// Execute a flow
+Call(MyFlow)
+
+// Chain termination
+Data -> Process -> Call</div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="math">
+        <h2>Math & Logic</h2>
+        <p>Ouroboros supports standard arithmetic and logical operators directly in expressions.</p>
+        
+        <table class="table">
+          <thead><tr><th>Operator</th><th>Description</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><code>+</code></td><td>Addition / String Concatenation</td><td><code>1 + 2</code>, <code>"A" + "B"</code></td></tr>
+            <tr><td><code>-</code></td><td>Subtraction / Unary Negation</td><td><code>10 - 5</code>, <code>-x</code></td></tr>
+            <tr><td><code>*</code></td><td>Multiplication</td><td><code>3 * 4</code></td></tr>
+            <tr><td><code>/</code></td><td>Division</td><td><code>10 / 2</code></td></tr>
+            <tr><td><code>%</code></td><td>Modulo</td><td><code>10 % 3</code></td></tr>
+            <tr><td><code>&</code></td><td>Logical AND</td><td><code>true & false</code></td></tr>
+            <tr><td><code>|</code></td><td>Logical OR</td><td><code>true | false</code></td></tr>
+            <tr><td><code>!</code></td><td>Logical NOT</td><td><code>!isValid</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+</body>
+</html>
