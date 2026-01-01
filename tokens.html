@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ouroboros Token Guide</title>
+  <title>Token Reference - Ouroboros</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -12,13 +12,15 @@
 <body>
   <nav>
     <div class="nav-inner">
-      <div class="brand">Ouroboros</div>
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo">Ouroboros</a>
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="getting_started.html">Get Started</a>
-        <a href="stdlib.html">Std Lib</a>
+        <a href="examples.html">Examples</a>
         <a href="arrows.html">Arrows</a>
         <a href="tokens.html">Tokens</a>
+        <a href="files.html">Files</a>
+        <a href="stdlib.html">Std Lib</a>
         <a href="downloads.html">Downloads</a>
       </div>
     </div>
@@ -26,248 +28,296 @@
 
   <div class="doc-layout">
     <aside class="doc-panel toc">
-      <h3>On this page</h3>
+      <h3>Tokens</h3>
       <ul>
-        <li><a href="#keywords">Core keywords</a></li>
-        <li><a href="#arrows">Arrows</a></li>
+        <li><a href="#keywords">Keywords</a></li>
         <li><a href="#declarations">Declarations</a></li>
         <li><a href="#operators">Operators</a></li>
-        <li><a href="#flows">Flows</a></li>
-        <li><a href="#control">Control flow</a></li>
+        <li><a href="#comparison">Comparison</a></li>
+        <li><a href="#punctuation">Punctuation</a></li>
         <li><a href="#literals">Literals</a></li>
+        <li><a href="#comments">Comments</a></li>
       </ul>
     </aside>
 
     <main class="doc-panel doc-content">
       <div class="doc-header">
-        <div class="badge">Token Reference</div>
-        <h1>Every token, explained</h1>
-        <p>Forward, pull, sync arrows; declarations; arithmetic; control flow; file-scope constructs. Fresh examples illustrate each token without copying existing samples.</p>
-      </div>
-
-      <div class="doc-section" id="overview">
-        <h2>How to read this page</h2>
-        <ul class="list">
-          <li>Arrows show data direction; variants convey intent (continuous, transfer, sever, async, await).</li>
-          <li>Declarations separate mutability: := for mutable, =: for immutable defaults.</li>
-          <li>Flows can return many values; capture them with pull arrows on the left.</li>
-          <li>Reserved tokens (||, ?, [ ]) are lexer-ready but not yet wired—avoid in scripts.</li>
-        </ul>
+        <div class="badge">Language Reference</div>
+        <h1>Token Reference</h1>
+        <p>Complete guide to all keywords, operators, and syntax elements.</p>
       </div>
 
       <div class="doc-section" id="keywords">
-        <h2>Core Keywords</h2>
+        <h2>Keywords</h2>
         <table class="table">
-          <thead><tr><th>Token</th><th>Meaning</th><th>Example</th></tr></thead>
+          <thead>
+            <tr><th>Keyword</th><th>Purpose</th><th>Example</th></tr>
+          </thead>
           <tbody>
-            <tr><td><strong>Flow</strong></td><td>Declares a flow (function) with parameters listed after an arrow.</td><td><div class="code-block">Flow Normalize -> value, max
-    ratio := value / max
-    return ratio</div></td></tr>
-            <tr><td><strong>return</strong></td><td>Emits one or more values from a flow.</td><td><div class="code-block">return sum, average, count</div></td></tr>
-            <tr><td><strong>if / elseif / else</strong></td><td>Conditional branching; bodies are indentation-based.</td><td><div class="code-block">if score > 90
-    grade := "A"
-elseif score ≥ 80
-    grade := "B"
-else
-    grade := "C"</div></td></tr>
-            <tr><td><strong>while</strong></td><td>Loop while the condition is true.</td><td><div class="code-block">i := 0
-while i < 5
-    i += 1</div></td></tr>
-            <tr><td><strong>Print</strong></td><td>Built-in flow call (can be bare or used in a chain).</td><td><div class="code-block">"Debug:" -> Print
-value -> Print</div></td></tr>
-            <tr><td><strong>Call</strong></td><td>Sink keyword for forward chains when you only need the side effect.</td><td><div class="code-block">result <- Compute -> 3, 4 -> Call</div></td></tr>
-            <tr><td><strong>Variable</strong></td><td>Starts a variable-type definition inside .var files.</td><td><div class="code-block">Variable Color
-    r := 0
-    g := 0
-    b := 0</div></td></tr>
-            <tr><td><strong>Component</strong></td><td>Begins a component definition inside .comp files.</td><td><div class="code-block">Component Transform
-    Position := Vector3
-    Scale := Vector3</div></td></tr>
-            <tr><td><strong>Entity</strong></td><td>Declares an entity that aggregates components (in .ent files).</td><td><div class="code-block">Entity NPC
-    HealthBase
-    Transform</div></td></tr>
-            <tr><td><strong>Template</strong></td><td>Entity template alias; defined in .ent files alongside Entity.</td><td><div class="code-block">Template Vendor
-    Inventory
-    Transform</div></td></tr>
-            <tr><td><strong>true / false</strong></td><td>Boolean literals.</td><td><div class="code-block">isReady := true
-hasErrors := false</div></td></tr>
+            <tr>
+              <td><code>Flow</code></td>
+              <td>Declare a flow (function)</td>
+              <td><div class="code-block">Flow Add -> a, b
+    return a + b</div></td>
+            </tr>
+            <tr>
+              <td><code>return</code></td>
+              <td>Return value(s) from a flow</td>
+              <td><div class="code-block">return result
+return a, b, c</div></td>
+            </tr>
+            <tr>
+              <td><code>if</code></td>
+              <td>Conditional branch</td>
+              <td><div class="code-block">if score ≥ 90
+    grade := "A"</div></td>
+            </tr>
+            <tr>
+              <td><code>elseif</code></td>
+              <td>Additional conditional</td>
+              <td><div class="code-block">elseif score ≥ 80
+    grade := "B"</div></td>
+            </tr>
+            <tr>
+              <td><code>else</code></td>
+              <td>Default branch</td>
+              <td><div class="code-block">else
+    grade := "F"</div></td>
+            </tr>
+            <tr>
+              <td><code>while</code></td>
+              <td>Loop while condition is true</td>
+              <td><div class="code-block">while i < 10
+    i += 1</div></td>
+            </tr>
+            <tr>
+              <td><code>true</code></td>
+              <td>Boolean true literal</td>
+              <td><code>active := true</code></td>
+            </tr>
+            <tr>
+              <td><code>false</code></td>
+              <td>Boolean false literal</td>
+              <td><code>paused := false</code></td>
+            </tr>
+            <tr>
+              <td><code>Print</code></td>
+              <td>Built-in output function</td>
+              <td><code>"Hello" -> Print</code></td>
+            </tr>
+            <tr>
+              <td><code>Call</code></td>
+              <td>Sink for side-effect chains</td>
+              <td><code>data -> Process -> Call</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Type Keywords (File-Specific)</h3>
+        <table class="table">
+          <thead>
+            <tr><th>Keyword</th><th>File Type</th><th>Purpose</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>Variable</code></td>
+              <td>.var</td>
+              <td>Define a variable type/prototype</td>
+            </tr>
+            <tr>
+              <td><code>Component</code></td>
+              <td>.comp</td>
+              <td>Define a component (field collection)</td>
+            </tr>
+            <tr>
+              <td><code>Entity</code></td>
+              <td>.ent</td>
+              <td>Define an entity (component aggregate)</td>
+            </tr>
+            <tr>
+              <td><code>Template</code></td>
+              <td>.ent</td>
+              <td>Define an entity template</td>
+            </tr>
           </tbody>
         </table>
       </div>
 
-      <div class="doc-section" id="arrows">
-        <h2>Arrow Families (data flow)</h2>
-        <p class="lead">Arrows wire values between expressions, flows, and bindings. Variants share the same shape but express intent (continuous, transfer, sever, async, await).</p>
-        <h3>Forward arrows</h3>
-        <div class="token-grid">
-          <div class="token"><span class="label">Base</span><strong>-></strong><p>Push value(s) forward into the next expression or flow.</p><div class="code-block">5 -> Double -> Print</div></div>
-          <div class="token"><span class="label">Continuous</span><strong>-▷</strong><p>Marks a live forward feed; mirrors base forward today.</p><div class="code-block">input -▷ Process -▷ Render</div></div>
-          <div class="token"><span class="label">Transfer</span><strong>-|-></strong><p>One-shot forward push to signal ownership transfer.</p><div class="code-block">payload -|-> SendOnce</div></div>
-          <div class="token"><span class="label">Sever</span><strong>-||-></strong><p>Forward with explicit severing semantics.</p><div class="code-block">session -||-> CloseAndLog</div></div>
-          <div class="token"><span class="label">Async</span><strong>->></strong><p>Forward fire-and-forget.</p><div class="code-block">event ->> Audit</div></div>
-          <div class="token"><span class="label">Await/Barrier</span><strong>->|</strong><p>Forward with barrier semantics.</p><div class="code-block">asset ->| Load ->| Use</div></div>
-        </div>
-
-        <h3>Pull arrows</h3>
-        <div class="token-grid">
-          <div class="token"><span class="label">Base</span><strong><-</strong><p>Bind target to source/expression; updates propagate.</p><div class="code-block">area <- width * height</div></div>
-          <div class="token"><span class="label">Continuous</span><strong>◁-</strong><p>Continuous backward monitor (visual variant of <-).</p><div class="code-block">preview ◁- cameraFeed</div></div>
-          <div class="token"><span class="label">Transfer</span><strong><-| -</strong><p>One-time pull; captures current value then detaches.</p><div class="code-block">snapshot <-|- temperature</div></div>
-          <div class="token"><span class="label">Sever</span><strong><-||-</strong><p>Pull with explicit sever intent.</p><div class="code-block">log <-||- remoteValue</div></div>
-          <div class="token"><span class="label">Async</span><strong><<-</strong><p>Asynchronous pull (fire-and-forget read).</p><div class="code-block">cached <<- expensiveCall</div></div>
-          <div class="token"><span class="label">Await/Barrier</span><strong>|<-</strong><p>Pull that waits for readiness before binding.</p><div class="code-block">result |<- loadConfig</div></div>
-        </div>
-
-        <h3>Sync arrows</h3>
-        <div class="token-grid">
-          <div class="token"><span class="label">Base</span><strong><-></strong><p>Bidirectional sync; both sides mirror each other.</p><div class="code-block">width <-> height</div></div>
-          <div class="token"><span class="label">Continuous</span><strong>◁-▷</strong><p>Live-wire sync variant (visual).</p><div class="code-block">cursor ◁-▷ pointer</div></div>
-          <div class="token"><span class="label">Transfer</span><strong><-|-></strong><p>One-shot sync handshake, then optional detach.</p><div class="code-block">token <-|-> client</div></div>
-          <div class="token"><span class="label">Sever</span><strong><-||-></strong><p>Sync with sever semantics.</p><div class="code-block">mirror <-||-> backup</div></div>
-          <div class="token"><span class="label">Async</span><strong><<->></strong><p>Bidirectional async sync.</p><div class="code-block">inventory <<->> server</div></div>
-          <div class="token"><span class="label">Await/Barrier</span><strong>|<->|</strong><p>Sync gated by a barrier.</p><div class="code-block">state |<->| renderer</div></div>
-        </div>
-      </div>
-
       <div class="doc-section" id="declarations">
-        <h2>Declarations and Assignment Tokens</h2>
+        <h2>Declaration & Assignment</h2>
         <div class="grid">
           <div class="card">
-            <strong>Mutable declare (:=)</strong>
-            <p>Create and initialize a variable; can be reassigned later.</p>
+            <h3>Mutable Declaration (:=)</h3>
+            <p>Create a variable that can be reassigned.</p>
             <div class="code-block">count := 0
-count = 4</div>
+name := "Alice"
+values := [1, 2, 3]</div>
           </div>
           <div class="card">
-            <strong>Immutable declare (=:)</strong>
-            <p>Create and initialize a read-only binding (re-declaration required to change).</p>
-            <div class="code-block">pi =: 3.14159
-// later lines cannot do: pi = 4</div>
+            <h3>Immutable Declaration (=:)</h3>
+            <p>Create a constant that cannot be reassigned.</p>
+            <div class="code-block">PI =: 3.14159
+MAX_SIZE =: 100</div>
           </div>
           <div class="card">
-            <strong>Reassignment (=)</strong>
-            <p>Updates an existing mutable variable or field.</p>
-            <div class="code-block">score := 10
-score = score + 5</div>
+            <h3>Assignment (=)</h3>
+            <p>Reassign an existing mutable variable.</p>
+            <div class="code-block">count := 0
+count = 5
+count = count + 1</div>
           </div>
           <div class="card">
-            <strong>Compound ops (+=, -=, *=, /=, %=)</strong>
-            <p>Update in place with arithmetic.</p>
-            <div class="code-block">hp := 50
-hp += 25
-hp %= 60</div>
+            <h3>Compound Assignment</h3>
+            <p>Modify a variable in place.</p>
+            <div class="code-block">x := 10
+x += 5   // x = 15
+x -= 3   // x = 12
+x *= 2   // x = 24
+x /= 4   // x = 6
+x %= 4   // x = 2</div>
           </div>
         </div>
       </div>
 
       <div class="doc-section" id="operators">
-        <h2>Operators and Punctuation</h2>
-        <div class="token-grid">
-          <div class="token"><span class="label">Arithmetic</span><strong>+  -  *  /  %</strong><p>Add, subtract, multiply, divide, modulo.</p><div class="code-block">delta := (a + b) / 2
-wrap := ticks % 60</div></div>
-          <div class="token"><span class="label">Comparison</span><strong>&gt;  &lt;  ≥  ≤</strong><p>Relational operators.</p><div class="code-block">if temp ≥ 100
-    alarm := true</div></div>
-          <div class="token"><span class="label">Logical</span><strong>&amp;  |  !</strong><p>AND, OR, NOT.</p><div class="code-block">if ready & !paused
-    start := true</div></div>
-          <div class="token"><span class="label">Comma</span><strong>,</strong><p>Separates arguments, returns, and tuple-like captures.</p><div class="code-block">left, right <- Split -> text</div></div>
-          <div class="token"><span class="label">Parentheses</span><strong>( )</strong><p>Grouping expressions and flow calls.</p><div class="code-block">area := (w + h) * 0.5</div></div>
-          <div class="token"><span class="label">Braces</span><strong>{ }</strong><p>Object initialization inline.</p><div class="code-block">vector := Vector3
-vector { 2, 4, 6 }</div></div>
-          <div class="token"><span class="label">Brackets</span><strong>[ ]</strong><p>Tokenized for indexing; reserved for future collection syntax.</p><p class="notice">Present in the lexer; avoid until implemented.</p></div>
-          <div class="token"><span class="label">Dot</span><strong>.</strong><p>Field access and chaining.</p><div class="code-block">player.position.x = 12</div></div>
-          <div class="token"><span class="label">Colon</span><strong>:</strong><p>Part of := and =:; also used in declarations within type files.</p><div class="code-block">speed := distance / time</div></div>
-          <div class="token"><span class="label">Double pipe</span><strong>||</strong><p>Tokenized; reserved (use single | for logical OR today).</p></div>
-          <div class="token"><span class="label">Question mark</span><strong>?</strong><p>Tokenized placeholder; not wired to semantics yet.</p></div>
-        </div>
+        <h2>Arithmetic Operators</h2>
+        <table class="table">
+          <thead>
+            <tr><th>Operator</th><th>Name</th><th>Example</th><th>Result</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>+</code></td><td>Addition</td><td><code>10 + 5</code></td><td>15</td></tr>
+            <tr><td><code>-</code></td><td>Subtraction</td><td><code>10 - 5</code></td><td>5</td></tr>
+            <tr><td><code>*</code></td><td>Multiplication</td><td><code>10 * 5</code></td><td>50</td></tr>
+            <tr><td><code>/</code></td><td>Division</td><td><code>10 / 5</code></td><td>2</td></tr>
+            <tr><td><code>%</code></td><td>Modulo</td><td><code>10 % 3</code></td><td>1</td></tr>
+            <tr><td><code>-</code></td><td>Negation (unary)</td><td><code>-42</code></td><td>-42</td></tr>
+          </tbody>
+        </table>
+
+        <h3>String Concatenation</h3>
+        <div class="code-block">greeting := "Hello, " + "World!"  // "Hello, World!"</div>
       </div>
 
-      <div class="doc-section" id="flows">
-        <h2>Flows, Calls, and Multi-Return Capture</h2>
-        <p class="lead">Flows accept parameters after an arrow, and return any number of values. Forward arrows push inputs in; pull arrows capture outputs.</p>
-        <div class="grid">
-          <div class="card">
-            <strong>Define and call</strong>
-            <div class="code-block">Flow Clamp -> v, min, max
-    clipped := v
-    if clipped < min
-        clipped = min
-    elseif clipped > max
-        clipped = max
-    return clipped
+      <div class="doc-section" id="comparison">
+        <h2>Comparison Operators</h2>
+        <p><strong>Important:</strong> Use Unicode symbols <code>≥</code> and <code>≤</code> for greater/less-or-equal comparisons.</p>
+        <table class="table">
+          <thead>
+            <tr><th>Operator</th><th>Name</th><th>Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>==</code></td><td>Equal</td><td><code>a == b</code></td></tr>
+            <tr><td><code>!=</code></td><td>Not equal</td><td><code>a != b</code></td></tr>
+            <tr><td><code>></code></td><td>Greater than</td><td><code>a > b</code></td></tr>
+            <tr><td><code><</code></td><td>Less than</td><td><code>a < b</code></td></tr>
+            <tr><td><code>≥</code></td><td>Greater than or equal</td><td><code>a ≥ b</code></td></tr>
+            <tr><td><code>≤</code></td><td>Less than or equal</td><td><code>a ≤ b</code></td></tr>
+          </tbody>
+        </table>
 
-safe <- Clamp -> 120, 0, 100</div>
-          </div>
-          <div class="card">
-            <strong>Multi-return pull</strong>
-            <div class="code-block">Flow Stats -> a, b, c
-    sum := a + b + c
-    avg := sum / 3
-    return sum, avg
+        <h3>Logical Operators</h3>
+        <table class="table">
+          <thead>
+            <tr><th>Operator</th><th>Name</th><th>Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>&</code></td><td>Logical AND</td><td><code>a & b</code></td></tr>
+            <tr><td><code>|</code></td><td>Logical OR</td><td><code>a | b</code></td></tr>
+            <tr><td><code>!</code></td><td>Logical NOT</td><td><code>!a</code></td></tr>
+          </tbody>
+        </table>
 
-total, average <- Stats -> 4, 6, 10</div>
-          </div>
-          <div class="card">
-            <strong>Chaining sinks with Call</strong>
-            <div class="code-block">payload -> Send -> Call
-// Call acts as a final sink when you don't need values back</div>
-          </div>
-        </div>
+        <div class="code-block">if active & !paused
+    "Running" -> Print
+
+if error | warning
+    "Check logs" -> Print</div>
       </div>
 
-      <div class="doc-section" id="control">
-        <h2>Control Flow Tokens</h2>
-        <div class="grid">
-          <div class="card">
-            <strong>if / elseif / else</strong>
-            <p>Indentation defines blocks; no parentheses required.</p>
-            <div class="code-block">if attempts ≥ limit
-    locked := true
-else
-    attempts += 1</div>
-          </div>
-          <div class="card">
-            <strong>while</strong>
-            <p>Evaluates the condition before each loop.</p>
-            <div class="code-block">timer := 3
-while timer > 0
-    timer -= 1</div>
-          </div>
-        </div>
+      <div class="doc-section" id="punctuation">
+        <h2>Punctuation & Delimiters</h2>
+        <table class="table">
+          <thead>
+            <tr><th>Symbol</th><th>Name</th><th>Purpose</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>,</code></td><td>Comma</td><td>Separate arguments, returns, array elements</td></tr>
+            <tr><td><code>( )</code></td><td>Parentheses</td><td>Grouping expressions</td></tr>
+            <tr><td><code>[ ]</code></td><td>Brackets</td><td>Array literals and indexing</td></tr>
+            <tr><td><code>{ }</code></td><td>Braces</td><td>Object initialization</td></tr>
+            <tr><td><code>.</code></td><td>Dot</td><td>Field access</td></tr>
+            <tr><td><code>:</code></td><td>Colon</td><td>Part of := and =:</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Examples</h3>
+        <div class="code-block">// Comma separates arguments
+a, b, c -> ProcessAll
+
+// Brackets for arrays
+numbers := [1, 2, 3, 4, 5]
+first := numbers[0]
+
+// Parentheses for grouping
+result := (a + b) * (c - d)
+
+// Dot for field access
+player.health = 100
+player.position.x = 50</div>
       </div>
 
       <div class="doc-section" id="literals">
-        <h2>Literals, Identifiers, and Comments</h2>
+        <h2>Literals</h2>
         <div class="grid">
           <div class="card">
-            <strong>Strings</strong>
-            <p>Double-quoted UTF-8 strings.</p>
-            <div class="code-block">message := "Hello, Ouro!"</div>
+            <h3>Numbers</h3>
+            <p>Integers and floating-point numbers.</p>
+            <div class="code-block">integer := 42
+negative := -17
+decimal := 3.14159
+scientific := 1.5e10</div>
           </div>
           <div class="card">
-            <strong>Numbers</strong>
-            <p>Integers or decimals; negative numbers use the unary - operator.</p>
-            <div class="code-block">gravity := -9.81
-count := 42</div>
+            <h3>Strings</h3>
+            <p>Double-quoted UTF-8 text.</p>
+            <div class="code-block">name := "Ouroboros"
+message := "Hello, World!"
+unicode := "こんにちは"</div>
           </div>
           <div class="card">
-            <strong>Identifiers</strong>
-            <p>Names for flows, variables, fields, components, and entities.</p>
-            <div class="code-block">Flow BlendColor -> base, tint
-    return base + tint</div>
+            <h3>Booleans</h3>
+            <p>True or false values.</p>
+            <div class="code-block">active := true
+paused := false</div>
           </div>
           <div class="card">
-            <strong>Comments</strong>
-            <p>// begins a single-line comment.</p>
-            <div class="code-block">// This line is ignored by the compiler
-value := 10</div>
+            <h3>Arrays</h3>
+            <p>Ordered collections in square brackets.</p>
+            <div class="code-block">numbers := [1, 2, 3, 4, 5]
+mixed := [42, "text", true]
+nested := [[1, 2], [3, 4]]
+empty := []</div>
           </div>
         </div>
       </div>
 
-      <footer>
-        Tokens listed reflect the current lexer and parser; reserved tokens (||, ?, [ ]) are present but not yet active.
-      </footer>
+      <div class="doc-section" id="comments">
+        <h2>Comments</h2>
+        <p>Single-line comments start with <code>//</code>.</p>
+        <div class="code-block">// This is a comment
+value := 42  // Inline comment
+
+// Multi-line comments use multiple //
+// Line 1
+// Line 2
+// Line 3</div>
+      </div>
     </main>
   </div>
+
+  <footer>
+    <p>Ouroboros Language © 2026</p>
+  </footer>
 </body>
 </html>

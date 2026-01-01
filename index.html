@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ouroboros Language Hub</title>
+  <title>Ouroboros - Flow-Oriented Programming Language</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -12,116 +12,176 @@
 <body>
   <nav>
     <div class="nav-inner">
-      <div class="brand">Ouroboros</div>
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo">Ouroboros</a>
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="getting_started.html">Get Started</a>
-        <a href="stdlib.html">Std Lib</a>
+        <a href="examples.html">Examples</a>
         <a href="arrows.html">Arrows</a>
         <a href="tokens.html">Tokens</a>
+        <a href="files.html">Files</a>
+        <a href="stdlib.html">Std Lib</a>
         <a href="downloads.html">Downloads</a>
       </div>
     </div>
   </nav>
 
   <section class="hero">
-    <div class="hero-card">
-      <div class="badge">Modern Flow-Oriented Language</div>
-      <h1>Build, link, and script with confidence.</h1>
-      <p class="lead">Ouroboros blends forward, pull, and sync arrows with multi-return flows. This site gives you everything you need to download the compiler and master the syntax.</p>
+    <div class="hero-card hero-main">
+      <div class="badge">Flow-Oriented Programming</div>
+      <h1>Data flows. Code follows.</h1>
+      <p class="lead">Ouroboros is a modern programming language where arrows define data flow. Forward, pull, sync, fork—every operation is a directed stream of values between expressions and flows.</p>
       <div class="button-row">
-        <a class="btn primary" href="downloads.html">Get the Compiler</a>
-        <a class="btn secondary" href="tokens.html">Explore Tokens</a>
+        <a class="btn primary" href="getting_started.html">Get Started</a>
+        <a class="btn secondary" href="examples.html">See Examples</a>
+        <a class="btn secondary" href="downloads.html">Download</a>
       </div>
     </div>
     <div class="hero-card">
-      <h2>What makes Ouroboros different?</h2>
-      <ul class="list">
-        <li>Flow blocks that return multiple values without ceremony.</li>
-        <li>Directional arrows for dataflow: forward, pull, and bidirectional sync.</li>
-        <li>Composable declarations for variables, components, and entities.</li>
-        <li>Lean syntax: indentation-driven blocks, inline formulas, reactive bindings.</li>
+      <h2>Why Ouroboros?</h2>
+      <ul class="list feature-list">
+        <li><strong>Directional Data Flow</strong> — Arrows show exactly where data goes</li>
+        <li><strong>Multi-Return Flows</strong> — Return multiple values without tuples</li>
+        <li><strong>Reactive Bindings</strong> — Variables update automatically when dependencies change</li>
+        <li><strong>Bidirectional Sync</strong> — Keep two variables perfectly in sync</li>
+        <li><strong>Conditional Gates</strong> — Route data based on conditions inline</li>
+        <li><strong>Fork Broadcasting</strong> — Send data to multiple destinations at once</li>
       </ul>
-      <div class="notice">Keep this site in the repo or a GitHub Pages branch; all pages are static and self-contained.</div>
     </div>
   </section>
 
   <section class="section">
-    <h2>Quickstart Highlights</h2>
+    <h2>Core Concepts</h2>
     <div class="grid">
       <div class="card">
-        <strong>Flows & Returns</strong>
-        <p>Define a flow, pass inputs via a forward arrow, and pull its multiple outputs in one line.</p>
-        <div class="code-block">Flow AddAndScale -> a, b
-    sum := a + b
-    scaled := sum * 2
-    return sum, scaled
+        <h3>Forward Arrow (->)</h3>
+        <p>Push data forward to flows or chains.</p>
+        <div class="code-block">"Hello, World!" -> Print
 
-result, doubled <- AddAndScale -> 5, 7</div>
+10, 5 -> Add -> Print</div>
       </div>
       <div class="card">
-        <strong>Reactive Pull</strong>
-        <p>Pull arrows bind a target to a source or expression; updates propagate.</p>
-        <div class="code-block">base := 12
-perimeter <- base * 4
-base = 15  // perimeter now 60</div>
-      </div>
-      <div class="card">
-        <strong>Sync State</strong>
-        <p>Bidirectional sync keeps values aligned—ideal for UI, physics, or gameplay state.</p>
-        <div class="code-block">left := 1
-right := 2
-left <-> right
-right = 99  // left now 99</div>
-      </div>
-    </div>
-  </section>
+        <h3>Pull Arrow (<-)</h3>
+        <p>Capture return values or create reactive bindings.</p>
+        <div class="code-block">result <- Add -> 10, 5
 
-  <section class="section">
-    <h2>Essential Links</h2>
-    <div class="grid">
-      <div class="card">
-        <strong>Token Catalog</strong>
-        <p>Detailed semantics and fresh examples for every operator, arrow, keyword, and literal.</p>
-        <a href="tokens.html">Open the token guide →</a>
+// Reactive: area updates when width/height change
+area <- width * height</div>
       </div>
       <div class="card">
-        <strong>File Types</strong>
-        <p>Learn how .ouro, .var, .comp, and .ent work together in a project.</p>
-        <a href="files.html">See file type map →</a>
+        <h3>Sync Arrow (<->)</h3>
+        <p>Bidirectional binding—changes on either side mirror to the other.</p>
+        <div class="code-block">player_hp <-> ui_hp_display
+
+player_hp = 75  // ui_hp_display now 75</div>
       </div>
       <div class="card">
-        <strong>Compiler Builds</strong>
-        <p>Grab platform-ready binaries or source archives from the downloads page.</p>
-        <a href="downloads.html">Download page →</a>
+        <h3>Fork Arrow (-<)</h3>
+        <p>Broadcast a value to multiple destinations simultaneously.</p>
+        <div class="code-block">event_data -< LogEvent, UpdateUI, PlaySound</div>
       </div>
     </div>
   </section>
 
   <section class="section">
-    <h2>Language at a glance</h2>
+    <h2>Quick Examples</h2>
     <div class="grid">
       <div class="card">
-        <strong>Dataflow mindset</strong>
-        <p>Use forward arrows to push, pull arrows to bind reactively, and sync arrows to mirror state.</p>
+        <h3>Define a Flow</h3>
+        <div class="code-block">Flow Add -> a, b
+    result := a + b
+    return result
+
+sum <- Add -> 10, 5
+sum -> Print  // Outputs: 15</div>
       </div>
       <div class="card">
-        <strong>Multi-return flows</strong>
-        <p>Flows return multiple values without tuples—capture them with a pull arrow.</p>
+        <h3>Multi-Return</h3>
+        <div class="code-block">Flow Stats -> a, b, c
+    sum := a + b + c
+    avg := sum / 3
+    return sum, avg
+
+total, average <- Stats -> 4, 6, 10</div>
       </div>
       <div class="card">
-        <strong>Types as files</strong>
-        <p>Variable, Component, and Entity files describe structure; .ouro scripts execute logic.</p>
+        <h3>Conditional Gates</h3>
+        <div class="code-block">// Only execute if condition is true
+value -[value > 50]-> ProcessHigh
+
+// Transform data inline
+input -[input > 0 ? input * 2]-> Process</div>
       </div>
       <div class="card">
-        <strong>Arrows for fields</strong>
-        <p>Bind fields of objects directly with pull/sync arrows to keep structs and scalars aligned.</p>
+        <h3>Control Flow</h3>
+        <div class="code-block">if score ≥ 90
+    grade := "A"
+elseif score ≥ 80
+    grade := "B"
+else
+    grade := "C"
+
+while counter < 10
+    counter += 1</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Advanced Features</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Continuous Funnels (▷-)</h3>
+        <p>Stream data reactively—any change triggers the target.</p>
+        <div class="code-block">sensor_temp ▷- ThermalMonitor
+sensor_pressure ▷- ThermalMonitor</div>
+      </div>
+      <div class="card">
+        <h3>Fuzzy Logic (~>)</h3>
+        <p>Soft influence—suggest rather than set values.</p>
+        <div class="code-block">temperature ~> ClimateController</div>
+      </div>
+      <div class="card">
+        <h3>Solvers (=>)</h3>
+        <p>Constraint-based pathfinding or optimization.</p>
+        <div class="code-block">start_position => PathSolver</div>
+      </div>
+      <div class="card">
+        <h3>Ownership Transfer (-|->)</h3>
+        <p>Move ownership of data—source becomes invalid.</p>
+        <div class="code-block">cargo -|-> ReceiveShipment</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Explore the Language</h2>
+    <div class="grid">
+      <div class="card">
+        <strong>Getting Started</strong>
+        <p>Install the compiler and write your first script in minutes.</p>
+        <a href="getting_started.html" class="card-link">Start the tutorial →</a>
+      </div>
+      <div class="card">
+        <strong>Examples</strong>
+        <p>From Hello World to complex simulations—learn by example.</p>
+        <a href="examples.html" class="card-link">Browse examples →</a>
+      </div>
+      <div class="card">
+        <strong>Arrow Reference</strong>
+        <p>Complete guide to every arrow type and variant.</p>
+        <a href="arrows.html" class="card-link">View arrow guide →</a>
+      </div>
+      <div class="card">
+        <strong>Token Reference</strong>
+        <p>Keywords, operators, and syntax—all in one place.</p>
+        <a href="tokens.html" class="card-link">View token guide →</a>
       </div>
     </div>
   </section>
 
   <footer>
-    <p style="margin-top: 8px; color: var(--muted); font-size: 14px;">This site was generated by AI and will receive a proper redesign in the future.</p>
+    <p>Ouroboros Language © 2026</p>
   </footer>
 </body>
 </html>

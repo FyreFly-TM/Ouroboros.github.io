@@ -12,13 +12,15 @@
 <body>
   <nav>
     <div class="nav-inner">
-      <div class="brand">Ouroboros</div>
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo">Ouroboros</a>
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="getting_started.html">Get Started</a>
-        <a href="stdlib.html">Std Lib</a>
+        <a href="examples.html">Examples</a>
         <a href="arrows.html">Arrows</a>
         <a href="tokens.html">Tokens</a>
+        <a href="files.html">Files</a>
+        <a href="stdlib.html">Std Lib</a>
         <a href="downloads.html">Downloads</a>
       </div>
     </div>
@@ -26,79 +28,265 @@
 
   <div class="doc-layout">
     <aside class="doc-panel toc">
-      <h3>Steps</h3>
+      <h3>Tutorial</h3>
       <ul>
         <li><a href="#install">1. Installation</a></li>
-        <li><a href="#hello-world">2. Hello World</a></li>
-        <li><a href="#first-flow">3. Your First Flow</a></li>
-        <li><a href="#running">4. Running Code</a></li>
+        <li><a href="#hello">2. Hello World</a></li>
+        <li><a href="#variables">3. Variables</a></li>
+        <li><a href="#flows">4. Flows</a></li>
+        <li><a href="#arrows">5. Basic Arrows</a></li>
+        <li><a href="#control">6. Control Flow</a></li>
+        <li><a href="#next">7. Next Steps</a></li>
       </ul>
     </aside>
 
     <main class="doc-panel doc-content">
       <div class="doc-header">
         <div class="badge">Tutorial</div>
-        <h1>Getting Started</h1>
-        <p>From zero to running code in minutes.</p>
+        <h1>Getting Started with Ouroboros</h1>
+        <p>From zero to running code in 10 minutes.</p>
       </div>
 
       <div class="doc-section" id="install">
         <h2>1. Installation</h2>
-        <p>Ouroboros is a compiled language. You'll need the <code>chimera</code> compiler.</p>
+        <p>Ouroboros uses the <strong>Chimera</strong> compiler/interpreter.</p>
         <ol class="list">
-            <li>Go to the <a href="downloads.html">Downloads page</a>.</li>
-            <li>Download the latest <code>chimera.exe</code> for your platform.</li>
-            <li>Place it in a folder included in your system's PATH, or keep it in your project folder.</li>
+          <li>Download the latest <code>.zip</code> from the <a href="downloads.html">Downloads page</a></li>
+          <li>Extract the zip file</li>
+          <li>Create a new project folder for your scripts</li>
+          <li>Copy <code>chimera.exe</code> into your project folder</li>
+        </ol>
+        
+        <h3>VS Code Setup (Optional)</h3>
+        <p>For syntax highlighting in Visual Studio Code:</p>
+        <ol class="list">
+          <li>Open VS Code and go to Extensions (Ctrl+Shift+X)</li>
+          <li>Click the <strong>three dots (⋯)</strong> in the top right</li>
+          <li>Select <strong>"Install from VSIX..."</strong></li>
+          <li>Choose the <code>.vsix</code> file from the downloaded package</li>
         </ol>
       </div>
 
-      <div class="doc-section" id="hello-world">
+      <div class="doc-section" id="hello">
         <h2>2. Hello World</h2>
-        <p>Create a new file named <code>hello.ouro</code> and open it in your text editor.</p>
-        <p>In Ouroboros, data flows from left to right. To print text, we send a string into the <code>Print</code> flow.</p>
-        
+        <p>Create a file named <code>hello.ouro</code> in your project folder:</p>
         <div class="code-block">// hello.ouro
 "Hello, Ouroboros!" -> Print</div>
+        <p>Open a terminal in your project folder and run:</p>
+        <div class="code-block">// Run a specific script
+.\chimera.exe hello.ouro
+
+// Or run the entire project
+.\chimera.exe</div>
+        <p>Output:</p>
+        <div class="code-block">Hello, Ouroboros!</div>
+        <p>The <code>-></code> (forward arrow) sends the string to the <code>Print</code> function.</p>
       </div>
 
-      <div class="doc-section" id="first-flow">
-        <h2>3. Your First Flow</h2>
-        <p>Flows are the building blocks of Ouroboros (similar to functions in other languages). Let's define a flow that adds two numbers.</p>
+      <div class="doc-section" id="variables">
+        <h2>3. Variables</h2>
+        <p>Ouroboros has two declaration styles:</p>
         
-        <div class="code-block">// math.ouro
+        <h3>Mutable Variables (:=)</h3>
+        <div class="code-block">count := 0       // Declare and initialize
+count = 5        // Reassign
+count += 1       // Compound assignment (now 6)</div>
 
-// Define a flow named 'Add' that takes inputs 'a' and 'b'
-Flow Add -> a, b
+        <h3>Immutable Variables (=:)</h3>
+        <div class="code-block">pi =: 3.14159    // Cannot be reassigned later</div>
+
+        <h3>Data Types</h3>
+        <div class="code-block">// Numbers
+age := 25
+price := 19.99
+negative := -42
+
+// Strings
+name := "Ouroboros"
+
+// Booleans
+active := true
+paused := false
+
+// Arrays
+numbers := [1, 2, 3, 4, 5]
+mixed := [42, "text", true]
+
+// Access array elements
+first := numbers[0]</div>
+      </div>
+
+      <div class="doc-section" id="flows">
+        <h2>4. Flows (Functions)</h2>
+        <p>Flows are the building blocks of Ouroboros—similar to functions in other languages.</p>
+
+        <h3>Basic Flow</h3>
+        <div class="code-block">Flow Greet -> name
+    "Hello, " -> Print
+    name -> Print
+    return true
+
+// Call the flow
+"World" -> Greet</div>
+
+        <h3>Flow with Return Value</h3>
+        <div class="code-block">Flow Add -> a, b
     result := a + b
     return result
 
-// Call the flow
+// Capture the return value with a pull arrow
 sum <- Add -> 10, 5
+sum -> Print  // Outputs: 15</div>
 
-// Print the result
-"The sum is: " -> Print
-sum -> Print</div>
+        <h3>Multi-Return Flow</h3>
+        <div class="code-block">Flow Divide -> a, b
+    quotient := a / b
+    remainder := a % b
+    return quotient, remainder
 
-        <p>Notice the syntax:</p>
+// Capture multiple return values
+q, r <- Divide -> 17, 5
+"Quotient: " -> Print
+q -> Print  // 3
+"Remainder: " -> Print
+r -> Print  // 2</div>
+      </div>
+
+      <div class="doc-section" id="arrows">
+        <h2>5. Basic Arrows</h2>
+        <p>Arrows are the core of Ouroboros. Here are the essentials:</p>
+
+        <table class="table">
+          <thead>
+            <tr><th>Arrow</th><th>Name</th><th>Purpose</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>-></code></td>
+              <td>Forward</td>
+              <td>Push data to a flow or expression</td>
+            </tr>
+            <tr>
+              <td><code><-</code></td>
+              <td>Pull</td>
+              <td>Capture return values or bind reactively</td>
+            </tr>
+            <tr>
+              <td><code><-></code></td>
+              <td>Sync</td>
+              <td>Bidirectional binding</td>
+            </tr>
+            <tr>
+              <td><code>-<</code></td>
+              <td>Fork</td>
+              <td>Send to multiple destinations</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Forward Arrow Examples</h3>
+        <div class="code-block">// Send value to Print
+42 -> Print
+
+// Chain multiple flows
+data -> Process -> Validate -> Print
+
+// Pass multiple arguments
+10, 5 -> Add -> Print</div>
+
+        <h3>Pull Arrow Examples</h3>
+        <div class="code-block">// Capture return value
+result <- Calculate -> input
+
+// Reactive binding (updates when dependencies change)
+area <- width * height</div>
+
+        <h3>Sync Arrow Example</h3>
+        <div class="code-block">// Both variables stay in sync
+left := 10
+right := 20
+left <-> right
+
+right = 50  // left is now also 50</div>
+
+        <h3>Fork Arrow Example</h3>
+        <div class="code-block">// Send to multiple flows at once
+event -< LogEvent, UpdateUI, NotifyUser</div>
+      </div>
+
+      <div class="doc-section" id="control">
+        <h2>6. Control Flow</h2>
+
+        <h3>If / Elseif / Else</h3>
+        <p>Blocks are defined by indentation (4 spaces). Note: use <code>≥</code> and <code>≤</code> for comparisons.</p>
+        <div class="code-block">score := 85
+
+if score ≥ 90
+    grade := "A"
+    "Excellent!" -> Print
+elseif score ≥ 80
+    grade := "B"
+    "Good job!" -> Print
+elseif score ≥ 70
+    grade := "C"
+    "Passing" -> Print
+else
+    grade := "F"
+    "Needs improvement" -> Print</div>
+
+        <h3>While Loop</h3>
+        <div class="code-block">counter := 0
+
+while counter < 5
+    counter -> Print
+    counter += 1
+
+// Outputs: 0 1 2 3 4</div>
+
+        <h3>Comparison Operators</h3>
+        <table class="table">
+          <thead>
+            <tr><th>Operator</th><th>Meaning</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>==</code></td><td>Equal</td></tr>
+            <tr><td><code>!=</code></td><td>Not equal</td></tr>
+            <tr><td><code>></code></td><td>Greater than</td></tr>
+            <tr><td><code><</code></td><td>Less than</td></tr>
+            <tr><td><code>≥</code></td><td>Greater than or equal</td></tr>
+            <tr><td><code>≤</code></td><td>Less than or equal</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Logical Operators</h3>
+        <div class="code-block">// AND
+if active & ready
+    "Go!" -> Print
+
+// OR
+if paused | stopped
+    "Not running" -> Print
+
+// NOT
+if !locked
+    "Accessible" -> Print</div>
+      </div>
+
+      <div class="doc-section" id="next">
+        <h2>7. Next Steps</h2>
+        <p>You've learned the basics! Here's where to go next:</p>
         <ul class="list">
-            <li><code>Flow Name -> params</code> defines the flow.</li>
-            <li><code>:=</code> assigns a value to a variable.</li>
-            <li><code><-</code> (Pull Arrow) captures the return value.</li>
-            <li><code>-></code> (Forward Arrow) passes arguments to the flow.</li>
+          <li><a href="examples.html">Examples</a> — Learn from real code</li>
+          <li><a href="arrows.html">Arrow Reference</a> — Master all arrow types</li>
+          <li><a href="tokens.html">Token Reference</a> — Complete syntax guide</li>
+          <li><a href="files.html">File Types</a> — Organize larger projects</li>
         </ul>
       </div>
-
-      <div class="doc-section" id="running">
-        <h2>4. Running Code</h2>
-        <p>Open your terminal or command prompt and run the compiler with your script file:</p>
-        
-        <div class="code-block">chimera.exe hello.ouro</div>
-        
-        <p>You should see the output:</p>
-        <div class="code-block">Hello, Ouroboros!</div>
-      </div>
-
     </main>
   </div>
+
+  <footer>
+    <p>Ouroboros Language © 2026</p>
+  </footer>
 </body>
 </html>

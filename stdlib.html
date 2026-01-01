@@ -12,13 +12,15 @@
 <body>
   <nav>
     <div class="nav-inner">
-      <div class="brand">Ouroboros</div>
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo">Ouroboros</a>
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="getting_started.html">Get Started</a>
-        <a href="stdlib.html">Std Lib</a>
+        <a href="examples.html">Examples</a>
         <a href="arrows.html">Arrows</a>
         <a href="tokens.html">Tokens</a>
+        <a href="files.html">Files</a>
+        <a href="stdlib.html">Std Lib</a>
         <a href="downloads.html">Downloads</a>
       </div>
     </div>
@@ -26,11 +28,12 @@
 
   <div class="doc-layout">
     <aside class="doc-panel toc">
-      <h3>Contents</h3>
+      <h3>Standard Library</h3>
       <ul>
         <li><a href="#io">I/O Functions</a></li>
+        <li><a href="#math">Math Operations</a></li>
+        <li><a href="#arrays">Array Operations</a></li>
         <li><a href="#flow-control">Flow Control</a></li>
-        <li><a href="#math">Math & Logic</a></li>
       </ul>
     </aside>
 
@@ -38,56 +41,149 @@
       <div class="doc-header">
         <div class="badge">Library Reference</div>
         <h1>Standard Library</h1>
-        <p>The core set of built-in flows and functions available in the Ouroboros runtime.</p>
+        <p>Built-in functions and operations available in every Ouroboros script.</p>
       </div>
 
       <div class="doc-section" id="io">
         <h2>I/O Functions</h2>
-        <p>Basic input/output operations.</p>
-        
+
         <div class="card">
           <h3>Print</h3>
-          <p>Prints one or more values to the standard output (console), followed by a newline.</p>
-          <div class="code-block">"Hello World" -> Print
-Print("Value is:", 42)</div>
+          <p>Output values to the console. Can receive values via forward arrow or function call syntax.</p>
+          <div class="code-block">// Forward arrow style (preferred)
+"Hello, World!" -> Print
+42 -> Print
+myVariable -> Print
+
+// Multiple values
+"Result: " -> Print
+result -> Print
+
+// Chain output
+value -> Transform -> Print</div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="math">
+        <h2>Math Operations</h2>
+        <p>Standard arithmetic is performed inline using operators.</p>
+
+        <div class="grid">
+          <div class="card">
+            <h3>Arithmetic</h3>
+            <div class="code-block">sum := a + b      // Addition
+diff := a - b     // Subtraction
+prod := a * b     // Multiplication
+quot := a / b     // Division
+rem := a % b      // Modulo
+neg := -a         // Negation</div>
+          </div>
+          <div class="card">
+            <h3>Compound Assignment</h3>
+            <div class="code-block">x := 10
+x += 5    // x = 15
+x -= 3    // x = 12
+x *= 2    // x = 24
+x /= 4    // x = 6
+x %= 4    // x = 2</div>
+          </div>
+        </div>
+
+        <h3>Example: Math Flow</h3>
+        <div class="code-block">Flow Clamp -> value, min, max
+    result := value
+    if result < min
+        result = min
+    elseif result > max
+        result = max
+    return result
+
+// Clamp a value between 0 and 100
+clamped <- Clamp -> 150, 0, 100  // Returns 100</div>
+      </div>
+
+      <div class="doc-section" id="arrays">
+        <h2>Array Operations</h2>
+
+        <div class="card">
+          <h3>Array Creation</h3>
+          <div class="code-block">// Literal arrays
+numbers := [1, 2, 3, 4, 5]
+mixed := [42, "text", true]
+empty := []
+nested := [[1, 2], [3, 4]]</div>
+        </div>
+
+        <div class="card">
+          <h3>Array Indexing</h3>
+          <p>Access elements using zero-based indexing with square brackets.</p>
+          <div class="code-block">arr := [10, 20, 30, 40, 50]
+
+first := arr[0]   // 10
+second := arr[1]  // 20
+last := arr[4]    // 50</div>
+        </div>
+
+        <div class="card">
+          <h3>Array in Flows</h3>
+          <div class="code-block">Flow SumFirstTwo -> arr
+    first := arr[0]
+    second := arr[1]
+    return first + second
+
+result <- SumFirstTwo -> [10, 20, 30]
+result -> Print  // 30</div>
         </div>
       </div>
 
       <div class="doc-section" id="flow-control">
         <h2>Flow Control</h2>
-        <p>Utilities for managing flow execution.</p>
 
         <div class="card">
           <h3>Call</h3>
-          <p>Executes a flow or a chain of flows. Useful when you want to trigger a flow for its side effects without capturing a return value, or as the terminator of a forward chain.</p>
-          <div class="code-block">// Execute a flow
-Call(MyFlow)
+          <p>Execute a flow for its side effects when you don't need the return value. Acts as a terminal in flow chains.</p>
+          <div class="code-block">// As chain terminator
+data -> Process -> Validate -> Call
 
-// Chain termination
-Data -> Process -> Call</div>
+// Explicit flow execution
+Call(InitializeSystem)</div>
+        </div>
+
+        <div class="card">
+          <h3>Conditional Execution</h3>
+          <p>Use if/elseif/else for branching logic.</p>
+          <div class="code-block">if condition
+    // Execute if true
+elseif other_condition
+    // Execute if first false, this true
+else
+    // Execute if all above false</div>
+        </div>
+
+        <div class="card">
+          <h3>Loops</h3>
+          <p>Use while for repeated execution.</p>
+          <div class="code-block">counter := 0
+while counter < 10
+    counter -> Print
+    counter += 1</div>
+        </div>
+
+        <div class="card">
+          <h3>Conditional Gates</h3>
+          <p>Inline conditional execution using gate syntax.</p>
+          <div class="code-block">// Only execute if condition is true
+value -[value > threshold]-> Handler
+
+// Transform value if condition is true
+input -[input > 0 ? input * 2]-> Process</div>
         </div>
       </div>
-
-      <div class="doc-section" id="math">
-        <h2>Math & Logic</h2>
-        <p>Ouroboros supports standard arithmetic and logical operators directly in expressions.</p>
-        
-        <table class="table">
-          <thead><tr><th>Operator</th><th>Description</th><th>Example</th></tr></thead>
-          <tbody>
-            <tr><td><code>+</code></td><td>Addition / String Concatenation</td><td><code>1 + 2</code>, <code>"A" + "B"</code></td></tr>
-            <tr><td><code>-</code></td><td>Subtraction / Unary Negation</td><td><code>10 - 5</code>, <code>-x</code></td></tr>
-            <tr><td><code>*</code></td><td>Multiplication</td><td><code>3 * 4</code></td></tr>
-            <tr><td><code>/</code></td><td>Division</td><td><code>10 / 2</code></td></tr>
-            <tr><td><code>%</code></td><td>Modulo</td><td><code>10 % 3</code></td></tr>
-            <tr><td><code>&</code></td><td>Logical AND</td><td><code>true & false</code></td></tr>
-            <tr><td><code>|</code></td><td>Logical OR</td><td><code>true | false</code></td></tr>
-            <tr><td><code>!</code></td><td>Logical NOT</td><td><code>!isValid</code></td></tr>
-          </tbody>
-        </table>
-      </div>
-
     </main>
   </div>
+
+  <footer>
+    <p>Ouroboros Language © 2026</p>
+  </footer>
 </body>
 </html>

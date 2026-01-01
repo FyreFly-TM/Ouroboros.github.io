@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arrow Semantics - Ouroboros</title>
+  <title>Arrow Reference - Ouroboros</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -12,13 +12,15 @@
 <body>
   <nav>
     <div class="nav-inner">
-      <div class="brand">Ouroboros</div>
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo">Ouroboros</a>
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="getting_started.html">Get Started</a>
-        <a href="stdlib.html">Std Lib</a>
+        <a href="examples.html">Examples</a>
         <a href="arrows.html">Arrows</a>
         <a href="tokens.html">Tokens</a>
+        <a href="files.html">Files</a>
+        <a href="stdlib.html">Std Lib</a>
         <a href="downloads.html">Downloads</a>
       </div>
     </div>
@@ -28,70 +30,338 @@
     <aside class="doc-panel toc">
       <h3>Arrow Types</h3>
       <ul>
+        <li><a href="#overview">Overview</a></li>
         <li><a href="#forward">Forward (->)</a></li>
         <li><a href="#pull">Pull (<-)</a></li>
-        <li><a href="#fork">Fork (-<)</a></li>
         <li><a href="#sync">Sync (<->)</a></li>
-        <li><a href="#variants">Variants</a></li>
+        <li><a href="#fork">Fork (-<)</a></li>
+        <li><a href="#funnel">Funnel (▷-)</a></li>
+        <li><a href="#fuzzy">Fuzzy (~>)</a></li>
+        <li><a href="#solver">Solver (=>)</a></li>
+        <li><a href="#transfer">Transfer (-|->)</a></li>
+        <li><a href="#sever">Sever (-||->)</a></li>
+        <li><a href="#async">Async Arrows</a></li>
+        <li><a href="#gates">Conditional Gates</a></li>
+        <li><a href="#chaining">Arrow Chaining</a></li>
       </ul>
     </aside>
 
     <main class="doc-panel doc-content">
       <div class="doc-header">
-        <div class="badge">Language Guide</div>
+        <div class="badge">Language Reference</div>
         <h1>Arrow Semantics</h1>
-        <p>Ouroboros is defined by its arrows. Each direction and style conveys a specific data flow intent.</p>
+        <p>Arrows are the heart of Ouroboros. Every arrow expresses a specific data flow intent.</p>
       </div>
 
-      <div class="doc-section" id="forward">
-        <h2>Forward Arrow (->)</h2>
-        <p><strong>"Pass data to..."</strong></p>
-        <p>The most common arrow. It moves data from left to right. Use it to pass arguments to a flow or to chain operations.</p>
-        <div class="code-block">Value -> Flow
-10 -> Print</div>
-      </div>
-
-      <div class="doc-section" id="pull">
-        <h2>Pull Arrow (<-)</h2>
-        <p><strong>"Get data from..."</strong></p>
-        <p>Used for assignment and capturing return values. It pulls the result of the expression on the right into the variable on the left.</p>
-        <div class="code-block">result <- Calculate -> input
-x <- 10</div>
-        <p>In reactive contexts (future), this establishes a dependency where the left side updates whenever the right side changes.</p>
-      </div>
-
-      <div class="doc-section" id="fork">
-        <h2>Fork Arrow (-<)</h2>
-        <p><strong>"Broadcast to..."</strong></p>
-        <p>Takes a single input on the left and sends it to multiple flows on the right simultaneously (or sequentially, depending on the runtime). It returns a sequence of results from all targets.</p>
-        <div class="code-block">event_data -< LogEvent, UpdateUI, PlaySound</div>
-        <p>Use this for event handling, broadcasting state changes, or parallel processing.</p>
-      </div>
-
-      <div class="doc-section" id="sync">
-        <h2>Sync Arrow (<->)</h2>
-        <p><strong>"Keep in sync with..."</strong></p>
-        <p>Establishes a bidirectional binding. If either side changes, the other is updated to match. This is powerful for UI development (Model-View binding) or synchronizing game state.</p>
-        <div class="code-block">Slider.value <-> Player.health</div>
-      </div>
-
-      <div class="doc-section" id="variants">
-        <h2>Arrow Variants</h2>
-        <p>Arrows can be modified to express specific timing or ownership semantics. While the current compiler may treat some of these identically, using the correct variant makes your code self-documenting.</p>
-        
+      <div class="doc-section" id="overview">
+        <h2>Overview</h2>
+        <p>Ouroboros uses arrows to direct data flow between expressions, variables, and flows. Each arrow type conveys different semantics:</p>
         <table class="table">
-          <thead><tr><th>Symbol</th><th>Name</th><th>Intent</th></tr></thead>
+          <thead>
+            <tr><th>Arrow</th><th>Name</th><th>Direction</th><th>Purpose</th></tr>
+          </thead>
           <tbody>
-            <tr><td><code>->></code></td><td>Async</td><td>Fire-and-forget. Start a task and don't wait for it to finish.</td></tr>
-            <tr><td><code>->|</code></td><td>Await</td><td>Pause execution until the task completes and returns a value.</td></tr>
-            <tr><td><code>-|-></code></td><td>Transfer</td><td>Move ownership of the data. The source variable becomes invalid.</td></tr>
-            <tr><td><code>-||-></code></td><td>Sever</td><td>Break a connection or stop a continuous flow.</td></tr>
-            <tr><td><code>-▷</code></td><td>Continuous</td><td>Stream data continuously (like a pipe).</td></tr>
+            <tr><td><code>-></code></td><td>Forward</td><td>Left → Right</td><td>Push data to a destination</td></tr>
+            <tr><td><code><-</code></td><td>Pull</td><td>Right → Left</td><td>Capture or bind reactively</td></tr>
+            <tr><td><code><-></code></td><td>Sync</td><td>Bidirectional</td><td>Keep both sides equal</td></tr>
+            <tr><td><code>-<</code></td><td>Fork</td><td>One → Many</td><td>Broadcast to multiple targets</td></tr>
+            <tr><td><code>▷-</code></td><td>Funnel</td><td>Continuous</td><td>Stream changes reactively</td></tr>
+            <tr><td><code>~></code></td><td>Fuzzy</td><td>Soft Forward</td><td>Suggest rather than force</td></tr>
+            <tr><td><code>=></code></td><td>Solver</td><td>Constraint</td><td>Find solutions/paths</td></tr>
+            <tr><td><code>-|-></code></td><td>Transfer</td><td>Ownership</td><td>Move data, invalidate source</td></tr>
+            <tr><td><code>-||-></code></td><td>Sever</td><td>Disconnect</td><td>Break a connection</td></tr>
           </tbody>
         </table>
       </div>
 
+      <div class="doc-section" id="forward">
+        <h2>Forward Arrow (->)</h2>
+        <p><strong>Purpose:</strong> Push data from left to right.</p>
+        <p>The most common arrow. It sends values to flows, chains operations, or passes arguments.</p>
+        
+        <h3>Basic Usage</h3>
+        <div class="code-block">// Send a value to Print
+"Hello, World!" -> Print
+
+// Pass to a flow
+42 -> ProcessNumber</div>
+
+        <h3>Multiple Arguments</h3>
+        <div class="code-block">// Pass multiple values separated by commas
+10, 5 -> Add -> Print</div>
+
+        <h3>Chaining</h3>
+        <div class="code-block">// Chain multiple flows together
+input -> Validate -> Transform -> Store -> Print</div>
+      </div>
+
+      <div class="doc-section" id="pull">
+        <h2>Pull Arrow (<-)</h2>
+        <p><strong>Purpose:</strong> Capture return values or create reactive bindings.</p>
+
+        <h3>Capture Return Value</h3>
+        <div class="code-block">// Capture single return
+result <- Add -> 10, 5
+
+// Capture multiple returns
+quotient, remainder <- Divide -> 17, 5</div>
+
+        <h3>Reactive Binding</h3>
+        <p>When used with an expression, the left side updates whenever the right side changes:</p>
+        <div class="code-block">width := 10
+height := 5
+
+// area automatically recalculates when width or height change
+area <- width * height
+
+width = 20  // area is now 100</div>
+
+        <h3>Formula Binding</h3>
+        <div class="code-block">co2 := 400.0
+temp := -50.0
+water := 10.0
+
+// Complex formula binding
+health <- (temp + 50.0) * water / co2</div>
+      </div>
+
+      <div class="doc-section" id="sync">
+        <h2>Sync Arrow (<->)</h2>
+        <p><strong>Purpose:</strong> Bidirectional binding—both sides stay equal.</p>
+        <p>Changes to either side are immediately reflected in the other. Perfect for UI bindings or state synchronization.</p>
+
+        <div class="code-block">model := 100
+view := 0
+
+// Establish sync
+model <-> view
+
+// Now both are 100
+view = 250
+// Both are now 250
+
+model = 999
+// Both are now 999</div>
+
+        <h3>Use Cases</h3>
+        <ul class="list">
+          <li>Model-View synchronization in UI</li>
+          <li>Game state between client and server</li>
+          <li>Keeping backup values in sync</li>
+        </ul>
+      </div>
+
+      <div class="doc-section" id="fork">
+        <h2>Fork Arrow (-<)</h2>
+        <p><strong>Purpose:</strong> Send a single input to multiple destinations.</p>
+        <p>Broadcasting—one source feeds many targets simultaneously.</p>
+
+        <div class="code-block">// Fork to multiple handlers
+event -< LogEvent, UpdateUI, NotifyUser
+
+// Use in event systems
+"player_joined" -< OnJoin, Analytics, Achievements</div>
+
+        <h3>Chained Forks</h3>
+        <p>Forks can appear at the end of arrow chains:</p>
+        <div class="code-block">// Process then fork the result
+data -> Transform -> Validate -< Store, Backup, Notify</div>
+      </div>
+
+      <div class="doc-section" id="funnel">
+        <h2>Continuous Funnel (▷-)</h2>
+        <p><strong>Purpose:</strong> Stream data continuously—any change triggers the target.</p>
+        <p>Unlike a one-time forward arrow, a funnel establishes an ongoing connection.</p>
+
+        <div class="code-block">sensor_temp := 22.0
+sensor_pressure := 1013.0
+
+// Establish continuous monitoring
+sensor_temp ▷- ClimateMonitor
+sensor_pressure ▷- ClimateMonitor
+
+Flow ClimateMonitor -> val
+    "Sensor changed: " -> Print
+    val -> Print
+    return true
+
+// Any change triggers the monitor
+sensor_temp = 25.0  // Triggers ClimateMonitor</div>
+
+        <h3>Continuous Fork (▷-<)</h3>
+        <p>Combine continuous monitoring with forking:</p>
+        <div class="code-block">sensor ▷-< Handler1, Handler2, Handler3</div>
+      </div>
+
+      <div class="doc-section" id="fuzzy">
+        <h2>Fuzzy Arrow (~>)</h2>
+        <p><strong>Purpose:</strong> Soft influence—suggest rather than force.</p>
+        <p>Used for fuzzy logic systems where values are "influenced" rather than directly set.</p>
+
+        <div class="code-block">temperature := 28.0
+
+// Fuzzy influence on controller
+temperature ~> ThermalController
+
+Flow ThermalController -> t
+    // Fuzzy logic: soft response
+    if t > 25.0
+        "Suggesting: increase cooling" -> Print
+    elseif t < 18.0
+        "Suggesting: increase heating" -> Print
+    else
+        "Nominal range" -> Print
+    return true</div>
+      </div>
+
+      <div class="doc-section" id="solver">
+        <h2>Solver Arrow (=>)</h2>
+        <p><strong>Purpose:</strong> Constraint-based solving—find paths or solutions.</p>
+        <p>Used for pathfinding, optimization, or constraint satisfaction problems.</p>
+
+        <div class="code-block">start_position := "Sector_A"
+target := "Depot"
+
+// Request path solving
+start_position => PathSolver
+
+Flow PathSolver -> start
+    "SOLVER: Computing optimal path from " -> Print
+    start -> Print
+    // Constraint solving logic here
+    return "optimal_route"</div>
+      </div>
+
+      <div class="doc-section" id="transfer">
+        <h2>Transfer Arrow (-|->)</h2>
+        <p><strong>Purpose:</strong> Move ownership—source becomes invalid after transfer.</p>
+        <p>Similar to Rust's move semantics. After transfer, the source should not be used.</p>
+
+        <div class="code-block">drone_cargo := ["Titanium", "Gold", "Uranium"]
+
+// Transfer ownership to depot
+drone_cargo -|-> DepotReceiver
+
+Flow DepotReceiver -> cargo
+    "Cargo received: " -> Print
+    cargo -> Print
+    return true
+
+// drone_cargo is now conceptually invalid</div>
+      </div>
+
+      <div class="doc-section" id="sever">
+        <h2>Sever Arrow (-||->)</h2>
+        <p><strong>Purpose:</strong> Explicitly break a connection or trigger disconnect.</p>
+        <p>Used to signal the end of a relationship or connection.</p>
+
+        <div class="code-block">session_id := "Session_12345"
+
+// Sever the connection
+session_id -||-> DisconnectHandler
+
+Flow DisconnectHandler -> id
+    "Disconnecting session: " -> Print
+    id -> Print
+    "Connection severed." -> Print
+    return true</div>
+      </div>
+
+      <div class="doc-section" id="async">
+        <h2>Async Arrows</h2>
+        <p>Async variants allow fire-and-forget or non-blocking operations.</p>
+
+        <table class="table">
+          <thead>
+            <tr><th>Arrow</th><th>Name</th><th>Purpose</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>->></code></td><td>Async Forward</td><td>Fire-and-forget forward</td></tr>
+            <tr><td><code><<-</code></td><td>Async Pull</td><td>Non-blocking capture</td></tr>
+            <tr><td><code>-<<</code></td><td>Async Fork</td><td>Parallel broadcast</td></tr>
+            <tr><td><code>>>-</code></td><td>Async Funnel</td><td>Async continuous stream</td></tr>
+            <tr><td><code>|<-</code></td><td>Pull Await</td><td>Wait for value to be ready</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Async Fork Example</h3>
+        <div class="code-block">// Send to multiple handlers asynchronously
+threat -<< DeployDrones, LockSector, NotifyCaptain</div>
+
+        <h3>Pull Await Example</h3>
+        <div class="code-block">// Wait for conditions to be true
+launch_signal |<- fuel_ready
+launch_signal |<- nav_ready
+launch_signal |<- crew_ready</div>
+      </div>
+
+      <div class="doc-section" id="gates">
+        <h2>Conditional Gates</h2>
+        <p>Gates filter or transform data inline using <code>-[condition]-></code> syntax.</p>
+
+        <h3>Simple Gate (Filter)</h3>
+        <p>Only execute if condition is true:</p>
+        <div class="code-block">value := 75
+
+// Only calls ProcessHigh if value > 50
+value -[value > 50]-> ProcessHigh
+
+// Only calls ProcessLow if value <= 50
+value -[value ≤ 50]-> ProcessLow</div>
+
+        <h3>Transform Gate</h3>
+        <p>Transform the value before passing:</p>
+        <div class="code-block">input := 10
+
+// If condition is true, pass the transformed value
+input -[input > 5 ? input * 2]-> Handler     // Passes 20
+input -[input > 5 ? "HIGH"]-> Classifier     // Passes "HIGH"</div>
+
+        <h3>Complex Conditions</h3>
+        <div class="code-block">status := "Active"
+power := 80
+
+// Compound conditions
+status -[status == "Active" & power > 90]-> CriticalHandler
+status -[status == "Active" & (power > 90 | power < 10)]-> AlertHandler</div>
+
+        <h3>Gates with Any Arrow</h3>
+        <div class="code-block">// Gate + Fuzzy
+temp -[lockdown == false]~> Regulator
+
+// Gate + Solver
+position -[obstacles < 5]=> PathFinder</div>
+      </div>
+
+      <div class="doc-section" id="chaining">
+        <h2>Arrow Chaining</h2>
+        <p>Combine multiple arrows in a single expression for complex pipelines.</p>
+
+        <h3>Basic Chain</h3>
+        <div class="code-block">input -> Step1 -> Step2 -> Step3 -> Print</div>
+
+        <h3>Capture from Chain</h3>
+        <div class="code-block">result <- input -> Transform -> Validate</div>
+
+        <h3>Mixed Arrow Chain</h3>
+        <div class="code-block">// Gate -> Flow -> Fuzzy -> Solver -> Fork
+data -[valid]-> Decrypt ~> Analyze => Solve -< Log, Alert</div>
+
+        <h3>The "Omega Chain"</h3>
+        <p>Maximum complexity—combining all arrow types:</p>
+        <div class="code-block">// 1. Gate check on radiation
+// 2. Forward to Decrypt
+// 3. Fuzzy to Analyzer
+// 4. Solver for geometry
+// 5. Fork to multiple outputs
+
+artifact -[radiation < 10]-> Decrypt ~> Analyzer => Solver -< Log, Alert</div>
+      </div>
     </main>
   </div>
+
+  <footer>
+    <p>Ouroboros Language © 2026</p>
+  </footer>
 </body>
 </html>

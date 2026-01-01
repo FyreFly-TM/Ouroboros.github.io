@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examples - Ouroboros</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo">Ouroboros</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="getting_started.html">Get Started</a>
+        <a href="examples.html">Examples</a>
+        <a href="arrows.html">Arrows</a>
+        <a href="tokens.html">Tokens</a>
+        <a href="files.html">Files</a>
+        <a href="stdlib.html">Std Lib</a>
+        <a href="downloads.html">Downloads</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="doc-layout">
+    <aside class="doc-panel toc">
+      <h3>Examples</h3>
+      <ul>
+        <li><a href="#beginner">Beginner</a></li>
+        <li><a href="#intermediate">Intermediate</a></li>
+        <li><a href="#advanced">Advanced</a></li>
+        <li><a href="#patterns">Patterns</a></li>
+      </ul>
+    </aside>
+
+    <main class="doc-panel doc-content">
+      <div class="doc-header">
+        <div class="badge">Learn by Example</div>
+        <h1>Ouroboros Examples</h1>
+        <p>From simple scripts to complex simulations—working code you can run today.</p>
+      </div>
+
+      <!-- BEGINNER EXAMPLES -->
+      <div class="doc-section" id="beginner">
+        <h2>Beginner Examples</h2>
+
+        <div class="example-card">
+          <h3>Hello World</h3>
+          <p>The simplest Ouroboros program.</p>
+          <div class="code-block">"Hello, World!" -> Print</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Variables and Math</h3>
+          <p>Basic variable declaration and arithmetic.</p>
+          <div class="code-block">// Declare variables
+x := 10
+y := 5
+
+// Arithmetic operations
+sum := x + y
+diff := x - y
+product := x * y
+quotient := x / y
+remainder := x % y
+
+// Print results
+"Sum: " -> Print
+sum -> Print
+
+"Product: " -> Print
+product -> Print</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Simple Flow</h3>
+          <p>Define and call a flow (function).</p>
+          <div class="code-block">Flow Double -> n
+    result := n * 2
+    return result
+
+// Call the flow and capture result
+answer <- Double -> 21
+answer -> Print  // Outputs: 42</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Greeting Flow</h3>
+          <p>A flow that prints a personalized greeting.</p>
+          <div class="code-block">Flow Greet -> name
+    "Hello, " -> Print
+    name -> Print
+    "!" -> Print
+    return true
+
+"Alice" -> Greet
+"Bob" -> Greet</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Counter Loop</h3>
+          <p>A simple while loop counting from 1 to 5.</p>
+          <div class="code-block">i := 1
+
+while i ≤ 5
+    i -> Print
+    i += 1
+
+"Done!" -> Print</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Conditional Logic</h3>
+          <p>Using if/elseif/else to grade a score.</p>
+          <div class="code-block">score := 78
+
+if score ≥ 90
+    "Grade: A" -> Print
+elseif score ≥ 80
+    "Grade: B" -> Print
+elseif score ≥ 70
+    "Grade: C" -> Print
+elseif score ≥ 60
+    "Grade: D" -> Print
+else
+    "Grade: F" -> Print</div>
+        </div>
+      </div>
+
+      <!-- INTERMEDIATE EXAMPLES -->
+      <div class="doc-section" id="intermediate">
+        <h2>Intermediate Examples</h2>
+
+        <div class="example-card">
+          <h3>Multi-Return Flow</h3>
+          <p>A flow that returns multiple values at once.</p>
+          <div class="code-block">Flow ComputeStats -> a, b
+    sum := a + b
+    product := a * b
+    average := sum / 2
+    return sum, product, average
+
+// Capture all three return values
+s, p, avg <- ComputeStats -> 10, 20
+
+"Sum: " -> Print
+s -> Print
+"Product: " -> Print
+p -> Print
+"Average: " -> Print
+avg -> Print</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Calculator</h3>
+          <p>A modular calculator using multiple flows.</p>
+          <div class="code-block">Flow Add -> a, b
+    return a + b
+
+Flow Subtract -> a, b
+    return a - b
+
+Flow Multiply -> a, b
+    return a * b
+
+Flow Divide -> a, b
+    return a / b
+
+// Use the calculator
+result1 <- Add -> 15, 25
+result2 <- Multiply -> result1, 2
+result2 -> Print  // 80</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Flow Chaining</h3>
+          <p>Chain multiple flows together in a pipeline.</p>
+          <div class="code-block">Flow AddOne -> n
+    return n + 1
+
+Flow Double -> n
+    return n * 2
+
+Flow Square -> n
+    return n * n
+
+// Chain: 5 -> AddOne (6) -> Double (12) -> Square (144)
+5 -> AddOne -> Double -> Square -> Print</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Array Processing</h3>
+          <p>Working with arrays and indexing.</p>
+          <div class="code-block">// Create arrays
+numbers := [10, 20, 30, 40, 50]
+names := ["Alice", "Bob", "Charlie"]
+
+// Access elements
+first := numbers[0]
+last := numbers[4]
+
+"First: " -> Print
+first -> Print
+"Last: " -> Print
+last -> Print
+
+// Create array from flow
+Flow MakeTriple -> a, b, c
+    return [a, b, c]
+
+triple <- MakeTriple -> 1, 2, 3
+triple -> Print</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Reactive Bindings</h3>
+          <p>Create variables that update automatically.</p>
+          <div class="code-block">width := 10
+height := 5
+
+// area automatically updates when width or height change
+area <- width * height
+perimeter <- 2 * (width + height)
+
+"Initial area: " -> Print
+area -> Print  // 50
+
+// Change a dimension
+width = 20
+
+"New area: " -> Print
+area -> Print  // 100 (auto-updated)</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Bidirectional Sync</h3>
+          <p>Keep two variables perfectly synchronized.</p>
+          <div class="code-block">model_value := 100
+view_value := 0
+
+// Establish sync
+model_value <-> view_value
+
+"After sync - view: " -> Print
+view_value -> Print  // 100
+
+// Change either side
+view_value = 250
+"Model after view change: " -> Print
+model_value -> Print  // 250
+
+model_value = 999
+"View after model change: " -> Print
+view_value -> Print  // 999</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Fork Broadcasting</h3>
+          <p>Send an event to multiple handlers simultaneously.</p>
+          <div class="code-block">Flow LogEvent -> event
+    "LOG: Event received - " -> Print
+    event -> Print
+    return true
+
+Flow UpdateUI -> event
+    "UI: Refreshing display for - " -> Print
+    event -> Print
+    return true
+
+Flow NotifyUser -> event
+    "NOTIFY: Alert sent for - " -> Print
+    event -> Print
+    return true
+
+// Fork: send to all three handlers at once
+"user_login" -< LogEvent, UpdateUI, NotifyUser</div>
+        </div>
+      </div>
+
+      <!-- ADVANCED EXAMPLES -->
+      <div class="doc-section" id="advanced">
+        <h2>Advanced Examples</h2>
+
+        <div class="example-card">
+          <h3>Conditional Gates</h3>
+          <p>Route data based on conditions using gate syntax.</p>
+          <div class="code-block">Flow ProcessHigh -> val
+    "Processing HIGH value: " -> Print
+    val -> Print
+    return true
+
+Flow ProcessLow -> val
+    "Processing LOW value: " -> Print
+    val -> Print
+    return true
+
+value := 75
+
+// Gate: only executes if condition is true
+value -[value > 50]-> ProcessHigh
+value -[value ≤ 50]-> ProcessLow</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Transform Gates</h3>
+          <p>Transform data inline before passing to a flow.</p>
+          <div class="code-block">Flow Receiver -> data
+    "Received: " -> Print
+    data -> Print
+    return true
+
+input := 10
+
+// Transform: if condition is true, pass transformed value
+input -[input > 5 ? input * 2]-> Receiver  // Receives 20
+input -[input > 5 ? "HIGH"]-> Receiver     // Receives "HIGH"</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Continuous Funnels</h3>
+          <p>React to value changes automatically.</p>
+          <div class="code-block">sensor_temp := 22.0
+sensor_humidity := 45.0
+
+Flow ClimateMonitor -> val
+    "Climate sensor triggered: " -> Print
+    val -> Print
+    return true
+
+// Continuous funnel: triggers on any change
+sensor_temp ▷- ClimateMonitor
+sensor_humidity ▷- ClimateMonitor
+
+// Changing values triggers the monitor
+"Simulating temperature change..." -> Print
+sensor_temp = 28.5</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Fuzzy Logic Arrow</h3>
+          <p>Soft influence—suggest rather than force values.</p>
+          <div class="code-block">target_temp := 22.0
+
+Flow ThermalController -> t
+    if t > 25.0
+        "Fuzzy: Cooling suggested" -> Print
+    elseif t < 18.0
+        "Fuzzy: Heating suggested" -> Print
+    else
+        "Fuzzy: Temperature nominal" -> Print
+    return true
+
+// Fuzzy arrow: soft influence
+target_temp ~> ThermalController</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Solver Arrow</h3>
+          <p>Constraint-based solving for pathfinding or optimization.</p>
+          <div class="code-block">Flow PathSolver -> start
+    "SOLVER: Calculating optimal path from " -> Print
+    start -> Print
+    "SOLVER: Path found via A* algorithm" -> Print
+    return "optimal_path"
+
+current_position := "Sector_A"
+
+// Solver arrow: find solution
+current_position => PathSolver</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Ownership Transfer</h3>
+          <p>Transfer data ownership—source becomes invalid.</p>
+          <div class="code-block">Flow DepotReceiver -> cargo
+    "DEPOT: Received cargo:" -> Print
+    cargo -> Print
+    return true
+
+drone_cargo := ["Titanium", "Gold", "Uranium"]
+
+"Drone cargo before transfer:" -> Print
+drone_cargo -> Print
+
+// Transfer ownership
+drone_cargo -|-> DepotReceiver
+
+// drone_cargo is now conceptually invalid</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Sever Connection</h3>
+          <p>Explicitly break a connection or trigger disconnect.</p>
+          <div class="code-block">Flow DisconnectHandler -> id
+    "Disconnecting: " -> Print
+    id -> Print
+    "Connection severed." -> Print
+    return true
+
+session_id := "Session_12345"
+
+// Sever arrow: break connection
+session_id -||-> DisconnectHandler</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Recursive Flow</h3>
+          <p>A flow that calls itself for recursive algorithms.</p>
+          <div class="code-block">Flow Factorial -> n
+    if n ≤ 1
+        return 1
+    
+    prev <- Factorial -> (n - 1)
+    return n * prev
+
+result <- Factorial -> 5
+"5! = " -> Print
+result -> Print  // 120</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Complex Chain</h3>
+          <p>Combine multiple arrow types in a single pipeline.</p>
+          <div class="code-block">Flow Decrypt -> data
+    "Decrypting..." -> Print
+    return "decrypted_data"
+
+Flow Analyze -> data
+    "Analyzing intent..." -> Print
+    return data
+
+Flow Solve -> data
+    "Solving geometry..." -> Print
+    return "solved"
+
+Flow LogResult -> result
+    "LOGGED: " -> Print
+    result -> Print
+    return true
+
+Flow AlertTeam -> result
+    "ALERT SENT" -> Print
+    return true
+
+// The Omega Chain: Gate -> Flow -> Fuzzy -> Solver -> Fork
+radiation := 3.0
+artifact := "alien_signal"
+
+artifact -[radiation < 10]-> Decrypt ~> Analyze => Solve -< LogResult, AlertTeam</div>
+        </div>
+      </div>
+
+      <!-- PATTERNS -->
+      <div class="doc-section" id="patterns">
+        <h2>Common Patterns</h2>
+
+        <div class="example-card">
+          <h3>Event System</h3>
+          <p>A simple event broadcasting pattern.</p>
+          <div class="code-block">// Event handlers
+Flow OnPlayerJoin -> player
+    "Player joined: " -> Print
+    player -> Print
+    return true
+
+Flow OnPlayerLeave -> player
+    "Player left: " -> Print
+    player -> Print
+    return true
+
+Flow LogActivity -> player
+    "Activity logged for: " -> Print
+    player -> Print
+    return true
+
+// Broadcast player events
+"Alice" -< OnPlayerJoin, LogActivity
+"Bob" -< OnPlayerLeave, LogActivity</div>
+        </div>
+
+        <div class="example-card">
+          <h3>State Machine</h3>
+          <p>Using conditional gates as a state machine.</p>
+          <div class="code-block">state := "idle"
+
+Flow HandleIdle -> s
+    "State: IDLE -> Starting" -> Print
+    return "running"
+
+Flow HandleRunning -> s
+    "State: RUNNING -> Processing" -> Print
+    return "complete"
+
+Flow HandleComplete -> s
+    "State: COMPLETE -> Done!" -> Print
+    return "idle"
+
+// Process based on current state
+state -[state == "idle"]-> HandleIdle
+state -[state == "running"]-> HandleRunning
+state -[state == "complete"]-> HandleComplete</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Pipeline Processing</h3>
+          <p>Data transformation pipeline.</p>
+          <div class="code-block">Flow Validate -> data
+    "Validating..." -> Print
+    return data
+
+Flow Transform -> data
+    "Transforming..." -> Print
+    return data
+
+Flow Store -> data
+    "Storing..." -> Print
+    return true
+
+// Process data through pipeline
+raw_data := "user_input"
+raw_data -> Validate -> Transform -> Store</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Sensor Fusion</h3>
+          <p>Multiple sensors feeding into a single processor.</p>
+          <div class="code-block">Flow SensorProcessor -> reading
+    "Sensor reading: " -> Print
+    reading -> Print
+    return true
+
+// Multiple sensors continuously feed the processor
+temperature := 22.5
+pressure := 1013.25
+humidity := 65.0
+
+temperature ▷- SensorProcessor
+pressure ▷- SensorProcessor
+humidity ▷- SensorProcessor
+
+// Any change triggers processing
+temperature = 23.0</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <p>Ouroboros Language © 2026</p>
+  </footer>
+</body>
+</html>

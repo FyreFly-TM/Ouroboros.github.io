@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ouroboros Downloads</title>
+  <title>Downloads - Ouroboros</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -12,85 +12,121 @@
 <body>
   <nav>
     <div class="nav-inner">
-      <div class="brand">Ouroboros</div>
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo">Ouroboros</a>
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="getting_started.html">Get Started</a>
-        <a href="stdlib.html">Std Lib</a>
+        <a href="examples.html">Examples</a>
         <a href="arrows.html">Arrows</a>
         <a href="tokens.html">Tokens</a>
+        <a href="files.html">Files</a>
+        <a href="stdlib.html">Std Lib</a>
         <a href="downloads.html">Downloads</a>
       </div>
     </div>
   </nav>
 
   <section class="hero">
-    <div class="hero-card">
-      <div class="badge">Compiler Builds</div>
-      <h1>Download Ouroboros Compiler</h1>
-      <p class="lead">Pick a platform build or grab the source archive. Links assume binaries or zips live under a /downloads directoryâ€”replace the targets with your release artifacts when you publish.</p>
+    <div class="hero-card hero-main">
+      <div class="badge">Get Ouroboros</div>
+      <h1>Download the Compiler</h1>
+      <p class="lead">Get the Chimera compiler and start writing Ouroboros code today.</p>
       <div class="button-row">
-        <a class="btn secondary" href="index.html">Back to home</a>
+        <a class="btn primary" href="https://github.com/FyreFly-TM/Ouroboros.github.io/releases">Download from GitHub</a>
+        <a class="btn secondary" href="getting_started.html">Getting Started Guide</a>
       </div>
     </div>
     <div class="hero-card">
-      <h2>What you get</h2>
-      <ul class="list">
-        <li>Compiler executable (chimera) ready to run.</li>
-        <li>Standard library definitions bundled (.var, .comp, .ent).</li>
-        <li>Example scripts demonstrating arrows, flows, and bindings.</li>
+      <h2>What's Included</h2>
+      <ul class="list feature-list">
+        <li><strong>Chimera Compiler</strong> — The Ouroboros interpreter/compiler</li>
+        <li><strong>Example Scripts</strong> — Working examples to learn from</li>
+        <li><strong>VS Code Extension</strong> — Syntax highlighting for .ouro files</li>
+        <li><strong>Documentation</strong> — Offline reference guides</li>
       </ul>
-      <div class="notice">Install instructions live elsewhere; this page focuses on distribution links.</div>
     </div>
-  </section>
-
-  <section class="section" id="releases">
-    <h2>Platform Builds</h2>
-    <div class="grid">
-      <div class="card">
-        <strong>Windows (x64)</strong>
-        <p>Portable zip with chimera.exe and starter examples.</p>
-        <a class="btn primary" href="https://github.com/FyreFly-TM/Ouroboros.github.io/releases">Download from GitHub</a>
-        <div class="notice">Latest release artifacts are hosted on GitHub.</div>
-      </div>
-      <div class="card" style="opacity: 0.6;">
-        <strong>Linux (x64)</strong>
-        <p style="color: var(--muted);">Not currently supported.</p>
-        <div class="notice">Linux builds coming in a future release.</div>
-      </div>
-      <div class="card" style="opacity: 0.6;">
-        <strong>macOS (Apple/Intel)</strong>
-        <p style="color: var(--muted);">Not currently supported.</p>
-        <div class="notice">macOS builds coming in a future release.</div>
-      </div>
-    </div>
-    <div class="notice">Hosting on GitHub Pages? Commit the archives under docs/site/downloads/ or point these links to GitHub Releases URLs.</div>
   </section>
 
   <section class="section">
-    <h2>Whatâ€™s in a release?</h2>
+    <h2>Platform Availability</h2>
     <div class="grid">
       <div class="card">
-        <strong>Compiler</strong>
-        <p>Platform binary (chimera) with lexer/parser/runtime for arrows, flows, and bindings.</p>
+        <h3>Windows (x64)</h3>
+        <p>Fully supported. Download the portable zip with chimera.exe.</p>
+        <a class="btn primary" href="https://github.com/FyreFly-TM/Ouroboros.github.io/releases">Download for Windows</a>
+      </div>
+      <div class="card card-muted">
+        <h3>Linux (x64)</h3>
+        <p>Coming soon in a future release.</p>
+      </div>
+      <div class="card card-muted">
+        <h3>macOS</h3>
+        <p>Coming soon in a future release.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Installation</h2>
+    <div class="card">
+      <h3>Step 1: Download</h3>
+      <ol class="list">
+        <li>Go to the <a href="https://github.com/FyreFly-TM/Ouroboros.github.io/releases">GitHub Releases</a> page</li>
+        <li>Download the latest <code>.zip</code> file</li>
+        <li>Extract the zip to a location of your choice</li>
+      </ol>
+    </div>
+    
+    <div class="card">
+      <h3>Step 2: Set Up Your Project</h3>
+      <ol class="list">
+        <li>Create a new folder for your project</li>
+        <li>Copy <code>chimera.exe</code> into your project folder</li>
+        <li>Create your <code>.ouro</code> script files in the same folder</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h3>Step 3: Run Your Code</h3>
+      <p>Open a terminal in your project folder and run:</p>
+      <div class="code-block">// Run a specific script
+.\chimera.exe yourscript.ouro
+
+// Run the entire project (all .ouro files)
+.\chimera.exe</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Editor Support</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>VS Code Extension</h3>
+        <p>Syntax highlighting and language support for Ouroboros files.</p>
+        <p>The extension (<code>.vsix</code> file) is included in the release package.</p>
+        <h4>Installation:</h4>
+        <ol class="list">
+          <li>Open Visual Studio Code</li>
+          <li>Go to Extensions (Ctrl+Shift+X)</li>
+          <li>Click the <strong>three dots (⋯)</strong> in the top right corner</li>
+          <li>Select <strong>"Install from VSIX..."</strong></li>
+          <li>Navigate to and select the <code>.vsix</code> file from the downloaded package</li>
+        </ol>
       </div>
       <div class="card">
-        <strong>Standard types</strong>
-        <p>Bundled .var, .comp, .ent definitions (Vector types, common components) for immediate use.</p>
-      </div>
-      <div class="card">
-        <strong>Examples</strong>
-        <p>Fresh scripts showcasing forward/pull/sync arrows, multi-return flows, field bindings, and arrays/matrices.</p>
-      </div>
-      <div class="card">
-        <strong>Editor support</strong>
-        <p>VS Code grammar/theme for syntax highlighting in ouro files.</p>
+        <h3>Features</h3>
+        <ul class="list">
+          <li>Syntax highlighting for .ouro, .var, .comp, .ent files</li>
+          <li>Arrow operator highlighting</li>
+          <li>Keyword and flow detection</li>
+          <li>Custom color theme</li>
+        </ul>
       </div>
     </div>
   </section>
 
   <footer>
-    Replace download targets with your release artifacts before publishing.
+    <p>Ouroboros Language © 2026</p>
   </footer>
 </body>
 </html>
