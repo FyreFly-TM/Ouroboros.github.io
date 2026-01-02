@@ -17,6 +17,8 @@
         <a href="index.html">Home</a>
         <a href="getting_started.html">Get Started</a>
         <a href="examples.html">Examples</a>
+        <a href="flows.html">Flows</a>
+        <a href="reference.html">Reference</a>
         <a href="arrows.html">Arrows</a>
         <a href="tokens.html">Tokens</a>
         <a href="files.html">Files</a>
@@ -68,22 +70,27 @@
         
         <div class="code-block">// game.ouro
 
-Flow Attack -> attacker, target
+Flow Attack(attacker, target)
     damage := attacker.power - target.armor
     target.health = target.health - damage
     return damage
 
-Flow Heal -> target, amount
+Flow Heal(target, amount)
     target.health = target.health + amount
     return target.health
 
 // Game logic
 "Battle starting!" -> Print
 
-player := { health: 100, power: 25 }
-enemy := { health: 80, armor: 5 }
+player := Player
+player.health = 100
+player.power = 25
 
-dealt <- Attack -> player, enemy
+enemy := Enemy
+enemy.health = 80
+enemy.armor = 5
+
+dealt := Attack(player, enemy)
 "Damage dealt: " -> Print
 dealt -> Print</div>
       </div>

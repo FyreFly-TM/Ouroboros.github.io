@@ -17,6 +17,8 @@
         <a href="index.html">Home</a>
         <a href="getting_started.html">Get Started</a>
         <a href="examples.html">Examples</a>
+        <a href="flows.html">Flows</a>
+        <a href="reference.html">Reference</a>
         <a href="arrows.html">Arrows</a>
         <a href="tokens.html">Tokens</a>
         <a href="files.html">Files</a>
@@ -55,15 +57,15 @@
     <div class="grid">
       <div class="card">
         <h3>Forward Arrow (->)</h3>
-        <p>Push data forward to flows or chains.</p>
+        <p>Push data forward to flows or print output.</p>
         <div class="code-block">"Hello, World!" -> Print
 
-10, 5 -> Add -> Print</div>
+5 -> AddTwo -> AddTwo -> Print</div>
       </div>
       <div class="card">
         <h3>Pull Arrow (<-)</h3>
         <p>Capture return values or create reactive bindings.</p>
-        <div class="code-block">result <- Add -> 10, 5
+        <div class="code-block">result <- Add(10, 5)
 
 // Reactive: area updates when width/height change
 area <- width * height</div>
@@ -88,21 +90,23 @@ player_hp = 75  // ui_hp_display now 75</div>
     <div class="grid">
       <div class="card">
         <h3>Define a Flow</h3>
-        <div class="code-block">Flow Add -> a, b
+        <div class="code-block">Flow Add(a, b)
     result := a + b
     return result
 
-sum <- Add -> 10, 5
-sum -> Print  // Outputs: 15</div>
+sum := Add(10, 5)
+sum -> Print  // Outputs: 15.00</div>
       </div>
       <div class="card">
         <h3>Multi-Return</h3>
-        <div class="code-block">Flow Stats -> a, b, c
+        <div class="code-block">Flow Stats(a, b, c)
     sum := a + b + c
     avg := sum / 3
     return sum, avg
 
-total, average <- Stats -> 4, 6, 10</div>
+total, average <- Stats(4, 6, 10)
+total -> Print
+average -> Print</div>
       </div>
       <div class="card">
         <h3>Conditional Gates</h3>

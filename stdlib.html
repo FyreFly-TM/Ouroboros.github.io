@@ -17,6 +17,8 @@
         <a href="index.html">Home</a>
         <a href="getting_started.html">Get Started</a>
         <a href="examples.html">Examples</a>
+        <a href="flows.html">Flows</a>
+        <a href="reference.html">Reference</a>
         <a href="arrows.html">Arrows</a>
         <a href="tokens.html">Tokens</a>
         <a href="files.html">Files</a>
@@ -49,13 +51,13 @@
 
         <div class="card">
           <h3>Print</h3>
-          <p>Output values to the console. Can receive values via forward arrow or function call syntax.</p>
-          <div class="code-block">// Forward arrow style (preferred)
+          <p>Output values to the console. Use the forward arrow to send values to Print.</p>
+          <div class="code-block">// Arrow style (preferred)
 "Hello, World!" -> Print
 42 -> Print
 myVariable -> Print
 
-// Multiple values
+// Multiple values on separate lines
 "Result: " -> Print
 result -> Print
 
@@ -90,7 +92,7 @@ x %= 4    // x = 2</div>
         </div>
 
         <h3>Example: Math Flow</h3>
-        <div class="code-block">Flow Clamp -> value, min, max
+        <div class="code-block">Flow Clamp(value, min, max)
     result := value
     if result < min
         result = min
@@ -99,7 +101,7 @@ x %= 4    // x = 2</div>
     return result
 
 // Clamp a value between 0 and 100
-clamped <- Clamp -> 150, 0, 100  // Returns 100</div>
+clamped := Clamp(150, 0, 100)  // Returns 100.00</div>
       </div>
 
       <div class="doc-section" id="arrays">
@@ -126,13 +128,13 @@ last := arr[4]    // 50</div>
 
         <div class="card">
           <h3>Array in Flows</h3>
-          <div class="code-block">Flow SumFirstTwo -> arr
+          <div class="code-block">Flow SumFirstTwo(arr)
     first := arr[0]
     second := arr[1]
     return first + second
 
-result <- SumFirstTwo -> [10, 20, 30]
-result -> Print  // 30</div>
+result := SumFirstTwo([10, 20, 30])
+result -> Print  // 30.00</div>
         </div>
       </div>
 

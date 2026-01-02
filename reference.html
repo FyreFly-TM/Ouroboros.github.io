@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Language Reference - Ouroboros</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo">Ouroboros</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="getting_started.html">Get Started</a>
+        <a href="examples.html">Examples</a>
+        <a href="flows.html">Flows</a>
+        <a href="arrows.html">Arrows</a>
+        <a href="tokens.html">Tokens</a>
+        <a href="files.html">Files</a>
+        <a href="stdlib.html">Std Lib</a>
+        <a href="downloads.html">Downloads</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="doc-layout">
+    <aside class="doc-panel toc">
+      <h3>Reference</h3>
+      <ul>
+        <li><a href="#variables">Variables</a></li>
+        <li><a href="#data-types">Data Types</a></li>
+        <li><a href="#operators">Operators</a></li>
+        <li><a href="#control-flow">Control Flow</a></li>
+        <li><a href="#variable-types">.var Types</a></li>
+        <li><a href="#components">.comp Components</a></li>
+        <li><a href="#entities">.ent Entities</a></li>
+        <li><a href="#field-access">Field Access</a></li>
+        <li><a href="#execution">Execution Model</a></li>
+      </ul>
+    </aside>
+
+    <main class="doc-panel doc-content">
+      <div class="doc-header">
+        <div class="badge">Complete Reference</div>
+        <h1>Language Reference</h1>
+        <p>In-depth documentation of all Ouroboros language features and semantics.</p>
+      </div>
+
+      <div class="doc-section" id="variables">
+        <h2>Variables</h2>
+        <p>Variables in Ouroboros store values and can be mutable or immutable.</p>
+
+        <h3>Mutable Declaration (:=)</h3>
+        <p>Create a variable that can be reassigned later:</p>
+        <div class="code-block">count := 0
+name := "Player"
+health := 100.0
+active := true
+items := [1, 2, 3]</div>
+
+        <h3>Immutable Declaration (=:)</h3>
+        <p>Create a constant that cannot be reassigned:</p>
+        <div class="code-block">PI =: 3.14159
+MAX_HEALTH =: 100
+GAME_TITLE =: "Ouroboros"</div>
+
+        <h3>Assignment (=)</h3>
+        <p>Reassign a mutable variable:</p>
+        <div class="code-block">health := 100
+health = 75      // Valid: reassignment
+health = 50      // Valid: reassignment again</div>
+
+        <h3>Compound Assignment</h3>
+        <p>Modify a variable in place:</p>
+        <div class="code-block">x := 10
+x += 5    // x = 15 (addition)
+x -= 3    // x = 12 (subtraction)
+x *= 2    // x = 24 (multiplication)
+x /= 4    // x = 6  (division)
+x %= 4    // x = 2  (modulo)</div>
+
+        <h3>Reactive Binding (<-)</h3>
+        <p>Create a variable that automatically updates when its dependencies change:</p>
+        <div class="code-block">width := 10
+height := 5
+
+// area is reactively bound - updates automatically
+area <- width * height
+
+width = 20  // area is now 100 (auto-updated)</div>
+      </div>
+
+      <div class="doc-section" id="data-types">
+        <h2>Data Types</h2>
+        <p>Ouroboros supports several built-in data types.</p>
+
+        <h3>Numbers</h3>
+        <p>All numbers in Ouroboros are floating-point internally:</p>
+        <div class="code-block">integer := 42
+decimal := 3.14159
+negative := -17
+large := 1000000.0</div>
+
+        <h3>Strings</h3>
+        <p>Double-quoted UTF-8 text with concatenation support:</p>
+        <div class="code-block">name := "Ouroboros"
+greeting := "Hello, " + name + "!"
+unicode := "こんにちは"</div>
+
+        <h3>Booleans</h3>
+        <p>True or false values for logic:</p>
+        <div class="code-block">active := true
+paused := false
+
+// Booleans in conditions
+if active & !paused
+    "Running" -> Print</div>
+
+        <h3>Arrays</h3>
+        <p>Ordered collections with zero-based indexing:</p>
+        <div class="code-block">// Literal arrays
+numbers := [1, 2, 3, 4, 5]
+mixed := [42, "text", true]
+nested := [[1, 2], [3, 4]]
+empty := []
+
+// Access elements (0-based)
+first := numbers[0]    // 1
+second := numbers[1]   // 2
+
+// Arrays can contain any type
+complex := [
+    "string",
+    42,
+    true,
+    [1, 2, 3]
+]</div>
+
+        <h3>Null</h3>
+        <p>Represents the absence of a value:</p>
+        <div class="code-block">// Flows without explicit return give null
+Flow NoReturn()
+    "Side effect" -> Print
+
+result := NoReturn()
+// result is null</div>
+
+        <h3>Variable Types (Custom)</h3>
+        <p>User-defined types from <code>.var</code> files:</p>
+        <div class="code-block">// Defined in types.var:
+// Variable Vector3
+//     x := 0.0
+//     y := 0.0
+//     z := 0.0
+
+// Instantiate in .ouro:
+pos := Vector3
+pos.x = 10.0
+pos.y = 20.0
+pos.z = 30.0</div>
+      </div>
+
+      <div class="doc-section" id="operators">
+        <h2>Operators</h2>
+
+        <h3>Arithmetic Operators</h3>
+        <table class="table">
+          <thead>
+            <tr><th>Operator</th><th>Name</th><th>Example</th><th>Result</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>+</code></td><td>Addition</td><td><code>10 + 5</code></td><td>15</td></tr>
+            <tr><td><code>-</code></td><td>Subtraction</td><td><code>10 - 5</code></td><td>5</td></tr>
+            <tr><td><code>*</code></td><td>Multiplication</td><td><code>10 * 5</code></td><td>50</td></tr>
+            <tr><td><code>/</code></td><td>Division</td><td><code>10 / 5</code></td><td>2</td></tr>
+            <tr><td><code>%</code></td><td>Modulo</td><td><code>10 % 3</code></td><td>1</td></tr>
+            <tr><td><code>-</code></td><td>Negation</td><td><code>-42</code></td><td>-42</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Comparison Operators</h3>
+        <p><strong>Note:</strong> Use Unicode <code>≥</code> and <code>≤</code> for greater/less-or-equal.</p>
+        <table class="table">
+          <thead>
+            <tr><th>Operator</th><th>Name</th><th>Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>==</code></td><td>Equal</td><td><code>a == b</code></td></tr>
+            <tr><td><code>!=</code></td><td>Not equal</td><td><code>a != b</code></td></tr>
+            <tr><td><code>></code></td><td>Greater than</td><td><code>a > b</code></td></tr>
+            <tr><td><code><</code></td><td>Less than</td><td><code>a < b</code></td></tr>
+            <tr><td><code>≥</code></td><td>Greater or equal</td><td><code>a ≥ b</code></td></tr>
+            <tr><td><code>≤</code></td><td>Less or equal</td><td><code>a ≤ b</code></td></tr>
+          </tbody>
+        </table>
+
+        <h3>Logical Operators</h3>
+        <table class="table">
+          <thead>
+            <tr><th>Operator</th><th>Name</th><th>Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>&</code></td><td>Logical AND</td><td><code>a & b</code></td></tr>
+            <tr><td><code>|</code></td><td>Logical OR</td><td><code>a | b</code></td></tr>
+            <tr><td><code>!</code></td><td>Logical NOT</td><td><code>!a</code></td></tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">// Compound logical expressions
+if active & !paused & (level > 5 | has_key)
+    "Access granted" -> Print
+
+// Logical operators in conditions
+is_valid := age ≥ 18 & agreed_to_terms
+can_play := !banned & (premium | trials_left > 0)</div>
+
+        <h3>String Concatenation</h3>
+        <div class="code-block">first := "Hello"
+second := "World"
+message := first + ", " + second + "!"
+// message = "Hello, World!"</div>
+
+        <h3>Operator Precedence</h3>
+        <p>From highest to lowest:</p>
+        <ol class="list">
+          <li><code>!</code> (unary not), <code>-</code> (unary negation)</li>
+          <li><code>*</code>, <code>/</code>, <code>%</code></li>
+          <li><code>+</code>, <code>-</code></li>
+          <li><code>></code>, <code><</code>, <code>≥</code>, <code>≤</code></li>
+          <li><code>==</code>, <code>!=</code></li>
+          <li><code>&</code></li>
+          <li><code>|</code></li>
+        </ol>
+        <p>Use parentheses to override precedence:</p>
+        <div class="code-block">result := (a + b) * (c - d)
+check := (x > 5) & (y < 10) | force_override</div>
+      </div>
+
+      <div class="doc-section" id="control-flow">
+        <h2>Control Flow</h2>
+
+        <h3>If / Elseif / Else</h3>
+        <p>Conditional branching. Bodies are indented with 4 spaces:</p>
+        <div class="code-block">score := 85
+
+if score ≥ 90
+    grade := "A"
+    "Excellent!" -> Print
+elseif score ≥ 80
+    grade := "B"
+    "Good job!" -> Print
+elseif score ≥ 70
+    grade := "C"
+    "Passing" -> Print
+elseif score ≥ 60
+    grade := "D"
+    "Needs work" -> Print
+else
+    grade := "F"
+    "Failed" -> Print</div>
+
+        <h3>Nested Conditionals</h3>
+        <div class="code-block">if player.alive
+    if player.health < 20
+        "Critical health!" -> Print
+    elseif player.health < 50
+        "Low health" -> Print
+    else
+        "Healthy" -> Print
+else
+    "Game Over" -> Print</div>
+
+        <h3>While Loop</h3>
+        <p>Loop while a condition is true:</p>
+        <div class="code-block">counter := 0
+
+while counter < 5
+    counter -> Print
+    counter += 1
+
+// Outputs: 0.00, 1.00, 2.00, 3.00, 4.00</div>
+
+        <h3>Loop with Break Condition</h3>
+        <div class="code-block">i := 0
+found := false
+
+while i < 100 & !found
+    if data[i] == target
+        found = true
+        "Found at index: " -> Print
+        i -> Print
+    i += 1</div>
+
+        <h3>Conditional Gates (Inline)</h3>
+        <p>Use arrow gates for inline conditional execution:</p>
+        <div class="code-block">value := 75
+
+// Only executes if condition is true
+value -[value > 50]-> HighHandler
+value -[value ≤ 50]-> LowHandler
+
+// With transformation
+value -[value > 90 ? "CRITICAL"]-> AlertSystem</div>
+      </div>
+
+      <div class="doc-section" id="variable-types">
+        <h2>Variable Types (.var Files)</h2>
+        <p>Define reusable data structures in <code>.var</code> files.</p>
+
+        <h3>Basic Variable Type</h3>
+        <div class="code-block">// In types.var
+Variable Vector3
+    x := 0.0
+    y := 0.0
+    z := 0.0
+
+Variable PlayerStats
+    health := 100
+    maxHealth := 100
+    stamina := 50
+    level := 1</div>
+
+        <h3>Using Variable Types</h3>
+        <div class="code-block">// In game.ouro
+pos := Vector3
+pos.x = 10.0
+pos.y = 5.0
+pos.z = 0.0
+
+player := PlayerStats
+player.health = 80
+player.level = 5
+
+"Player Level: " -> Print
+player.level -> Print</div>
+
+        <h3>Nested Types</h3>
+        <div class="code-block">// In types.var
+Variable Transform
+    position := Vector3
+    rotation := Vector3
+    scale := Vector3
+
+// In game.ouro
+t := Transform
+t.position.x = 100.0
+t.position.y = 50.0
+t.rotation.z = 45.0</div>
+
+        <h3>Default Values</h3>
+        <p>Fields have default values that are used when instantiated:</p>
+        <div class="code-block">Variable GameState
+    score := 0          // Default: 0
+    level := 1          // Default: 1
+    lives := 3          // Default: 3
+    is_paused := false  // Default: false
+
+// All defaults applied on instantiation
+game := GameState
+game.score -> Print  // 0.00</div>
+      </div>
+
+      <div class="doc-section" id="components">
+        <h2>Components (.comp Files)</h2>
+        <p>Components group related fields for use in entity composition.</p>
+
+        <h3>Basic Component</h3>
+        <div class="code-block">// In components.comp
+Component HealthBase
+    currentHealth := 100
+    maxHealth := 100
+    regeneration := 0.5
+
+Component Transform
+    Position := Vector3
+    Rotation := Vector3
+    Scale := Vector3</div>
+
+        <h3>Component with Arrow Bindings</h3>
+        <p>Components can declare reactive relationships:</p>
+        <div class="code-block">// Sensor outputs continuously feed DataProcessor
+Component SensorFusion
+    SensorArray >- DataProcessor
+    NavigationUnit >- DataProcessor</div>
+
+        <h3>Component with Forks</h3>
+        <div class="code-block">// Input broadcasts to multiple systems
+Component PlayerController
+    InputHandler -< PhysicsSystem
+    InputHandler -< AudioSystem</div>
+      </div>
+
+      <div class="doc-section" id="entities">
+        <h2>Entities (.ent Files)</h2>
+        <p>Entities aggregate components to create game objects.</p>
+
+        <h3>Basic Entity</h3>
+        <div class="code-block">// In entities.ent
+Entity Player
+    Transform
+    HealthBase
+    Inventory
+
+Entity Enemy
+    Transform
+    HealthBase
+    AI</div>
+
+        <h3>Templates</h3>
+        <p>Templates are reusable entity blueprints:</p>
+        <div class="code-block">Template Boss
+    Transform
+    HealthBase
+    AI
+
+Template Vendor
+    Transform
+    Inventory</div>
+
+        <h3>Entity with Arrow Relationships</h3>
+        <div class="code-block">Entity PlayerCharacter
+    // Input drives Physics and Rendering
+    InputHandler -< PhysicsSystem
+    InputHandler -< RenderSystem
+    
+    // Physics continuously updates Audio
+    PhysicsSystem -◁ AudioSystem</div>
+
+        <h3>Using Entities in Scripts</h3>
+        <div class="code-block">// In game.ouro
+p := Player
+p.Transform.Position.x = 100.0
+p.HealthBase.currentHealth = 80
+
+enemy := Enemy
+enemy.Transform.Position.x = 200.0
+enemy.AI.aggression = 0.8</div>
+      </div>
+
+      <div class="doc-section" id="field-access">
+        <h2>Field Access</h2>
+        <p>Access fields of Variable types, Components, and Entities using dot notation.</p>
+
+        <h3>Basic Field Access</h3>
+        <div class="code-block">player := PlayerStats
+player.health = 100
+player.level = 5
+
+current := player.health
+current -> Print  // 100.00</div>
+
+        <h3>Nested Field Access</h3>
+        <div class="code-block">transform := Transform
+transform.position.x = 10.0
+transform.position.y = 20.0
+transform.rotation.z = 45.0</div>
+
+        <h3>Field Access in Expressions</h3>
+        <div class="code-block">damage := attacker.power - defender.armor
+new_health := player.health - damage
+
+if player.health ≤ 0
+    player.is_alive = false</div>
+
+        <h3>Field Binding</h3>
+        <p>Bind fields reactively:</p>
+        <div class="code-block">width := 10
+height := 20
+
+rect := Rectangle
+rect.width <- width      // One-way binding
+rect.height <-> height   // Two-way sync</div>
+      </div>
+
+      <div class="doc-section" id="execution">
+        <h2>Execution Model</h2>
+
+        <h3>Sequential Execution (Comma)</h3>
+        <p>Use commas to execute statements in order:</p>
+        <div class="code-block">"Step 1" -> Print,
+"Step 2" -> Print,
+"Step 3" -> Print
+
+// All three print in order</div>
+
+        <h3>Parallel Execution (Colon)</h3>
+        <p>Use colons for parallel/concurrent execution:</p>
+        <div class="code-block">TaskA() : TaskB() : TaskC() -> Print
+
+// All three may execute concurrently</div>
+
+        <h3>Script Execution Order</h3>
+        <ol class="list">
+          <li><code>.var</code> files are loaded (type definitions)</li>
+          <li><code>.comp</code> files are loaded (component definitions)</li>
+          <li><code>.ent</code> files are loaded (entity definitions)</li>
+          <li><code>.ouro</code> files are executed (flows and logic)</li>
+        </ol>
+
+        <h3>Flow Definition vs Execution</h3>
+        <p>Flow definitions are parsed but not executed until called:</p>
+        <div class="code-block">// This is just a definition - doesn't run yet
+Flow Greet(name)
+    "Hello, " + name -> Print
+    return true
+
+// This actually executes the flow
+Greet("World")</div>
+
+        <h3>Reactive Updates</h3>
+        <p>Variables bound with <code><-</code> auto-update when dependencies change:</p>
+        <div class="code-block">a := 10
+b := 20
+sum <- a + b  // 30
+
+a = 50
+// sum is now automatically 70</div>
+
+        <h3>Sync Updates</h3>
+        <p>Variables connected with <code><-></code> stay synchronized:</p>
+        <div class="code-block">left := 100
+right := 0
+
+left <-> right
+// right is now 100
+
+right = 250
+// left is now also 250</div>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <p>Ouroboros Language © 2026</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flows Reference - Ouroboros</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo">Ouroboros</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="getting_started.html">Get Started</a>
+        <a href="examples.html">Examples</a>
+        <a href="flows.html">Flows</a>
+        <a href="reference.html">Reference</a>
+        <a href="arrows.html">Arrows</a>
+        <a href="tokens.html">Tokens</a>
+        <a href="files.html">Files</a>
+        <a href="stdlib.html">Std Lib</a>
+        <a href="downloads.html">Downloads</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="doc-layout">
+    <aside class="doc-panel toc">
+      <h3>Flows</h3>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#declaration">Declaration</a></li>
+        <li><a href="#parameters">Parameters</a></li>
+        <li><a href="#return-values">Return Values</a></li>
+        <li><a href="#multi-return">Multi-Return</a></li>
+        <li><a href="#implicit-binding">Implicit Binding</a></li>
+        <li><a href="#calling">Calling Flows</a></li>
+        <li><a href="#chaining">Flow Chaining</a></li>
+        <li><a href="#recursion">Recursion</a></li>
+        <li><a href="#scope">Scope Rules</a></li>
+        <li><a href="#best-practices">Best Practices</a></li>
+      </ul>
+    </aside>
+
+    <main class="doc-panel doc-content">
+      <div class="doc-header">
+        <div class="badge">Language Reference</div>
+        <h1>Flows</h1>
+        <p>Flows are the fundamental building blocks of Ouroboros—similar to functions in other languages, but with unique return value binding and arrow integration.</p>
+      </div>
+
+      <div class="doc-section" id="overview">
+        <h2>Overview</h2>
+        <p>A Flow is a reusable unit of code that can accept parameters, perform operations, and return values. What makes Ouroboros Flows unique is their <strong>implicit return binding</strong>—returned values are automatically bound to variables with the same names in the calling scope.</p>
+        
+        <div class="code-block">Flow Add(a, b)
+    sum := a + b
+    return sum
+
+// Call the flow - 'sum' becomes available in this scope
+Add(10, 5)
+sum -> Print  // Outputs: 15.00</div>
+
+        <h3>Key Features</h3>
+        <ul class="list">
+          <li><strong>Implicit Return Binding</strong> — Return variable names become accessible in the caller's scope</li>
+          <li><strong>Multi-Return</strong> — Return multiple values at once</li>
+          <li><strong>Arrow Integration</strong> — Use <code>-></code> to pipe data into flows</li>
+          <li><strong>Flow Chaining</strong> — Chain multiple flows together in a pipeline</li>
+          <li><strong>Recursion</strong> — Flows can call themselves</li>
+        </ul>
+      </div>
+
+      <div class="doc-section" id="declaration">
+        <h2>Declaration</h2>
+        <p>Flows are declared using the <code>Flow</code> keyword, followed by the name and optional parameters in parentheses. The body is indented with 4 spaces.</p>
+        
+        <h3>Basic Syntax</h3>
+        <div class="code-block">Flow FlowName(param1, param2, ...)
+    // Flow body (indented 4 spaces)
+    // ... operations ...
+    return value</div>
+
+        <h3>Flow Without Parameters</h3>
+        <div class="code-block">Flow SayHello()
+    "Hello, World!" -> Print
+    return true
+
+// Call with empty parentheses
+SayHello()</div>
+
+        <h3>Flow With Parameters</h3>
+        <div class="code-block">Flow Greet(name)
+    "Hello, " + name + "!" -> Print
+    return true
+
+Greet("Alice")  // Outputs: Hello, Alice!</div>
+
+        <h3>Flow Without Explicit Return</h3>
+        <p>If a flow doesn't explicitly return, it returns <code>null</code>.</p>
+        <div class="code-block">Flow LogMessage(msg)
+    "LOG: " + msg -> Print
+    // No return statement - returns null
+
+LogMessage("System started")</div>
+      </div>
+
+      <div class="doc-section" id="parameters">
+        <h2>Parameters</h2>
+        <p>Parameters are passed by value. Changes to parameters inside a flow do not affect the original variables.</p>
+        
+        <h3>Single Parameter</h3>
+        <div class="code-block">Flow Double(n)
+    result := n * 2
+    return result
+
+Double(21)
+result -> Print  // 42.00</div>
+
+        <h3>Multiple Parameters</h3>
+        <div class="code-block">Flow Calculate(a, b, c)
+    sum := a + b + c
+    product := a * b * c
+    return sum, product
+
+Calculate(2, 3, 4)
+"Sum: " -> Print
+sum -> Print      // 9.00
+"Product: " -> Print
+product -> Print  // 24.00</div>
+
+        <h3>Passing Complex Types</h3>
+        <p>You can pass Variables, arrays, and other complex types:</p>
+        <div class="code-block">Flow ProcessPlayer(player)
+    "Processing player: " -> Print
+    player.name -> Print
+    player.health = player.health - 10
+    return player
+
+// Assuming Player is defined in a .var file
+p := Player
+p.name = "Hero"
+p.health = 100
+
+ProcessPlayer(p)
+p.health -> Print  // 90.00</div>
+      </div>
+
+      <div class="doc-section" id="return-values">
+        <h2>Return Values</h2>
+        <p>The <code>return</code> statement sends values back to the caller. The key feature is that <strong>the variable names used in the return statement become accessible in the calling scope</strong>.</p>
+        
+        <h3>Basic Return</h3>
+        <div class="code-block">Flow Square(n)
+    result := n * n
+    return result
+
+Square(5)
+result -> Print  // 25.00</div>
+
+        <h3>Return Expression (Anonymous)</h3>
+        <p>You can return an expression directly. If the expression isn't a named variable, you should capture the result explicitly:</p>
+        <div class="code-block">Flow Square(n)
+    return n * n
+
+// Must capture since there's no named return variable
+squared := Square(5)
+squared -> Print  // 25.00</div>
+
+        <h3>Early Return</h3>
+        <p>Use return to exit a flow early:</p>
+        <div class="code-block">Flow SafeDivide(a, b)
+    if b == 0
+        "Error: Division by zero!" -> Print
+        return 0
+    
+    result := a / b
+    return result
+
+SafeDivide(10, 0)  // Prints error, returns 0
+SafeDivide(10, 2)  // Returns 5</div>
+      </div>
+
+      <div class="doc-section" id="multi-return">
+        <h2>Multi-Return Values</h2>
+        <p>Flows can return multiple values at once. Each returned variable becomes accessible in the calling scope with its original name.</p>
+        
+        <h3>Returning Multiple Values</h3>
+        <div class="code-block">Flow ComputeStats(a, b)
+    sum := a + b
+    difference := a - b
+    product := a * b
+    quotient := a / b
+    return sum, difference, product, quotient
+
+// Call the flow
+ComputeStats(20, 5)
+
+// All return variables are now accessible
+sum -> Print        // 25.00
+difference -> Print // 15.00
+product -> Print    // 100.00
+quotient -> Print   // 4.00</div>
+
+        <h3>Practical Example: Coordinate Conversion</h3>
+        <div class="code-block">Flow PolarToCartesian(r, theta)
+    // theta in radians
+    x := r * cos(theta)
+    y := r * sin(theta)
+    return x, y
+
+PolarToCartesian(5, 0.785)  // 45 degrees
+"X: " -> Print
+x -> Print
+"Y: " -> Print
+y -> Print</div>
+
+        <h3>Capturing with Pull Arrow</h3>
+        <p>You can also capture multiple returns explicitly using the pull arrow:</p>
+        <div class="code-block">Flow Divide(a, b)
+    quotient := a / b
+    remainder := a % b
+    return quotient, remainder
+
+// Explicit capture with pull arrow
+q, r <- Divide(17, 5)
+q -> Print  // 3.00
+r -> Print  // 2.00</div>
+      </div>
+
+      <div class="doc-section" id="implicit-binding">
+        <h2>Implicit Return Binding</h2>
+        <p>This is Ouroboros's most unique feature. When a flow returns named variables, those names become available in the calling scope automatically.</p>
+
+        <h3>How It Works</h3>
+        <ol class="list">
+          <li>The flow executes and reaches a <code>return</code> statement</li>
+          <li>The interpreter captures the names of the returned variables</li>
+          <li>Those names are defined (or updated) in the caller's scope</li>
+          <li>You can use the variable names directly without explicit assignment</li>
+        </ol>
+
+        <div class="code-block">Flow GetPlayerInfo()
+    name := "Hero"
+    level := 42
+    health := 100
+    return name, level, health
+
+// After calling, name, level, and health are available
+GetPlayerInfo()
+
+"Player: " + name -> Print  // Player: Hero
+"Level: " -> Print
+level -> Print              // 42.00
+"HP: " -> Print
+health -> Print             // 100.00</div>
+
+        <h3>Variable Overwriting</h3>
+        <p>If a variable with the same name already exists, it will be updated:</p>
+        <div class="code-block">result := 0
+
+Flow Calculate()
+    result := 42
+    return result
+
+result -> Print  // 0.00
+Calculate()
+result -> Print  // 42.00</div>
+
+        <h3>When Binding Doesn't Apply</h3>
+        <p>Binding happens when you call a flow as a statement. If you capture the result explicitly with <code>:=</code> or <code><-</code>, implicit binding is bypassed:</p>
+        <div class="code-block">Flow GetValue()
+    answer := 42
+    return answer
+
+// Implicit binding - 'answer' becomes available
+GetValue()
+answer -> Print  // 42.00
+
+// Explicit capture - only 'x' is set, not 'answer'
+x := GetValue()
+x -> Print  // 42.00</div>
+      </div>
+
+      <div class="doc-section" id="calling">
+        <h2>Calling Flows</h2>
+        <p>There are several ways to invoke a flow in Ouroboros.</p>
+
+        <h3>Direct Call (Parentheses Style)</h3>
+        <div class="code-block">result := Add(10, 5)
+result -> Print
+
+// Or without capturing
+Add(10, 5)
+sum -> Print  // Using implicit binding</div>
+
+        <h3>Arrow Call (Pipe Style)</h3>
+        <p>Pass values using the forward arrow:</p>
+        <div class="code-block">// Single argument
+42 -> Double -> Print
+
+// Multiple arguments (comma-separated)
+10, 5 -> Add -> Print</div>
+
+        <h3>Chained Calls</h3>
+        <p>Chain multiple flows together:</p>
+        <div class="code-block">Flow AddOne(n)
+    return n + 1
+
+Flow Double(n)
+    return n * 2
+
+Flow Square(n)
+    return n * n
+
+// 5 -> AddOne (6) -> Double (12) -> Square (144)
+5 -> AddOne -> Double -> Square -> Print</div>
+
+        <h3>Calling Flows Without Return</h3>
+        <p>Some flows are called for side effects only:</p>
+        <div class="code-block">Flow LogEvent(event)
+    "EVENT: " + event -> Print
+    return true
+
+// Called for its side effect (printing)
+LogEvent("User logged in")</div>
+      </div>
+
+      <div class="doc-section" id="chaining">
+        <h2>Flow Chaining</h2>
+        <p>Ouroboros allows you to chain flows using the forward arrow. The output of one flow becomes the input to the next.</p>
+
+        <h3>Basic Chaining</h3>
+        <div class="code-block">Flow Validate(data)
+    "Validating..." -> Print
+    return data
+
+Flow Transform(data)
+    "Transforming..." -> Print
+    return data + "_processed"
+
+Flow Store(data)
+    "Storing: " + data -> Print
+    return true
+
+// Chain: data flows through all three
+"raw_input" -> Validate -> Transform -> Store</div>
+
+        <h3>Chaining with Print</h3>
+        <div class="code-block">// Print is also a valid chain target
+100 -> Double -> Square -> Print</div>
+
+        <h3>Chaining with Fork</h3>
+        <p>At the end of a chain, fork to multiple destinations:</p>
+        <div class="code-block">event -> Validate -> Transform -< LogToFile, SendToServer, UpdateUI</div>
+      </div>
+
+      <div class="doc-section" id="recursion">
+        <h2>Recursion</h2>
+        <p>Flows can call themselves recursively. Make sure to have a base case to prevent infinite recursion.</p>
+
+        <h3>Factorial Example</h3>
+        <div class="code-block">Flow Factorial(n)
+    if n ≤ 1
+        return 1
+    
+    sub := Factorial(n - 1)
+    result := n * sub
+    return result
+
+Factorial(5)
+result -> Print  // 120.00</div>
+
+        <h3>Collatz Conjecture</h3>
+        <div class="code-block">Flow Collatz(n)
+    n -> Print
+    
+    // Base case
+    if n ≤ 1
+        "Reached 1!" -> Print
+        return n
+    
+    // Even: divide by 2
+    if n % 2 == 0
+        return Collatz(n / 2)
+    
+    // Odd: 3n + 1
+    return Collatz(n * 3 + 1)
+
+Collatz(6)
+// Outputs: 6, 3, 10, 5, 16, 8, 4, 2, 1, "Reached 1!"</div>
+
+        <h3>Recursive with Conditional Gates</h3>
+        <div class="code-block">Flow SystemScan(sector_id)
+    "Scanning Sector: " -> Print
+    sector_id -> Print
+    
+    // Base case using gate
+    sector_id -[sector_id ≤ 1]-> ScanComplete
+    
+    // Recursive step with gates
+    sector_id -[sector_id > 1 & sector_id % 2 == 0 ? sector_id / 2]-> SystemScan
+    sector_id -[sector_id > 1 & sector_id % 2 != 0 ? (sector_id * 3) + 1]-> SystemScan
+    
+    return true
+
+Flow ScanComplete(id)
+    "Scan Complete. Root reached." -> Print
+    return true
+
+6 -> SystemScan</div>
+      </div>
+
+      <div class="doc-section" id="scope">
+        <h2>Scope Rules</h2>
+        <p>Understanding scope is important for working with flows effectively.</p>
+
+        <h3>Local Scope</h3>
+        <p>Variables declared inside a flow are local to that flow:</p>
+        <div class="code-block">Flow Test()
+    local_var := 42
+    return local_var
+
+Test()
+// local_var is now bound due to return
+local_var -> Print  // 42.00</div>
+
+        <h3>Parameter Scope</h3>
+        <p>Parameters are copies—modifying them doesn't affect the original:</p>
+        <div class="code-block">Flow TryModify(x)
+    x = x + 10
+    return x
+
+original := 5
+TryModify(original)
+original -> Print  // Still 5.00
+x -> Print         // 15.00 (from return binding)</div>
+
+        <h3>Global Access</h3>
+        <p>Flows can read global variables:</p>
+        <div class="code-block">multiplier := 10
+
+Flow Scale(value)
+    result := value * multiplier
+    return result
+
+Scale(5)
+result -> Print  // 50.00</div>
+
+        <h3>Modifying Global Variables</h3>
+        <p>Flows can modify global variables through field access or re-assignment:</p>
+        <div class="code-block">counter := 0
+
+Flow Increment()
+    counter = counter + 1
+    return counter
+
+Increment()
+Increment()
+Increment()
+counter -> Print  // 3.00</div>
+      </div>
+
+      <div class="doc-section" id="best-practices">
+        <h2>Best Practices</h2>
+        
+        <h3>1. Use Descriptive Names</h3>
+        <div class="code-block">// Good
+Flow CalculateDamage(attacker, defender)
+Flow ValidateUserInput(input)
+Flow ProcessPayment(order)
+
+// Avoid
+Flow Calc(a, b)
+Flow DoThing(x)</div>
+
+        <h3>2. Document Complex Returns</h3>
+        <div class="code-block">// When returning multiple values, the names should be self-documenting
+Flow AnalyzeData(dataset)
+    count := len(dataset)
+    average := sum / count
+    minimum := findMin(dataset)
+    maximum := findMax(dataset)
+    return count, average, minimum, maximum</div>
+
+        <h3>3. Keep Flows Focused</h3>
+        <div class="code-block">// Single responsibility - each flow does one thing
+Flow LoadConfig()
+    // Only loads config
+    return config
+
+Flow ValidateConfig(config)
+    // Only validates
+    return is_valid
+
+Flow ApplyConfig(config)
+    // Only applies
+    return success</div>
+
+        <h3>4. Use Early Returns for Guards</h3>
+        <div class="code-block">Flow ProcessOrder(order)
+    if order == null
+        "Error: No order provided" -> Print
+        return false
+    
+    if order.items == 0
+        "Error: Empty order" -> Print
+        return false
+    
+    // Main logic here...
+    return true</div>
+
+        <h3>5. Prefer Arrow Chaining for Pipelines</h3>
+        <div class="code-block">// Clean pipeline style
+input -> Validate -> Transform -> Sanitize -> Store
+
+// Versus nested calls (harder to read)
+Store(Sanitize(Transform(Validate(input))))</div>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <p>Ouroboros Language © 2026</p>
+  </footer>
+</body>
+</html>

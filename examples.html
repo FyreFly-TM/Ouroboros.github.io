@@ -17,6 +17,8 @@
         <a href="index.html">Home</a>
         <a href="getting_started.html">Get Started</a>
         <a href="examples.html">Examples</a>
+        <a href="flows.html">Flows</a>
+        <a href="reference.html">Reference</a>
         <a href="arrows.html">Arrows</a>
         <a href="tokens.html">Tokens</a>
         <a href="files.html">Files</a>
@@ -79,22 +81,21 @@ product -> Print</div>
         <div class="example-card">
           <h3>Simple Flow</h3>
           <p>Define and call a flow (function).</p>
-          <div class="code-block">Flow Double -> n
+          <div class="code-block">Flow Double(n)
     result := n * 2
     return result
 
 // Call the flow and capture result
-answer <- Double -> 21
-answer -> Print  // Outputs: 42</div>
+answer := Double(21)
+answer -> Print  // Outputs: 42.00</div>
         </div>
 
         <div class="example-card">
           <h3>Greeting Flow</h3>
           <p>A flow that prints a personalized greeting.</p>
-          <div class="code-block">Flow Greet -> name
+          <div class="code-block">Flow Greet(name)
     "Hello, " -> Print
     name -> Print
-    "!" -> Print
     return true
 
 "Alice" -> Greet
@@ -138,14 +139,14 @@ else
         <div class="example-card">
           <h3>Multi-Return Flow</h3>
           <p>A flow that returns multiple values at once.</p>
-          <div class="code-block">Flow ComputeStats -> a, b
+          <div class="code-block">Flow ComputeStats(a, b)
     sum := a + b
     product := a * b
     average := sum / 2
     return sum, product, average
 
 // Capture all three return values
-s, p, avg <- ComputeStats -> 10, 20
+s, p, avg <- ComputeStats(10, 20)
 
 "Sum: " -> Print
 s -> Print
@@ -158,38 +159,60 @@ avg -> Print</div>
         <div class="example-card">
           <h3>Calculator</h3>
           <p>A modular calculator using multiple flows.</p>
-          <div class="code-block">Flow Add -> a, b
+          <div class="code-block">Flow Add(a, b)
     return a + b
 
-Flow Subtract -> a, b
+Flow Subtract(a, b)
     return a - b
 
-Flow Multiply -> a, b
+Flow Multiply(a, b)
     return a * b
 
-Flow Divide -> a, b
+Flow Divide(a, b)
     return a / b
 
 // Use the calculator
-result1 <- Add -> 15, 25
-result2 <- Multiply -> result1, 2
-result2 -> Print  // 80</div>
+result1 := Add(15, 25)
+result2 := Multiply(result1, 2)
+result2 -> Print  // 80.00</div>
         </div>
 
         <div class="example-card">
           <h3>Flow Chaining</h3>
           <p>Chain multiple flows together in a pipeline.</p>
-          <div class="code-block">Flow AddOne -> n
+          <div class="code-block">Flow AddOne(n)
     return n + 1
 
-Flow Double -> n
+Flow Double(n)
     return n * 2
 
-Flow Square -> n
+Flow Square(n)
     return n * n
 
 // Chain: 5 -> AddOne (6) -> Double (12) -> Square (144)
 5 -> AddOne -> Double -> Square -> Print</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Sequential vs Parallel Execution</h3>
+          <p>Use comma for sequential and colon for parallel execution.</p>
+          <div class="code-block">Flow Log(msg)
+    "LOG: " + msg -> Print
+    return msg
+
+Flow FetchData(source)
+    "Fetching from " + source + "..." -> Print
+    return "Data_" + source
+
+// Sequential: steps happen in order
+Log("Step 1"),
+Log("Step 2"),
+Log("Step 3")
+
+// Parallel: sources fetched simultaneously
+FetchData("SourceA") :
+FetchData("SourceB") :
+FetchData("SourceC") -> Print</div>
         </div>
 
         <div class="example-card">
@@ -209,10 +232,10 @@ first -> Print
 last -> Print
 
 // Create array from flow
-Flow MakeTriple -> a, b, c
+Flow MakeTriple(a, b, c)
     return [a, b, c]
 
-triple <- MakeTriple -> 1, 2, 3
+triple <- MakeTriple(1, 2, 3)
 triple -> Print</div>
         </div>
 
@@ -261,17 +284,17 @@ view_value -> Print  // 999</div>
         <div class="example-card">
           <h3>Fork Broadcasting</h3>
           <p>Send an event to multiple handlers simultaneously.</p>
-          <div class="code-block">Flow LogEvent -> event
+          <div class="code-block">Flow LogEvent(event)
     "LOG: Event received - " -> Print
     event -> Print
     return true
 
-Flow UpdateUI -> event
+Flow UpdateUI(event)
     "UI: Refreshing display for - " -> Print
     event -> Print
     return true
 
-Flow NotifyUser -> event
+Flow NotifyUser(event)
     "NOTIFY: Alert sent for - " -> Print
     event -> Print
     return true
@@ -288,12 +311,12 @@ Flow NotifyUser -> event
         <div class="example-card">
           <h3>Conditional Gates</h3>
           <p>Route data based on conditions using gate syntax.</p>
-          <div class="code-block">Flow ProcessHigh -> val
+          <div class="code-block">Flow ProcessHigh(val)
     "Processing HIGH value: " -> Print
     val -> Print
     return true
 
-Flow ProcessLow -> val
+Flow ProcessLow(val)
     "Processing LOW value: " -> Print
     val -> Print
     return true
@@ -308,7 +331,7 @@ value -[value ≤ 50]-> ProcessLow</div>
         <div class="example-card">
           <h3>Transform Gates</h3>
           <p>Transform data inline before passing to a flow.</p>
-          <div class="code-block">Flow Receiver -> data
+          <div class="code-block">Flow Receiver(data)
     "Received: " -> Print
     data -> Print
     return true
@@ -326,7 +349,7 @@ input -[input > 5 ? "HIGH"]-> Receiver     // Receives "HIGH"</div>
           <div class="code-block">sensor_temp := 22.0
 sensor_humidity := 45.0
 
-Flow ClimateMonitor -> val
+Flow ClimateMonitor(val)
     "Climate sensor triggered: " -> Print
     val -> Print
     return true
@@ -345,7 +368,7 @@ sensor_temp = 28.5</div>
           <p>Soft influence—suggest rather than force values.</p>
           <div class="code-block">target_temp := 22.0
 
-Flow ThermalController -> t
+Flow ThermalController(t)
     if t > 25.0
         "Fuzzy: Cooling suggested" -> Print
     elseif t < 18.0
@@ -359,9 +382,58 @@ target_temp ~> ThermalController</div>
         </div>
 
         <div class="example-card">
+          <h3>Fuzzy Pull & Sync (<~, <~>)</h3>
+          <p>Soft probabilistic data relationships.</p>
+          <div class="code-block">// Fuzzy Pull: AI perceives player with uncertainty
+player_visibility := 0.8  // 0.0 to 1.0
+enemy_alert := 0.0
+
+// Soft pull - value may be dampened/noisy
+enemy_alert <~ player_visibility
+
+// Fuzzy Sync: elastic bidirectional influence
+market_supply := 500.0
+market_demand := 600.0
+
+// Changes propagate with elasticity
+market_supply <~> market_demand
+
+"Market supply: " -> Print
+market_supply -> Print</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Continuous Fork (-◁)</h3>
+          <p>React to changes and broadcast to multiple handlers.</p>
+          <div class="code-block">Flow UpdateHealthBar(h)
+    "UI: Health = " + h -> Print
+    return true
+
+Flow CheckCritical(h)
+    if h < 20
+        "WARNING: CRITICAL!" -> Print
+    return true
+
+Flow UpdateDamageOverlay(h)
+    "Overlay updated" -> Print
+    return true
+
+health := 100
+
+// Continuous fork: all handlers called on every change
+health -◁ UpdateHealthBar
+health -◁ CheckCritical
+health -◁ UpdateDamageOverlay
+
+// Simulate damage
+health = 50
+health = 15</div>
+        </div>
+
+        <div class="example-card">
           <h3>Solver Arrow</h3>
           <p>Constraint-based solving for pathfinding or optimization.</p>
-          <div class="code-block">Flow PathSolver -> start
+          <div class="code-block">Flow PathSolver(start)
     "SOLVER: Calculating optimal path from " -> Print
     start -> Print
     "SOLVER: Path found via A* algorithm" -> Print
@@ -376,7 +448,7 @@ current_position => PathSolver</div>
         <div class="example-card">
           <h3>Ownership Transfer</h3>
           <p>Transfer data ownership—source becomes invalid.</p>
-          <div class="code-block">Flow DepotReceiver -> cargo
+          <div class="code-block">Flow DepotReceiver(cargo)
     "DEPOT: Received cargo:" -> Print
     cargo -> Print
     return true
@@ -395,7 +467,7 @@ drone_cargo -|-> DepotReceiver
         <div class="example-card">
           <h3>Sever Connection</h3>
           <p>Explicitly break a connection or trigger disconnect.</p>
-          <div class="code-block">Flow DisconnectHandler -> id
+          <div class="code-block">Flow DisconnectHandler(id)
     "Disconnecting: " -> Print
     id -> Print
     "Connection severed." -> Print
@@ -410,39 +482,121 @@ session_id -||-> DisconnectHandler</div>
         <div class="example-card">
           <h3>Recursive Flow</h3>
           <p>A flow that calls itself for recursive algorithms.</p>
-          <div class="code-block">Flow Factorial -> n
+          <div class="code-block">Flow Factorial(n)
     if n ≤ 1
         return 1
     
-    prev <- Factorial -> (n - 1)
+    prev := Factorial(n - 1)
     return n * prev
 
-result <- Factorial -> 5
+result := Factorial(5)
 "5! = " -> Print
-result -> Print  // 120</div>
+result -> Print  // 120.00</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Conditional Pull Arrow (<-[]-)</h3>
+          <p>Pull a value only when a condition is met.</p>
+          <div class="code-block">is_daytime := true
+solar_reading := 500.0
+solar_output := 0.0
+
+// Conditional pull: only update if daytime
+solar_output <-[is_daytime]- solar_reading
+
+// With negation
+solar_output <-[!is_daytime]- 0.0
+
+"Solar output: " -> Print
+solar_output -> Print</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Conditional Pull with Transform</h3>
+          <p>Transform the value while pulling conditionally.</p>
+          <div class="code-block">efficiency := 0.8
+raw_reading := 100.0
+is_active := true
+adjusted := 0.0
+
+// Syntax: target <-[condition ? transformation]- source
+adjusted <-[is_active ? raw_reading * efficiency]- raw_reading
+
+"Adjusted reading: " -> Print
+adjusted -> Print  // 80.0</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Conditional Sync Arrow (<-[]->)</h3>
+          <p>Synchronize values only when a condition is met.</p>
+          <div class="code-block">local_log := "Status: Online"
+remote_hq := "Standby"
+is_secure := true
+
+// Conditional sync: only sync if secure
+remote_hq <-[is_secure]-> local_log
+
+"Remote HQ: " -> Print
+remote_hq -> Print  // "Status: Online"
+
+// Block sync when insecure
+is_secure = false
+local_log = "Status: Critical"
+// remote_hq is NOT updated because sync is blocked</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Priority Cascade Pattern</h3>
+          <p>Use conditional pulls for fallback logic.</p>
+          <div class="code-block">// Power source priorities
+solar := 500.0
+battery := 300.0
+grid := 1000.0
+demand := 450.0
+
+active_source := "None"
+power := 0.0
+
+// Priority 1: Solar (if sufficient)
+use_solar := solar ≥ demand
+power <-[use_solar]- solar
+active_source <-[use_solar]- "Solar"
+
+// Priority 2: Battery (fallback)
+use_battery := !use_solar & battery ≥ demand
+power <-[use_battery]- battery
+active_source <-[use_battery]- "Battery"
+
+// Priority 3: Grid (last resort)
+use_grid := !use_solar & !use_battery
+power <-[use_grid]- grid
+active_source <-[use_grid]- "Grid"
+
+"Active: " -> Print
+active_source -> Print</div>
         </div>
 
         <div class="example-card">
           <h3>Complex Chain</h3>
           <p>Combine multiple arrow types in a single pipeline.</p>
-          <div class="code-block">Flow Decrypt -> data
+          <div class="code-block">Flow Decrypt(data)
     "Decrypting..." -> Print
     return "decrypted_data"
 
-Flow Analyze -> data
+Flow Analyze(data)
     "Analyzing intent..." -> Print
     return data
 
-Flow Solve -> data
+Flow Solve(data)
     "Solving geometry..." -> Print
     return "solved"
 
-Flow LogResult -> result
+Flow LogResult(result)
     "LOGGED: " -> Print
     result -> Print
     return true
 
-Flow AlertTeam -> result
+Flow AlertTeam(result)
     "ALERT SENT" -> Print
     return true
 
@@ -462,17 +616,17 @@ artifact -[radiation < 10]-> Decrypt ~> Analyze => Solve -< LogResult, AlertTeam
           <h3>Event System</h3>
           <p>A simple event broadcasting pattern.</p>
           <div class="code-block">// Event handlers
-Flow OnPlayerJoin -> player
+Flow OnPlayerJoin(player)
     "Player joined: " -> Print
     player -> Print
     return true
 
-Flow OnPlayerLeave -> player
+Flow OnPlayerLeave(player)
     "Player left: " -> Print
     player -> Print
     return true
 
-Flow LogActivity -> player
+Flow LogActivity(player)
     "Activity logged for: " -> Print
     player -> Print
     return true
@@ -487,15 +641,15 @@ Flow LogActivity -> player
           <p>Using conditional gates as a state machine.</p>
           <div class="code-block">state := "idle"
 
-Flow HandleIdle -> s
+Flow HandleIdle(s)
     "State: IDLE -> Starting" -> Print
     return "running"
 
-Flow HandleRunning -> s
+Flow HandleRunning(s)
     "State: RUNNING -> Processing" -> Print
     return "complete"
 
-Flow HandleComplete -> s
+Flow HandleComplete(s)
     "State: COMPLETE -> Done!" -> Print
     return "idle"
 
@@ -508,15 +662,15 @@ state -[state == "complete"]-> HandleComplete</div>
         <div class="example-card">
           <h3>Pipeline Processing</h3>
           <p>Data transformation pipeline.</p>
-          <div class="code-block">Flow Validate -> data
+          <div class="code-block">Flow Validate(data)
     "Validating..." -> Print
     return data
 
-Flow Transform -> data
+Flow Transform(data)
     "Transforming..." -> Print
     return data
 
-Flow Store -> data
+Flow Store(data)
     "Storing..." -> Print
     return true
 
@@ -528,7 +682,7 @@ raw_data -> Validate -> Transform -> Store</div>
         <div class="example-card">
           <h3>Sensor Fusion</h3>
           <p>Multiple sensors feeding into a single processor.</p>
-          <div class="code-block">Flow SensorProcessor -> reading
+          <div class="code-block">Flow SensorProcessor(reading)
     "Sensor reading: " -> Print
     reading -> Print
     return true

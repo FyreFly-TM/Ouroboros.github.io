@@ -17,6 +17,8 @@
         <a href="index.html">Home</a>
         <a href="getting_started.html">Get Started</a>
         <a href="examples.html">Examples</a>
+        <a href="flows.html">Flows</a>
+        <a href="reference.html">Reference</a>
         <a href="arrows.html">Arrows</a>
         <a href="tokens.html">Tokens</a>
         <a href="files.html">Files</a>
@@ -34,13 +36,15 @@
         <li><a href="#forward">Forward (->)</a></li>
         <li><a href="#pull">Pull (<-)</a></li>
         <li><a href="#sync">Sync (<->)</a></li>
-        <li><a href="#fork">Fork (-<)</a></li>
-        <li><a href="#funnel">Funnel (▷-)</a></li>
-        <li><a href="#fuzzy">Fuzzy (~>)</a></li>
-        <li><a href="#solver">Solver (=>)</a></li>
-        <li><a href="#transfer">Transfer (-|->)</a></li>
-        <li><a href="#sever">Sever (-||->)</a></li>
+        <li><a href="#fork">Fork (-<, -◁)</a></li>
+        <li><a href="#funnel">Funnel (>-, ▷-)</a></li>
+        <li><a href="#continuous">Continuous (-▷, ◁-, ◁-▷)</a></li>
+        <li><a href="#fuzzy">Fuzzy (~>, <~, <~>)</a></li>
+        <li><a href="#solver">Solver (=>, ≈>)</a></li>
+        <li><a href="#transfer">Transfer (-|->, <-|-)</a></li>
+        <li><a href="#sever">Sever (-||->, <-||-)</a></li>
         <li><a href="#async">Async Arrows</a></li>
+        <li><a href="#conditional-arrows">Conditional Arrows</a></li>
         <li><a href="#gates">Conditional Gates</a></li>
         <li><a href="#chaining">Arrow Chaining</a></li>
       </ul>
@@ -56,6 +60,8 @@
       <div class="doc-section" id="overview">
         <h2>Overview</h2>
         <p>Ouroboros uses arrows to direct data flow between expressions, variables, and flows. Each arrow type conveys different semantics:</p>
+        
+        <h3>Core Arrows</h3>
         <table class="table">
           <thead>
             <tr><th>Arrow</th><th>Name</th><th>Direction</th><th>Purpose</th></tr>
@@ -65,11 +71,79 @@
             <tr><td><code><-</code></td><td>Pull</td><td>Right → Left</td><td>Capture or bind reactively</td></tr>
             <tr><td><code><-></code></td><td>Sync</td><td>Bidirectional</td><td>Keep both sides equal</td></tr>
             <tr><td><code>-<</code></td><td>Fork</td><td>One → Many</td><td>Broadcast to multiple targets</td></tr>
-            <tr><td><code>▷-</code></td><td>Funnel</td><td>Continuous</td><td>Stream changes reactively</td></tr>
-            <tr><td><code>~></code></td><td>Fuzzy</td><td>Soft Forward</td><td>Suggest rather than force</td></tr>
-            <tr><td><code>=></code></td><td>Solver</td><td>Constraint</td><td>Find solutions/paths</td></tr>
-            <tr><td><code>-|-></code></td><td>Transfer</td><td>Ownership</td><td>Move data, invalidate source</td></tr>
-            <tr><td><code>-||-></code></td><td>Sever</td><td>Disconnect</td><td>Break a connection</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Continuous/Streaming Arrows</h3>
+        <table class="table">
+          <thead>
+            <tr><th>Arrow</th><th>Name</th><th>Purpose</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>>-</code></td><td>Funnel</td><td>Stream changes reactively to handler</td></tr>
+            <tr><td><code>▷-</code></td><td>Funnel (Unicode)</td><td>Same as >- with Unicode symbol</td></tr>
+            <tr><td><code>-▷</code></td><td>Continuous Forward</td><td>Push continuously</td></tr>
+            <tr><td><code>◁-</code></td><td>Continuous Pull</td><td>Continuously monitor and pull changes</td></tr>
+            <tr><td><code>◁-▷</code></td><td>Continuous Sync</td><td>Bidirectional continuous sync</td></tr>
+            <tr><td><code>-◁</code></td><td>Continuous Fork</td><td>Fork to multiple targets on every change</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Special Arrows</h3>
+        <table class="table">
+          <thead>
+            <tr><th>Arrow</th><th>Name</th><th>Purpose</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>~></code></td><td>Fuzzy Forward</td><td>Suggest rather than force (soft influence)</td></tr>
+            <tr><td><code><~</code></td><td>Fuzzy Pull</td><td>Softly pull with noise/dampening</td></tr>
+            <tr><td><code><~></code></td><td>Fuzzy Sync</td><td>Bidirectional soft influence</td></tr>
+            <tr><td><code>=></code></td><td>Solver</td><td>Find solutions/paths (constraint-based)</td></tr>
+            <tr><td><code>≈></code></td><td>Fuzzy Solver</td><td>Soft constraint solving</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Ownership Arrows</h3>
+        <table class="table">
+          <thead>
+            <tr><th>Arrow</th><th>Name</th><th>Purpose</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>-|-></code></td><td>Transfer Forward</td><td>Move data, invalidate source</td></tr>
+            <tr><td><code><-|-</code></td><td>Transfer Pull</td><td>Pull and take ownership, source invalidated</td></tr>
+            <tr><td><code>-||-></code></td><td>Sever Forward</td><td>Break connection, forward final value</td></tr>
+            <tr><td><code><-||-</code></td><td>Sever Pull</td><td>Pull and disconnect from source</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Conditional Arrows</h3>
+        <table class="table">
+          <thead>
+            <tr><th>Arrow</th><th>Name</th><th>Purpose</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code><-[cond]-</code></td><td>Conditional Pull</td><td>Pull only if condition is true</td></tr>
+            <tr><td><code><-[cond]-></code></td><td>Conditional Sync</td><td>Sync only if condition is true</td></tr>
+            <tr><td><code>-[cond]-></code></td><td>Conditional Forward</td><td>Forward only if condition is true</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Async Arrows</h3>
+        <table class="table">
+          <thead>
+            <tr><th>Arrow</th><th>Name</th><th>Purpose</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>->></code></td><td>Async Forward</td><td>Fire-and-forget forward</td></tr>
+            <tr><td><code><<-</code></td><td>Async Pull</td><td>Non-blocking capture</td></tr>
+            <tr><td><code><<->></code></td><td>Async Sync</td><td>Non-blocking bidirectional</td></tr>
+            <tr><td><code>-<<</code></td><td>Async Fork</td><td>Parallel broadcast</td></tr>
+            <tr><td><code>>>-</code></td><td>Async Funnel</td><td>Async continuous stream</td></tr>
+            <tr><td><code>->|</code></td><td>Await Forward</td><td>Wait then forward</td></tr>
+            <tr><td><code>|<-</code></td><td>Pull Await</td><td>Wait for value to be ready</td></tr>
+            <tr><td><code>|<->|</code></td><td>Sync Await</td><td>Wait for both sides to be ready</td></tr>
+            <tr><td><code><-|-></code></td><td>Sync Transfer</td><td>Transfer ownership bidirectionally</td></tr>
+            <tr><td><code><-||-></code></td><td>Sync Sever</td><td>Sever bidirectional connection</td></tr>
           </tbody>
         </table>
       </div>
@@ -101,10 +175,13 @@ input -> Validate -> Transform -> Store -> Print</div>
 
         <h3>Capture Return Value</h3>
         <div class="code-block">// Capture single return
-result <- Add -> 10, 5
+result := Add(10, 5)
+
+// Or use pull arrow with function call
+result <- Add(10, 5)
 
 // Capture multiple returns
-quotient, remainder <- Divide -> 17, 5</div>
+quotient, remainder <- Divide(17, 5)</div>
 
         <h3>Reactive Binding</h3>
         <p>When used with an expression, the left side updates whenever the right side changes:</p>
@@ -166,44 +243,81 @@ event -< LogEvent, UpdateUI, NotifyUser
         <p>Forks can appear at the end of arrow chains:</p>
         <div class="code-block">// Process then fork the result
 data -> Transform -> Validate -< Store, Backup, Notify</div>
+
+        <h3>Continuous Fork (-◁)</h3>
+        <p>Combine continuous monitoring with forking—every change broadcasts to all targets:</p>
+        <div class="code-block">health := 100
+
+// Every time health changes, all handlers are called
+health -◁ UpdateHealthBar
+health -◁ CheckCriticalHealth
+health -◁ UpdateDamageOverlay
+
+health = 50  // Triggers all three handlers</div>
       </div>
 
       <div class="doc-section" id="funnel">
-        <h2>Continuous Funnel (▷-)</h2>
+        <h2>Funnel Arrows (>-, ▷-)</h2>
         <p><strong>Purpose:</strong> Stream data continuously—any change triggers the target.</p>
-        <p>Unlike a one-time forward arrow, a funnel establishes an ongoing connection.</p>
+        <p>Unlike a one-time forward arrow, a funnel establishes an ongoing connection. Use <code>>-</code> for ASCII or <code>▷-</code> for Unicode.</p>
 
         <div class="code-block">sensor_temp := 22.0
 sensor_pressure := 1013.0
 
-// Establish continuous monitoring
-sensor_temp ▷- ClimateMonitor
+// Establish continuous monitoring (ASCII version)
+sensor_temp >- ClimateMonitor
+
+// Or use Unicode version
 sensor_pressure ▷- ClimateMonitor
 
-Flow ClimateMonitor -> val
+Flow ClimateMonitor(val)
     "Sensor changed: " -> Print
     val -> Print
     return true
 
 // Any change triggers the monitor
 sensor_temp = 25.0  // Triggers ClimateMonitor</div>
+      </div>
 
-        <h3>Continuous Fork (▷-<)</h3>
-        <p>Combine continuous monitoring with forking:</p>
-        <div class="code-block">sensor ▷-< Handler1, Handler2, Handler3</div>
+      <div class="doc-section" id="continuous">
+        <h2>Continuous Arrows (-▷, ◁-)</h2>
+        <p><strong>Purpose:</strong> Establish ongoing push or pull connections.</p>
+        <p>These arrows maintain a persistent connection—any change automatically propagates.</p>
+
+        <h3>Continuous Forward (-▷)</h3>
+        <p>Continuously push updates to the target:</p>
+        <div class="code-block">msg := "Status Update"
+
+// Continuously forward to Print
+msg -▷ Print
+
+// Every change to msg is automatically printed
+msg = "New Status"  // Printed automatically</div>
+
+        <h3>Continuous Pull (◁-)</h3>
+        <p>Continuously monitor a source and pull changes:</p>
+        <div class="code-block">source_value := 100
+
+// Establish continuous pull
+monitored ◁- source_value
+
+// monitored updates whenever source_value changes
+source_value = 200  // monitored is now 200</div>
       </div>
 
       <div class="doc-section" id="fuzzy">
-        <h2>Fuzzy Arrow (~>)</h2>
+        <h2>Fuzzy Arrows (~>, <~, <~>)</h2>
         <p><strong>Purpose:</strong> Soft influence—suggest rather than force.</p>
-        <p>Used for fuzzy logic systems where values are "influenced" rather than directly set.</p>
+        <p>Used for fuzzy logic systems where values are "influenced" rather than directly set. The relationship is probabilistic or soft, not rigid.</p>
 
+        <h3>Fuzzy Forward (~>)</h3>
+        <p>Softly push influence to a target:</p>
         <div class="code-block">temperature := 28.0
 
 // Fuzzy influence on controller
 temperature ~> ThermalController
 
-Flow ThermalController -> t
+Flow ThermalController(t)
     // Fuzzy logic: soft response
     if t > 25.0
         "Suggesting: increase cooling" -> Print
@@ -212,59 +326,117 @@ Flow ThermalController -> t
     else
         "Nominal range" -> Print
     return true</div>
+
+        <h3>Fuzzy Pull (<~)</h3>
+        <p>Softly pull influence from a source. The value received may be noisy or dampened:</p>
+        <div class="code-block">// AI perception with probability
+player_visibility := 0.8  // 0.0 to 1.0
+enemy_alert_level := 0.0
+
+// Soft pull - enemy "might" see based on visibility
+enemy_alert_level <~ player_visibility
+
+// Alert level is influenced by, not strictly set to, visibility</div>
+
+        <h3>Fuzzy Sync (<~>)</h3>
+        <p>Bidirectional soft influence. Both sides affect each other with "elasticity":</p>
+        <div class="code-block">// Market simulation: supply and demand
+market_supply := 500.0
+market_demand := 600.0
+
+// Establish soft bidirectional sync
+market_supply <~> market_demand
+
+// Changes propagate with elasticity, not instantly
+market_supply = 200.0
+// Demand rises in response, but softly, not rigidly</div>
+
+        <h3>Conditional Fuzzy Arrow</h3>
+        <p>Combine gates with fuzzy arrows:</p>
+        <div class="code-block">// Only apply fuzzy influence if windows are closed
+temp -[windows_open == false]~> AC_Controller</div>
       </div>
 
       <div class="doc-section" id="solver">
-        <h2>Solver Arrow (=>)</h2>
+        <h2>Solver Arrows (=>, ≈>)</h2>
         <p><strong>Purpose:</strong> Constraint-based solving—find paths or solutions.</p>
         <p>Used for pathfinding, optimization, or constraint satisfaction problems.</p>
 
+        <h3>Standard Solver (=>)</h3>
         <div class="code-block">start_position := "Sector_A"
 target := "Depot"
 
 // Request path solving
 start_position => PathSolver
 
-Flow PathSolver -> start
+Flow PathSolver(start)
     "SOLVER: Computing optimal path from " -> Print
     start -> Print
     // Constraint solving logic here
     return "optimal_route"</div>
+
+        <h3>Fuzzy Solver (≈>)</h3>
+        <p>A soft constraint solver that finds approximate or probabilistic solutions:</p>
+        <div class="code-block">// Fuzzy solver for approximate matching
+input_pattern := "user_query"
+
+// Find approximate matches
+input_pattern ≈> FuzzyMatcher</div>
       </div>
 
       <div class="doc-section" id="transfer">
-        <h2>Transfer Arrow (-|->)</h2>
+        <h2>Transfer Arrows (-|->, <-|-)</h2>
         <p><strong>Purpose:</strong> Move ownership—source becomes invalid after transfer.</p>
         <p>Similar to Rust's move semantics. After transfer, the source should not be used.</p>
 
+        <h3>Transfer Forward (-|->)</h3>
         <div class="code-block">drone_cargo := ["Titanium", "Gold", "Uranium"]
 
 // Transfer ownership to depot
 drone_cargo -|-> DepotReceiver
 
-Flow DepotReceiver -> cargo
+Flow DepotReceiver(cargo)
     "Cargo received: " -> Print
     cargo -> Print
     return true
 
 // drone_cargo is now conceptually invalid</div>
+
+        <h3>Transfer Pull (<-|-)</h3>
+        <p>Pull value and take ownership from source:</p>
+        <div class="code-block">source_data := "Critical Data"
+
+// Pull and take ownership
+my_data <-|- source_data
+
+// source_data is now invalid, my_data owns the value</div>
       </div>
 
       <div class="doc-section" id="sever">
-        <h2>Sever Arrow (-||->)</h2>
+        <h2>Sever Arrows (-||->, <-||-)</h2>
         <p><strong>Purpose:</strong> Explicitly break a connection or trigger disconnect.</p>
         <p>Used to signal the end of a relationship or connection.</p>
 
+        <h3>Sever Forward (-||->)</h3>
         <div class="code-block">session_id := "Session_12345"
 
 // Sever the connection
 session_id -||-> DisconnectHandler
 
-Flow DisconnectHandler -> id
+Flow DisconnectHandler(id)
     "Disconnecting session: " -> Print
     id -> Print
     "Connection severed." -> Print
     return true</div>
+
+        <h3>Sever Pull (<-||-)</h3>
+        <p>Pull final value and disconnect from source:</p>
+        <div class="code-block">stream_value := 42
+
+// Pull the current value and disconnect
+final_value <-||- stream_value
+
+// No longer connected to stream_value</div>
       </div>
 
       <div class="doc-section" id="async">
@@ -280,19 +452,96 @@ Flow DisconnectHandler -> id
             <tr><td><code><<-</code></td><td>Async Pull</td><td>Non-blocking capture</td></tr>
             <tr><td><code>-<<</code></td><td>Async Fork</td><td>Parallel broadcast</td></tr>
             <tr><td><code>>>-</code></td><td>Async Funnel</td><td>Async continuous stream</td></tr>
+            <tr><td><code>->|</code></td><td>Await Forward</td><td>Wait then forward</td></tr>
             <tr><td><code>|<-</code></td><td>Pull Await</td><td>Wait for value to be ready</td></tr>
           </tbody>
         </table>
 
+        <h3>Async Forward Example</h3>
+        <div class="code-block">msg := "Background Task"
+
+// Fire-and-forget: execution continues immediately
+msg ->> BackgroundHandler</div>
+
         <h3>Async Fork Example</h3>
         <div class="code-block">// Send to multiple handlers asynchronously
 threat -<< DeployDrones, LockSector, NotifyCaptain</div>
+
+        <h3>Await Forward Example</h3>
+        <div class="code-block">// Wait for value to be ready, then forward
+data ->| AsyncProcessor</div>
 
         <h3>Pull Await Example</h3>
         <div class="code-block">// Wait for conditions to be true
 launch_signal |<- fuel_ready
 launch_signal |<- nav_ready
 launch_signal |<- crew_ready</div>
+      </div>
+
+      <div class="doc-section" id="conditional-arrows">
+        <h2>Conditional Pull & Sync Arrows</h2>
+        <p><strong>Purpose:</strong> Pull or sync data only when a condition is met, with optional transformation.</p>
+        <p>These arrows use bracket notation to embed conditions directly in the arrow.</p>
+
+        <h3>Conditional Pull (<-[condition]-)</h3>
+        <p>Only pull the value if the condition is true:</p>
+        <div class="code-block">is_daytime := true
+solar_reading := 500.0
+solar_output := 0.0
+
+// Only pull if daytime
+solar_output <-[is_daytime]- solar_reading
+
+// With negation
+solar_output <-[!is_daytime]- 0.0</div>
+
+        <h3>Conditional Pull with Transformation</h3>
+        <p>Transform the value before pulling:</p>
+        <div class="code-block">efficiency := 0.8
+raw_reading := 100.0
+adjusted := 0.0
+
+// Syntax: target <-[condition ? transformation]- source
+adjusted <-[is_daytime ? raw_reading * efficiency]- raw_reading</div>
+
+        <h3>Conditional Sync (<-[condition]->)</h3>
+        <p>Only sync if the condition is met. Perfect for secure or conditional synchronization:</p>
+        <div class="code-block">local_log := "System Status: Online"
+remote_hq := "Standby"
+is_secure := true
+
+// Only sync if connection is secure
+// Syntax: target <-[condition]-> source
+remote_hq <-[is_secure]-> local_log
+
+// If not secure, sync is blocked
+is_secure = false
+// Now changes won't propagate to remote_hq</div>
+
+        <h3>Real-World Example: Power Grid Controller</h3>
+        <div class="code-block">// Priority-based source selection using conditional pulls
+solar := 500.0
+battery := 300.0
+grid := 1000.0
+demand := 450.0
+
+active_source := "None"
+power := 0.0
+
+// Priority 1: Solar (if sufficient)
+use_solar := solar >= demand
+power <-[use_solar]- solar
+active_source <-[use_solar]- "Solar"
+
+// Priority 2: Battery (if solar fails)
+use_battery := !use_solar & battery >= demand
+power <-[use_battery]- battery
+active_source <-[use_battery]- "Battery"
+
+// Priority 3: Grid (fallback)
+use_grid := !use_solar & !use_battery
+power <-[use_grid]- grid
+active_source <-[use_grid]- "Grid"</div>
       </div>
 
       <div class="doc-section" id="gates">
@@ -341,7 +590,9 @@ position -[obstacles < 5]=> PathFinder</div>
         <div class="code-block">input -> Step1 -> Step2 -> Step3 -> Print</div>
 
         <h3>Capture from Chain</h3>
-        <div class="code-block">result <- input -> Transform -> Validate</div>
+        <div class="code-block">// Chain flows and capture result
+result <- Transform(input)
+result <- input -> Transform -> Validate</div>
 
         <h3>Mixed Arrow Chain</h3>
         <div class="code-block">// Gate -> Flow -> Fuzzy -> Solver -> Fork

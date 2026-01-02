@@ -312,15 +312,16 @@ p.lead {
 
 .card {
   padding: 24px;
-  background: rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.25) 0%, rgba(20, 20, 28, 0.3) 100%);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 8px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .card:hover {
   border-color: var(--border-strong);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  transform: translateY(-2px);
 }
 
 .card h3 {
@@ -354,37 +355,47 @@ p.lead {
 }
 
 .example-card {
-  background: rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.25) 0%, rgba(20, 20, 25, 0.35) 100%);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   padding: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.example-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .example-card h3 {
   color: var(--accent-strong);
   margin-bottom: 8px;
+  font-size: 17px;
 }
 
 .example-card p {
   color: var(--muted);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  font-size: 14px;
 }
 
 .code-block {
-  background: rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(15, 15, 20, 0.6) 100%);
   border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
   border-radius: 6px;
-  padding: 16px 20px;
+  padding: 18px 22px;
   font-family: var(--font-mono);
   font-size: 13px;
   overflow-x: auto;
   margin-top: 12px;
   margin-bottom: 12px;
   color: #e8f4ff;
-  white-space: pre-wrap;
-  word-break: break-word;
-  line-height: 1.5;
+  white-space: pre;
+  word-break: normal;
+  line-height: 1.6;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .token-grid {
@@ -492,6 +503,56 @@ code {
   color: var(--accent-strong);
   font-family: var(--font-mono);
   font-size: 0.9em;
+}
+
+/* Syntax highlighting hints in code blocks */
+.code-block .comment {
+  color: #6a9955;
+}
+
+.code-block .keyword {
+  color: #c586c0;
+}
+
+.code-block .arrow {
+  color: #4fc1ff;
+}
+
+.code-block .string {
+  color: #ce9178;
+}
+
+.code-block .number {
+  color: #b5cea8;
+}
+
+/* Tip/Note boxes */
+.tip {
+  padding: 16px 20px;
+  border-radius: 6px;
+  border-left: 4px solid var(--success);
+  background: rgba(74, 222, 128, 0.08);
+  color: var(--text);
+  margin: 16px 0;
+  font-size: 14px;
+}
+
+.tip strong {
+  color: var(--success);
+}
+
+.warning {
+  padding: 16px 20px;
+  border-radius: 6px;
+  border-left: 4px solid var(--warning);
+  background: rgba(251, 191, 36, 0.08);
+  color: var(--text);
+  margin: 16px 0;
+  font-size: 14px;
+}
+
+.warning strong {
+  color: var(--warning);
 }
 
 footer {

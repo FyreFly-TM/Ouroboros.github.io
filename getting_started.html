@@ -17,6 +17,8 @@
         <a href="index.html">Home</a>
         <a href="getting_started.html">Get Started</a>
         <a href="examples.html">Examples</a>
+        <a href="flows.html">Flows</a>
+        <a href="reference.html">Reference</a>
         <a href="arrows.html">Arrows</a>
         <a href="tokens.html">Tokens</a>
         <a href="files.html">Files</a>
@@ -121,7 +123,7 @@ first := numbers[0]</div>
         <p>Flows are the building blocks of Ouroboros—similar to functions in other languages.</p>
 
         <h3>Basic Flow</h3>
-        <div class="code-block">Flow Greet -> name
+        <div class="code-block">Flow Greet(name)
     "Hello, " -> Print
     name -> Print
     return true
@@ -130,26 +132,41 @@ first := numbers[0]</div>
 "World" -> Greet</div>
 
         <h3>Flow with Return Value</h3>
-        <div class="code-block">Flow Add -> a, b
+        <div class="code-block">Flow Add(a, b)
     result := a + b
     return result
 
-// Capture the return value with a pull arrow
-sum <- Add -> 10, 5
-sum -> Print  // Outputs: 15</div>
+// Capture the return value
+sum := Add(10, 5)
+sum -> Print  // Outputs: 15.00</div>
 
         <h3>Multi-Return Flow</h3>
-        <div class="code-block">Flow Divide -> a, b
+        <div class="code-block">Flow Divide(a, b)
     quotient := a / b
     remainder := a % b
     return quotient, remainder
 
 // Capture multiple return values
-q, r <- Divide -> 17, 5
+q, r <- Divide(17, 5)
 "Quotient: " -> Print
-q -> Print  // 3
+q -> Print  // 3.00
 "Remainder: " -> Print
-r -> Print  // 2</div>
+r -> Print  // 2.00</div>
+
+        <h3>Implicit Return Binding</h3>
+        <p>When a Flow returns named values, those variable names become automatically accessible in the calling scope without explicit assignment:</p>
+        <div class="code-block">Flow Calculate(x, y)
+    sum := x + y
+    product := x * y
+    return sum, product
+
+// Just call the flow - no assignment needed!
+Calculate(10, 5)
+
+// Now sum and product are available directly
+sum -> Print      // 15.00
+product -> Print  // 50.00</div>
+        <p>This is a key feature of Ouroboros—return values are bound by name, not by position. Learn more in the <a href="flows.html">Flows reference</a>.</p>
       </div>
 
       <div class="doc-section" id="arrows">
@@ -196,10 +213,12 @@ data -> Process -> Validate -> Print
 
         <h3>Pull Arrow Examples</h3>
         <div class="code-block">// Capture return value
-result <- Calculate -> input
+result <- Calculate(input)
 
 // Reactive binding (updates when dependencies change)
-area <- width * height</div>
+width := 10
+height := 5
+area <- width * height  // area auto-updates</div>
 
         <h3>Sync Arrow Example</h3>
         <div class="code-block">// Both variables stay in sync
@@ -277,6 +296,8 @@ if !locked
         <p>You've learned the basics! Here's where to go next:</p>
         <ul class="list">
           <li><a href="examples.html">Examples</a> — Learn from real code</li>
+          <li><a href="flows.html">Flows Reference</a> — Deep dive into flows and return values</li>
+          <li><a href="reference.html">Language Reference</a> — Complete language specification</li>
           <li><a href="arrows.html">Arrow Reference</a> — Master all arrow types</li>
           <li><a href="tokens.html">Token Reference</a> — Complete syntax guide</li>
           <li><a href="files.html">File Types</a> — Organize larger projects</li>
