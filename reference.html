@@ -74,6 +74,17 @@ GAME_TITLE =: "Ouroboros"</div>
 health = 75      // Valid: reassignment
 health = 50      // Valid: reassignment again</div>
 
+        <div class="card" style="border-left: 4px solid #e74c3c; margin: 1rem 0;">
+          <h4>⚠️ Redefinition Error</h4>
+          <p>You cannot redefine an existing variable with <code>:=</code> or <code>=:</code>. Use <code>=</code> to reassign mutable variables instead.</p>
+          <div class="code-block">x := 10
+x := 20    // ERROR: Variable 'x' is already defined. Use '=' to reassign
+
+// Correct way to change the value:
+x := 10
+x = 20     // Valid: reassignment with =</div>
+        </div>
+
         <h3>Compound Assignment</h3>
         <p>Modify a variable in place:</p>
         <div class="code-block">x := 10
@@ -140,6 +151,23 @@ complex := [
     [1, 2, 3]
 ]</div>
 
+        <h3>Array Element Assignment</h3>
+        <p>Modify individual array elements using index assignment:</p>
+        <div class="code-block">// Direct array element assignment
+scores := [10, 20, 30]
+scores[1] = 99         // scores is now [10, 99, 30]
+
+// Works with nested structures too
+points := [Point{1, 2}, Point{3, 4}]
+points[0].x = 100      // Change first point's x
+
+// Object with array field
+container := Container{[1, 2, 3]}
+container.items[1] = 50  // Modify element in nested array
+
+// Deep nesting works
+obj.data[0].position.x = 999</div>
+
         <h3>Null</h3>
         <p>Represents the absence of a value:</p>
         <div class="code-block">// Flows without explicit return give null
@@ -176,11 +204,12 @@ pos.z = 30.0</div>
             <tr><td><code>+</code></td><td>Addition</td><td><code>10 + 5</code></td><td>15</td></tr>
             <tr><td><code>-</code></td><td>Subtraction</td><td><code>10 - 5</code></td><td>5</td></tr>
             <tr><td><code>*</code></td><td>Multiplication</td><td><code>10 * 5</code></td><td>50</td></tr>
-            <tr><td><code>/</code></td><td>Division</td><td><code>10 / 5</code></td><td>2</td></tr>
+            <tr><td><code>/</code></td><td>Division</td><td><code>10 / 4</code></td><td>2.5</td></tr>
             <tr><td><code>%</code></td><td>Modulo</td><td><code>10 % 3</code></td><td>1</td></tr>
             <tr><td><code>-</code></td><td>Negation</td><td><code>-42</code></td><td>-42</td></tr>
           </tbody>
         </table>
+        <p><strong>Note:</strong> Division always returns a floating-point result, even for integer operands.</p>
 
         <h3>Comparison Operators</h3>
         <p><strong>Note:</strong> Use Unicode <code>≥</code> and <code>≤</code> for greater/less-or-equal.</p>
@@ -458,6 +487,23 @@ current -> Print  // 100.00</div>
 transform.position.x = 10.0
 transform.position.y = 20.0
 transform.rotation.z = 45.0</div>
+
+        <h3>Array and Field Access Combinations</h3>
+        <p>Combine array indexing and field access in any order:</p>
+        <div class="code-block">// Array of objects - access field on element
+enemies := [Enemy{100}, Enemy{200}, Enemy{300}]
+enemies[1].health = 150    // Modify second enemy's health
+
+// Object with array field - access element
+inventory := Inventory{["sword", "shield", "potion"]}
+inventory.items[0] -> Print  // "sword"
+inventory.items[2] = "elixir"  // Replace item
+
+// Deep nesting - any combination works
+game.players[0].inventory.items[2].durability = 50
+
+// Reading deeply nested values
+dmg := game.enemies[i].weapon.baseDamage + bonus</div>
 
         <h3>Field Access in Expressions</h3>
         <div class="code-block">damage := attacker.power - defender.armor

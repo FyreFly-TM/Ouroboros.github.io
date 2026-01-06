@@ -204,16 +204,17 @@ health <- (temp + 50.0) * water / co2</div>
 
       <div class="doc-section" id="sync">
         <h2>Sync Arrow (<->)</h2>
-        <p><strong>Purpose:</strong> Bidirectional binding—both sides stay equal.</p>
-        <p>Changes to either side are immediately reflected in the other. Perfect for UI bindings or state synchronization.</p>
+        <p><strong>Purpose:</strong> Bidirectional binding—both sides stay equal when either changes.</p>
+        <p>Creates a reactive binding where changes to either side are reflected in the other. <strong>Important:</strong> The sync arrow does not immediately copy values when established—it only takes effect when either variable is later changed.</p>
 
         <div class="code-block">model := 100
-view := 0
+view := 50
 
-// Establish sync
+// Establish sync binding (values remain unchanged)
 model <-> view
+// model is still 100, view is still 50
 
-// Now both are 100
+// Now when either changes, the other follows
 view = 250
 // Both are now 250
 

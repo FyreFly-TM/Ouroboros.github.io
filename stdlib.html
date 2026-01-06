@@ -33,8 +33,11 @@
       <h3>Standard Library</h3>
       <ul>
         <li><a href="#io">I/O Functions</a></li>
+        <li><a href="#console-input">Console Input</a></li>
+        <li><a href="#console-utils">Console Utilities</a></li>
         <li><a href="#math">Math Operations</a></li>
         <li><a href="#arrays">Array Operations</a></li>
+        <li><a href="#string-funcs">String Functions</a></li>
         <li><a href="#flow-control">Flow Control</a></li>
       </ul>
     </aside>
@@ -63,6 +66,115 @@ result -> Print
 
 // Chain output
 value -> Transform -> Print</div>
+        </div>
+
+        <div class="card">
+          <h3>PrintColor</h3>
+          <p>Output colored text to the console using ANSI color codes.</p>
+          <div class="code-block">// Print text in different colors
+PrintColor("Error message!", "red")
+PrintColor("Success!", "green")
+PrintColor("Warning", "yellow")
+PrintColor("Info", "blue")
+PrintColor("Notice", "magenta")
+PrintColor("Debug", "cyan")</div>
+        </div>
+
+        <div class="card">
+          <h3>PrintStyle</h3>
+          <p>Output styled text to the console using ANSI style codes.</p>
+          <div class="code-block">// Print text with different styles
+PrintStyle("Important!", "bold")
+PrintStyle("Emphasized", "underline")
+PrintStyle("Italic text", "italic")
+PrintStyle("Dimmed text", "dim")</div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="console-input">
+        <h2>Console Input</h2>
+        <p>Functions for reading user input from the console.</p>
+
+        <div class="card">
+          <h3>ReadLine</h3>
+          <p>Read a line of text from the console. Optionally displays a prompt.</p>
+          <div class="code-block">// Read with prompt
+name := ReadLine("Enter your name: ")
+"Hello, " + name -> Print
+
+// Read without prompt
+"Type something: " -> Print
+input := ReadLine()
+input -> Print</div>
+        </div>
+
+        <div class="card">
+          <h3>ReadNumber</h3>
+          <p>Read a number from the console. Automatically converts input to a number.</p>
+          <div class="code-block">// Read a number with prompt
+age := ReadNumber("Enter your age: ")
+"You will be " + (age + 10) + " in 10 years" -> Print
+
+// Use in calculations
+a := ReadNumber("First number: ")
+b := ReadNumber("Second number: ")
+"Sum: " + (a + b) -> Print</div>
+        </div>
+
+        <div class="card">
+          <h3>Confirm</h3>
+          <p>Ask a yes/no question. Returns true for 'y' or 'Y', false otherwise.</p>
+          <div class="code-block">// Simple confirmation
+proceed := Confirm("Continue? (y/n): ")
+if proceed
+    "Proceeding..." -> Print
+else
+    "Cancelled" -> Print
+
+// Decision making
+wantsCoffee := Confirm("Coffee? (y/n): ")
+wantsSugar := Confirm("With sugar? (y/n): ")
+if wantsCoffee & wantsSugar
+    "Sweet coffee coming up!" -> Print</div>
+        </div>
+
+        <div class="card">
+          <h3>ReadPassword</h3>
+          <p>Read text without echoing (for passwords). Characters are masked with asterisks.</p>
+          <div class="code-block">password := ReadPassword("Enter password: ")
+"Password length: " + Len(password) -> Print</div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="console-utils">
+        <h2>Console Utilities</h2>
+        <p>Utility functions for console management.</p>
+
+        <div class="card">
+          <h3>Clear</h3>
+          <p>Clear the console screen. The program continues running after clearing.</p>
+          <div class="code-block">// Clear the screen
+Clear()
+"Fresh start!" -> Print</div>
+        </div>
+
+        <div class="card">
+          <h3>Exit</h3>
+          <p>Clear the console screen and terminate the program immediately.</p>
+          <div class="code-block">// Clear and exit
+Exit()
+// Any code after Exit() will not run</div>
+        </div>
+
+        <div class="card">
+          <h3>Pause</h3>
+          <p>Wait for the user to press Enter. Optionally displays a prompt.</p>
+          <div class="code-block">// Pause with prompt
+Pause("Press Enter to continue...")
+
+// Pause without prompt
+"Ready?" -> Print
+Pause()</div>
         </div>
       </div>
 
@@ -127,6 +239,22 @@ last := arr[4]    // 50</div>
         </div>
 
         <div class="card">
+          <h3>Array Element Assignment</h3>
+          <p>Modify individual array elements by index.</p>
+          <div class="code-block">arr := [10, 20, 30]
+arr[1] = 99       // arr is now [10, 99, 30]
+arr[0] = 5        // arr is now [5, 99, 30]
+
+// Works with objects in arrays
+points := [Point{1, 2}, Point{3, 4}]
+points[0].x = 100    // Modify first point's x field
+
+// And with array fields in objects
+container := Container{[1, 2, 3]}
+container.items[1] = 50  // Modify nested array element</div>
+        </div>
+
+        <div class="card">
           <h3>Array in Flows</h3>
           <div class="code-block">Flow SumFirstTwo(arr)
     first := arr[0]
@@ -135,6 +263,145 @@ last := arr[4]    // 50</div>
 
 result := SumFirstTwo([10, 20, 30])
 result -> Print  // 30.00</div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="string-funcs">
+        <h2>String Functions</h2>
+
+        <div class="card">
+          <h3>Len</h3>
+          <p>Get the length of a string or array.</p>
+          <div class="code-block">// String length
+text := "Hello, World!"
+length := Len(text)
+"Length: " + length -> Print  // 13
+
+// Array length
+numbers := [1, 2, 3, 4, 5]
+count := Len(numbers)
+"Count: " + count -> Print  // 5</div>
+        </div>
+
+        <div class="card">
+          <h3>CharAt</h3>
+          <p>Get the character at a specific index (0-based).</p>
+          <div class="code-block">text := "Hello"
+first := CharAt(text, 0)   // "H"
+last := CharAt(text, 4)    // "o"</div>
+        </div>
+
+        <div class="card">
+          <h3>Substring</h3>
+          <p>Extract a portion of a string. Takes start index and optional length.</p>
+          <div class="code-block">text := "Hello, World!"
+// Substring(string, start, length)
+hello := Substring(text, 0, 5)    // "Hello"
+world := Substring(text, 7, 5)    // "World"
+
+// Without length - gets rest of string
+rest := Substring(text, 7)        // "World!"</div>
+        </div>
+
+        <div class="card">
+          <h3>IndexOf</h3>
+          <p>Find the position of a substring. Returns -1 if not found.</p>
+          <div class="code-block">text := "Hello, World!"
+pos := IndexOf(text, "World")     // 7
+pos := IndexOf(text, "o")         // 4 (first occurrence)
+pos := IndexOf(text, "o", 5)      // 8 (search from index 5)
+pos := IndexOf(text, "xyz")       // -1 (not found)</div>
+        </div>
+
+        <div class="card">
+          <h3>Contains</h3>
+          <p>Check if a string contains a substring.</p>
+          <div class="code-block">text := "Hello, World!"
+has := Contains(text, "World")    // true
+has := Contains(text, "xyz")      // false</div>
+        </div>
+
+        <div class="card">
+          <h3>StartsWith / EndsWith</h3>
+          <p>Check if a string starts or ends with a given substring.</p>
+          <div class="code-block">text := "Hello, World!"
+StartsWith(text, "Hello")   // true
+StartsWith(text, "World")   // false
+EndsWith(text, "!")         // true
+EndsWith(text, "World!")    // true</div>
+        </div>
+
+        <div class="card">
+          <h3>ToUpper / ToLower</h3>
+          <p>Convert string to uppercase or lowercase.</p>
+          <div class="code-block">text := "Hello World"
+upper := ToUpper(text)   // "HELLO WORLD"
+lower := ToLower(text)   // "hello world"</div>
+        </div>
+
+        <div class="card">
+          <h3>Trim / TrimStart / TrimEnd</h3>
+          <p>Remove whitespace from strings.</p>
+          <div class="code-block">text := "   Hello World   "
+Trim(text)        // "Hello World"
+TrimStart(text)   // "Hello World   "
+TrimEnd(text)     // "   Hello World"</div>
+        </div>
+
+        <div class="card">
+          <h3>Replace</h3>
+          <p>Replace all occurrences of a substring.</p>
+          <div class="code-block">text := "Hello World"
+result := Replace(text, "World", "Ouro")  // "Hello Ouro"
+result := Replace("aaa", "a", "b")        // "bbb"</div>
+        </div>
+
+        <div class="card">
+          <h3>Split</h3>
+          <p>Split a string into an array by delimiter.</p>
+          <div class="code-block">// Split by comma
+csv := "apple,banana,cherry"
+parts := Split(csv, ",")
+// parts = ["apple", "banana", "cherry"]
+
+// Split by space
+words := Split("Hello World", " ")
+// words = ["Hello", "World"]
+
+// Split into characters (empty delimiter)
+chars := Split("ABC", "")
+// chars = ["A", "B", "C"]</div>
+        </div>
+
+        <div class="card">
+          <h3>Join</h3>
+          <p>Join array elements into a string with separator.</p>
+          <div class="code-block">arr := ["one", "two", "three"]
+result := Join(arr, "-")      // "one-two-three"
+result := Join(arr, ", ")     // "one, two, three"</div>
+        </div>
+
+        <div class="card">
+          <h3>ToNumber / ToString</h3>
+          <p>Convert between strings and numbers.</p>
+          <div class="code-block">// String to number
+num := ToNumber("42.5")       // 42.5
+num := ToNumber("123") + 10   // 133
+
+// Any value to string
+str := ToString(42)           // "42"
+str := ToString(true)         // "true"</div>
+        </div>
+
+        <div class="card">
+          <h3>IsDigit / IsAlpha</h3>
+          <p>Check if a string contains only digits or only letters.</p>
+          <div class="code-block">IsDigit("12345")    // true
+IsDigit("123a5")    // false
+IsDigit("")         // false
+
+IsAlpha("Hello")    // true
+IsAlpha("Hello1")   // false</div>
         </div>
       </div>
 
