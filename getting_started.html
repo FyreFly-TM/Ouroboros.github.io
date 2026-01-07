@@ -98,27 +98,63 @@ count += 1       // Compound assignment (now 6)</div>
         <div class="code-block">pi =: 3.14159    // Cannot be reassigned later</div>
 
         <h3>Data Types</h3>
-        <div class="code-block">// Numbers
+        <div class="code-block">// COMPLETE EXAMPLE: Data Types
+// Save as: data_types.ouro
+
+"=== Data Types Demo ==="  -> Print
+
+// Numbers
 age := 25
 price := 19.99
 negative := -42
 
+"Numbers:" -> Print
+"age = " + age -> Print
+"price = " + price -> Print
+"negative = " + negative -> Print
+
 // Strings
 name := "Ouroboros"
+"" -> Print
+"String: name = " + name -> Print
 
 // Booleans
 active := true
 paused := false
+"" -> Print
+"Booleans:" -> Print
+"active = " + active -> Print
+"paused = " + paused -> Print
 
 // Arrays
 numbers := [1, 2, 3, 4, 5]
-mixed := [42, "text", true]
+"" -> Print
+"Array: numbers = [1, 2, 3, 4, 5]" -> Print
 
 // Access array elements
 first := numbers[0]
+"first element = " + first -> Print
 
 // Modify array elements
-numbers[1] = 99</div>
+numbers[1] = 99
+"After numbers[1] = 99: " + numbers[1] -> Print
+
+// Expected Output:
+// === Data Types Demo ===
+// Numbers:
+// age = 25.00
+// price = 19.99
+// negative = -42.00
+//
+// String: name = Ouroboros
+//
+// Booleans:
+// active = true
+// paused = false
+//
+// Array: numbers = [1, 2, 3, 4, 5]
+// first element = 1.00
+// After numbers[1] = 99: 99.00</div>
       </div>
 
       <div class="doc-section" id="flows">
@@ -126,49 +162,120 @@ numbers[1] = 99</div>
         <p>Flows are the building blocks of Ouroboros—similar to functions in other languages.</p>
 
         <h3>Basic Flow</h3>
-        <div class="code-block">Flow Greet(name)
-    "Hello, " -> Print
-    name -> Print
+        <div class="code-block">// COMPLETE EXAMPLE: Basic Flow
+// Save as: greet_flow.ouro
+
+"=== Basic Flow Demo ==="  -> Print
+
+Flow Greet(name)
+    "Hello, " + name + "!" -> Print
     return true
 
 // Call the flow
-"World" -> Greet</div>
+Greet("World")
+Greet("Ouroboros")
+Greet("User")
+
+// Expected Output:
+// === Basic Flow Demo ===
+// Hello, World!
+// Hello, Ouroboros!
+// Hello, User!</div>
 
         <h3>Flow with Return Value</h3>
-        <div class="code-block">Flow Add(a, b)
+        <div class="code-block">// COMPLETE EXAMPLE: Flow with Return
+// Save as: add_flow.ouro
+
+"=== Flow with Return Demo ==="  -> Print
+
+Flow Add(a, b)
     result := a + b
     return result
 
 // Capture the return value
 sum := Add(10, 5)
-sum -> Print  // Outputs: 15.00</div>
+"10 + 5 = " + sum -> Print
+
+sum := Add(100, 200)
+"100 + 200 = " + sum -> Print
+
+sum := Add(7, 3)
+"7 + 3 = " + sum -> Print
+
+// Expected Output:
+// === Flow with Return Demo ===
+// 10 + 5 = 15.00
+// 100 + 200 = 300.00
+// 7 + 3 = 10.00</div>
 
         <h3>Multi-Return Flow</h3>
-        <div class="code-block">Flow Divide(a, b)
+        <div class="code-block">// COMPLETE EXAMPLE: Multi-Return Flow
+// Save as: divide_flow.ouro
+
+"=== Multi-Return Flow Demo ==="  -> Print
+
+Flow Divide(a, b)
     quotient := a / b
     remainder := a % b
     return quotient, remainder
 
 // Capture multiple return values
+"Dividing 17 by 5:" -> Print
 q, r <- Divide(17, 5)
-"Quotient: " -> Print
-q -> Print  // 3.00
-"Remainder: " -> Print
-r -> Print  // 2.00</div>
+"Quotient: " + q -> Print
+"Remainder: " + r -> Print
+
+"" -> Print
+"Dividing 100 by 7:" -> Print
+q, r <- Divide(100, 7)
+"Quotient: " + q -> Print
+"Remainder: " + r -> Print
+
+// Expected Output:
+// === Multi-Return Flow Demo ===
+// Dividing 17 by 5:
+// Quotient: 3.40
+// Remainder: 2.00
+//
+// Dividing 100 by 7:
+// Quotient: 14.29
+// Remainder: 2.00</div>
 
         <h3>Implicit Return Binding</h3>
         <p>When a Flow returns named values, those variable names become automatically accessible in the calling scope without explicit assignment:</p>
-        <div class="code-block">Flow Calculate(x, y)
+        <div class="code-block">// COMPLETE EXAMPLE: Implicit Return Binding
+// Save as: implicit_binding.ouro
+
+"=== Implicit Return Binding Demo ==="  -> Print
+
+Flow Calculate(x, y)
     sum := x + y
     product := x * y
     return sum, product
 
 // Just call the flow - no assignment needed!
+"Calculating with 10 and 5:" -> Print
 Calculate(10, 5)
 
 // Now sum and product are available directly
-sum -> Print      // 15.00
-product -> Print  // 50.00</div>
+"sum = " + sum -> Print
+"product = " + product -> Print
+
+"" -> Print
+"Calculating with 7 and 3:" -> Print
+Calculate(7, 3)
+"sum = " + sum -> Print
+"product = " + product -> Print
+
+// Expected Output:
+// === Implicit Return Binding Demo ===
+// Calculating with 10 and 5:
+// sum = 15.00
+// product = 50.00
+//
+// Calculating with 7 and 3:
+// sum = 10.00
+// product = 21.00</div>
         <p>This is a key feature of Ouroboros—return values are bound by name, not by position. Learn more in the <a href="flows.html">Flows reference</a>.</p>
       </div>
 
@@ -205,65 +312,237 @@ product -> Print  // 50.00</div>
         </table>
 
         <h3>Forward Arrow Examples</h3>
-        <div class="code-block">// Send value to Print
+        <div class="code-block">// COMPLETE EXAMPLE: Forward Arrow
+// Save as: forward_arrow.ouro
+
+"=== Forward Arrow Demo ==="  -> Print
+
+Flow Double(n)
+    result := n * 2
+    return result
+
+Flow Square(n)
+    result := n * n
+    return result
+
+// Send value to Print
+"Sending 42 to Print:" -> Print
 42 -> Print
 
-// Chain multiple flows
-data -> Process -> Validate -> Print
+// Call flows with arrow
+"" -> Print
+"Double(10):" -> Print
+Double(10)
+result -> Print
 
-// Pass multiple arguments
-10, 5 -> Add -> Print</div>
+"" -> Print
+"Square(5):" -> Print
+Square(5)
+result -> Print
+
+// Expected Output:
+// === Forward Arrow Demo ===
+// Sending 42 to Print:
+// 42.00
+//
+// Double(10):
+// 20.00
+//
+// Square(5):
+// 25.00</div>
 
         <h3>Pull Arrow Examples</h3>
-        <div class="code-block">// Capture return value
-result <- Calculate(input)
+        <div class="code-block">// COMPLETE EXAMPLE: Pull Arrow
+// Save as: pull_arrow.ouro
 
-// Reactive binding (updates when dependencies change)
+"=== Pull Arrow Demo ==="  -> Print
+
+Flow Calculate(a, b)
+    sum := a + b
+    return sum
+
+// Capture return value with pull arrow
+result <- Calculate(10, 5)
+"Calculate(10, 5) returned: " + result -> Print
+
+// Reactive binding demonstration
 width := 10
 height := 5
-area <- width * height  // area auto-updates</div>
+area := width * height
+
+"" -> Print
+"Initial:" -> Print
+"width = " + width -> Print
+"height = " + height -> Print
+"area = " + area -> Print
+
+// Update and recalculate
+width = 20
+area = width * height
+"" -> Print
+"After width = 20:" -> Print
+"area = " + area -> Print
+
+// Expected Output:
+// === Pull Arrow Demo ===
+// Calculate(10, 5) returned: 15.00
+//
+// Initial:
+// width = 10.00
+// height = 5.00
+// area = 50.00
+//
+// After width = 20:
+// area = 100.00</div>
 
         <h3>Sync Arrow Example</h3>
-        <div class="code-block">// Both variables stay in sync
+        <div class="code-block">// COMPLETE EXAMPLE: Sync Arrow
+// Save as: sync_arrow.ouro
+
+"=== Sync Arrow Demo ==="  -> Print
+
+// Both variables stay in sync
 left := 10
 right := 20
+
+"Initial values:" -> Print
+"left = " + left -> Print
+"right = " + right -> Print
+
 left <-> right
 
-right = 50  // left is now also 50</div>
+"" -> Print
+"After sync binding (no immediate change):" -> Print
+"left = " + left -> Print
+"right = " + right -> Print
+
+"" -> Print
+"Setting right = 50..." -> Print
+right = 50
+"left = " + left -> Print
+"right = " + right -> Print
+
+// Expected Output:
+// === Sync Arrow Demo ===
+// Initial values:
+// left = 10.00
+// right = 20.00
+//
+// After sync binding (no immediate change):
+// left = 10.00
+// right = 20.00
+//
+// Setting right = 50...
+// left = 50.00
+// right = 50.00</div>
 
         <h3>Fork Arrow Example</h3>
-        <div class="code-block">// Send to multiple flows at once
-event -< LogEvent, UpdateUI, NotifyUser</div>
+        <div class="code-block">// COMPLETE EXAMPLE: Fork Arrow
+// Save as: fork_arrow.ouro
+
+"=== Fork Arrow Demo ==="  -> Print
+
+Flow LogEvent(event)
+    "[LOG] " + event -> Print
+    return true
+
+Flow UpdateUI(event)
+    "[UI] " + event -> Print
+    return true
+
+Flow NotifyUser(event)
+    "[NOTIFY] " + event -> Print
+    return true
+
+// Send to multiple flows at once
+"Forking 'user_login' to 3 handlers:" -> Print
+"" -> Print
+
+event := "user_login"
+event -< LogEvent, UpdateUI, NotifyUser
+
+// Expected Output:
+// === Fork Arrow Demo ===
+// Forking 'user_login' to 3 handlers:
+//
+// [LOG] user_login
+// [UI] user_login
+// [NOTIFY] user_login</div>
       </div>
 
       <div class="doc-section" id="control">
         <h2>6. Control Flow</h2>
 
         <h3>If / Elseif / Else</h3>
-        <p>Blocks are defined by indentation (4 spaces). Note: use <code>≥</code> and <code>≤</code> for comparisons.</p>
-        <div class="code-block">score := 85
+        <p>Blocks are defined by indentation (4 spaces). Note: use <code>>=</code> and <code><=</code> or <code>≥</code> and <code>≤</code> for comparisons.</p>
+        <div class="code-block">// COMPLETE EXAMPLE: If/Elseif/Else
+// Save as: grading.ouro
 
-if score ≥ 90
-    grade := "A"
-    "Excellent!" -> Print
-elseif score ≥ 80
-    grade := "B"
-    "Good job!" -> Print
-elseif score ≥ 70
-    grade := "C"
-    "Passing" -> Print
-else
-    grade := "F"
-    "Needs improvement" -> Print</div>
+"=== Grading System ==="  -> Print
+
+Flow GetGrade(score)
+    grade := ""
+    if (score >= 90)
+        grade = "A"
+        "Excellent!" -> Print
+    elseif (score >= 80)
+        grade = "B"
+        "Good job!" -> Print
+    elseif (score >= 70)
+        grade = "C"
+        "Passing" -> Print
+    else
+        grade = "F"
+        "Needs improvement" -> Print
+    return grade
+
+"Score 85:" -> Print
+GetGrade(85)
+"Grade: " + grade -> Print
+
+"" -> Print
+"Score 95:" -> Print
+GetGrade(95)
+"Grade: " + grade -> Print
+
+// Expected Output:
+// === Grading System ===
+// Score 85:
+// Good job!
+// Grade: B
+//
+// Score 95:
+// Excellent!
+// Grade: A</div>
 
         <h3>While Loop</h3>
-        <div class="code-block">counter := 0
+        <div class="code-block">// COMPLETE EXAMPLE: While Loop
+// Save as: counter.ouro
 
-while counter < 5
-    counter -> Print
-    counter += 1
+"=== While Loop Demo ==="  -> Print
 
-// Outputs: 0 1 2 3 4</div>
+counter := 0
+
+"Counting from 0 to 4:" -> Print
+while (counter < 5)
+    "counter = " + counter -> Print
+    counter = counter + 1
+
+"" -> Print
+"Loop complete!" -> Print
+"Final counter = " + counter -> Print
+
+// Expected Output:
+// === While Loop Demo ===
+// Counting from 0 to 4:
+// counter = 0.00
+// counter = 1.00
+// counter = 2.00
+// counter = 3.00
+// counter = 4.00
+//
+// Loop complete!
+// Final counter = 5.00</div>
 
         <h3>Comparison Operators</h3>
         <table class="table">
@@ -281,17 +560,49 @@ while counter < 5
         </table>
 
         <h3>Logical Operators</h3>
-        <div class="code-block">// AND
-if active & ready
-    "Go!" -> Print
+        <div class="code-block">// COMPLETE EXAMPLE: Logical Operators
+// Save as: logic.ouro
+
+"=== Logical Operators Demo ==="  -> Print
+
+active := true
+ready := true
+paused := false
+locked := false
+
+"Variables:" -> Print
+"active = " + active -> Print
+"ready = " + ready -> Print
+"paused = " + paused -> Print
+"locked = " + locked -> Print
+
+"" -> Print
+
+// AND
+if (active & ready)
+    "AND: active & ready = Go!" -> Print
 
 // OR
-if paused | stopped
-    "Not running" -> Print
+if (paused | locked)
+    "OR: paused | locked = Blocked" -> Print
+else
+    "OR: Neither paused nor locked" -> Print
 
 // NOT
-if !locked
-    "Accessible" -> Print</div>
+if (!locked)
+    "NOT: !locked = Accessible" -> Print
+
+// Expected Output:
+// === Logical Operators Demo ===
+// Variables:
+// active = true
+// ready = true
+// paused = false
+// locked = false
+//
+// AND: active & ready = Go!
+// OR: Neither paused nor locked
+// NOT: !locked = Accessible</div>
       </div>
 
       <div class="doc-section" id="next">
@@ -312,5 +623,50 @@ if !locked
   <footer>
     <p>Ouroboros Language © 2026</p>
   </footer>
+
+  <script>
+    // Add copy buttons to all code blocks
+    document.addEventListener('DOMContentLoaded', function() {
+      const codeBlocks = document.querySelectorAll('.code-block');
+      
+      codeBlocks.forEach((block, index) => {
+        // Create wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        block.parentNode.insertBefore(wrapper, block);
+        wrapper.appendChild(block);
+        
+        // Create copy button
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-btn';
+        copyBtn.textContent = 'Copy';
+        copyBtn.setAttribute('data-code-index', index);
+        
+        wrapper.appendChild(copyBtn);
+        
+        // Copy functionality
+        copyBtn.addEventListener('click', function() {
+          const code = block.textContent;
+          navigator.clipboard.writeText(code).then(() => {
+            // Show success state
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            copyBtn.classList.add('copied');
+            
+            setTimeout(() => {
+              copyBtn.textContent = originalText;
+              copyBtn.classList.remove('copied');
+            }, 2000);
+          }).catch(err => {
+            console.error('Failed to copy:', err);
+            copyBtn.textContent = 'Failed';
+            setTimeout(() => {
+              copyBtn.textContent = 'Copy';
+            }, 2000);
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>

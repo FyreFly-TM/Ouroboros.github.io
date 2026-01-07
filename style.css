@@ -380,6 +380,12 @@ p.lead {
   font-size: 14px;
 }
 
+.code-block-wrapper {
+  position: relative;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
 .code-block {
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(15, 15, 20, 0.6) 100%);
   border: 1px solid var(--border);
@@ -389,13 +395,40 @@ p.lead {
   font-family: var(--font-mono);
   font-size: 13px;
   overflow-x: auto;
-  margin-top: 12px;
-  margin-bottom: 12px;
   color: #e8f4ff;
   white-space: pre;
   word-break: normal;
   line-height: 1.6;
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(107, 155, 209, 0.15);
+  border: 1px solid rgba(107, 155, 209, 0.4);
+  color: var(--accent);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.copy-btn:hover {
+  background: rgba(107, 155, 209, 0.3);
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+
+.copy-btn.copied {
+  background: rgba(74, 222, 128, 0.2);
+  border-color: var(--success);
+  color: var(--success);
 }
 
 .token-grid {

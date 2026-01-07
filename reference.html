@@ -56,17 +56,79 @@
 
         <h3>Mutable Declaration (:=)</h3>
         <p>Create a variable that can be reassigned later:</p>
-        <div class="code-block">count := 0
+        <div class="code-block">// COMPLETE EXAMPLE: Mutable Variables
+// Save as: mutable_vars.ouro
+
+"=== Mutable Variables Demo ==="  -> Print
+
+count := 0
 name := "Player"
 health := 100.0
 active := true
-items := [1, 2, 3]</div>
+items := [1, 2, 3]
+
+"Initial values:" -> Print
+"count: " + count -> Print
+"name: " + name -> Print
+"health: " + health -> Print
+"active: " + active -> Print
+
+// These can all be changed
+count = 10
+name = "Hero"
+health = 75.5
+
+"" -> Print
+"After changes:" -> Print
+"count: " + count -> Print
+"name: " + name -> Print
+"health: " + health -> Print
+
+// Expected Output:
+// === Mutable Variables Demo ===
+// Initial values:
+// count: 0.00
+// name: Player
+// health: 100.00
+// active: true
+//
+// After changes:
+// count: 10.00
+// name: Hero
+// health: 75.50</div>
 
         <h3>Immutable Declaration (=:)</h3>
         <p>Create a constant that cannot be reassigned:</p>
-        <div class="code-block">PI =: 3.14159
+        <div class="code-block">// COMPLETE EXAMPLE: Immutable Constants
+// Save as: constants.ouro
+
+"=== Immutable Constants Demo ==="  -> Print
+
+PI =: 3.14159
 MAX_HEALTH =: 100
-GAME_TITLE =: "Ouroboros"</div>
+GAME_TITLE =: "Ouroboros"
+
+"Constants:" -> Print
+"PI = " + PI -> Print
+"MAX_HEALTH = " + MAX_HEALTH -> Print
+"GAME_TITLE = " + GAME_TITLE -> Print
+
+// Calculate circle area
+radius := 5
+area := PI * radius * radius
+"" -> Print
+"Circle with radius " + radius + ":" -> Print
+"Area = " + area -> Print
+
+// Expected Output:
+// === Immutable Constants Demo ===
+// Constants:
+// PI = 3.14
+// MAX_HEALTH = 100.00
+// GAME_TITLE = Ouroboros
+//
+// Circle with radius 5.00:
+// Area = 78.54</div>
 
         <h3>Assignment (=)</h3>
         <p>Reassign a mutable variable:</p>
@@ -87,12 +149,37 @@ x = 20     // Valid: reassignment with =</div>
 
         <h3>Compound Assignment</h3>
         <p>Modify a variable in place:</p>
-        <div class="code-block">x := 10
-x += 5    // x = 15 (addition)
-x -= 3    // x = 12 (subtraction)
-x *= 2    // x = 24 (multiplication)
-x /= 4    // x = 6  (division)
-x %= 4    // x = 2  (modulo)</div>
+        <div class="code-block">// COMPLETE EXAMPLE: Compound Assignment
+// Save as: compound.ouro
+
+"=== Compound Assignment Demo ==="  -> Print
+
+x := 10
+"Starting x = " + x -> Print
+
+x += 5
+"x += 5  => x = " + x -> Print
+
+x -= 3
+"x -= 3  => x = " + x -> Print
+
+x *= 2
+"x *= 2  => x = " + x -> Print
+
+x /= 4
+"x /= 4  => x = " + x -> Print
+
+x %= 4
+"x %= 4  => x = " + x -> Print
+
+// Expected Output:
+// === Compound Assignment Demo ===
+// Starting x = 10.00
+// x += 5  => x = 15.00
+// x -= 3  => x = 12.00
+// x *= 2  => x = 24.00
+// x /= 4  => x = 6.00
+// x %= 4  => x = 2.00</div>
 
         <h3>Reactive Binding (<-)</h3>
         <p>Create a variable that automatically updates when its dependencies change:</p>
@@ -124,32 +211,97 @@ unicode := "こんにちは"</div>
 
         <h3>Booleans</h3>
         <p>True or false values for logic:</p>
-        <div class="code-block">active := true
+        <div class="code-block">// COMPLETE EXAMPLE: Booleans
+// Save as: booleans.ouro
+
+"=== Booleans Demo ==="  -> Print
+
+active := true
 paused := false
 
+"active = " + active -> Print
+"paused = " + paused -> Print
+
 // Booleans in conditions
-if active & !paused
-    "Running" -> Print</div>
+"" -> Print
+if (active & !paused)
+    "Status: Running (active AND not paused)" -> Print
+else
+    "Status: Stopped" -> Print
+
+// Toggle pause
+paused = true
+"" -> Print
+"After setting paused = true:" -> Print
+if (active & !paused)
+    "Status: Running" -> Print
+else
+    "Status: Paused" -> Print
+
+// Expected Output:
+// === Booleans Demo ===
+// active = true
+// paused = false
+//
+// Status: Running (active AND not paused)
+//
+// After setting paused = true:
+// Status: Paused</div>
 
         <h3>Arrays</h3>
         <p>Ordered collections with zero-based indexing:</p>
-        <div class="code-block">// Literal arrays
+        <div class="code-block">// COMPLETE EXAMPLE: Arrays
+// Save as: arrays.ouro
+
+"=== Arrays Demo ==="  -> Print
+
+// Literal arrays
 numbers := [1, 2, 3, 4, 5]
 mixed := [42, "text", true]
-nested := [[1, 2], [3, 4]]
 empty := []
 
-// Access elements (0-based)
-first := numbers[0]    // 1
-second := numbers[1]   // 2
+"numbers array: " -> Print
+i := 0
+while (i < Len(numbers))
+    "  [" + i + "] = " + numbers[i] -> Print
+    i = i + 1
 
-// Arrays can contain any type
-complex := [
-    "string",
-    42,
-    true,
-    [1, 2, 3]
-]</div>
+"" -> Print
+"mixed array: " -> Print
+"  [0] = " + mixed[0] -> Print
+"  [1] = " + mixed[1] -> Print
+"  [2] = " + mixed[2] -> Print
+
+// Access elements (0-based)
+"" -> Print
+first := numbers[0]
+second := numbers[1]
+"First element: " + first -> Print
+"Second element: " + second -> Print
+
+// Modify element
+numbers[2] = 99
+"After numbers[2] = 99:" -> Print
+"  numbers[2] = " + numbers[2] -> Print
+
+// Expected Output:
+// === Arrays Demo ===
+// numbers array:
+//   [0] = 1.00
+//   [1] = 2.00
+//   [2] = 3.00
+//   [3] = 4.00
+//   [4] = 5.00
+//
+// mixed array:
+//   [0] = 42.00
+//   [1] = text
+//   [2] = true
+//
+// First element: 1.00
+// Second element: 2.00
+// After numbers[2] = 99:
+//   numbers[2] = 99.00</div>
 
         <h3>Array Element Assignment</h3>
         <p>Modify individual array elements using index assignment:</p>
@@ -239,19 +391,81 @@ pos.z = 30.0</div>
           </tbody>
         </table>
 
-        <div class="code-block">// Compound logical expressions
-if active & !paused & (level > 5 | has_key)
-    "Access granted" -> Print
+        <div class="code-block">// COMPLETE EXAMPLE: Logical Operators
+// Save as: logic.ouro
 
-// Logical operators in conditions
-is_valid := age ≥ 18 & agreed_to_terms
-can_play := !banned & (premium | trials_left > 0)</div>
+"=== Logical Operators Demo ==="  -> Print
+
+active := true
+paused := false
+level := 7
+has_key := true
+
+"Variables:" -> Print
+"active = " + active -> Print
+"paused = " + paused -> Print
+"level = " + level -> Print
+"has_key = " + has_key -> Print
+
+"" -> Print
+"Testing: active & !paused & (level > 5 | has_key)" -> Print
+if (active & !paused & (level > 5 | has_key))
+    "Result: Access granted!" -> Print
+else
+    "Result: Access denied" -> Print
+
+// Change paused to true
+"" -> Print
+"Setting paused = true..." -> Print
+paused = true
+if (active & !paused)
+    "Result: Running" -> Print
+else
+    "Result: Paused" -> Print
+
+// Expected Output:
+// === Logical Operators Demo ===
+// Variables:
+// active = true
+// paused = false
+// level = 7.00
+// has_key = true
+//
+// Testing: active & !paused & (level > 5 | has_key)
+// Result: Access granted!
+//
+// Setting paused = true...
+// Result: Paused</div>
 
         <h3>String Concatenation</h3>
-        <div class="code-block">first := "Hello"
+        <div class="code-block">// COMPLETE EXAMPLE: String Concatenation
+// Save as: strings.ouro
+
+"=== String Concatenation Demo ==="  -> Print
+
+first := "Hello"
 second := "World"
 message := first + ", " + second + "!"
-// message = "Hello, World!"</div>
+message -> Print
+
+name := "Alice"
+age := 25
+"" -> Print
+"Name: " + name + ", Age: " + age -> Print
+
+// Build complex strings
+score := 100
+level := 5
+"" -> Print
+"Player Stats: Level " + level + " | Score " + score -> Print
+
+// Expected Output:
+// === String Concatenation Demo ===
+// Hello, World!
+//
+// Name: Alice, Age: 25.00
+//
+// Player Stats: Level 5.00 | Score 100.00</div>
 
         <h3>Operator Precedence</h3>
         <p>From highest to lowest:</p>
@@ -274,55 +488,181 @@ check := (x > 5) & (y < 10) | force_override</div>
 
         <h3>If / Elseif / Else</h3>
         <p>Conditional branching. Bodies are indented with 4 spaces:</p>
-        <div class="code-block">score := 85
+        <div class="code-block">// COMPLETE EXAMPLE: If/Elseif/Else
+// Save as: grading.ouro
 
-if score ≥ 90
-    grade := "A"
-    "Excellent!" -> Print
-elseif score ≥ 80
-    grade := "B"
-    "Good job!" -> Print
-elseif score ≥ 70
-    grade := "C"
-    "Passing" -> Print
-elseif score ≥ 60
-    grade := "D"
-    "Needs work" -> Print
-else
-    grade := "F"
-    "Failed" -> Print</div>
+"=== Grading System ==="  -> Print
+
+Flow GetGrade(score)
+    if (score >= 90)
+        grade := "A"
+        "Excellent!" -> Print
+    elseif (score >= 80)
+        grade := "B"
+        "Good job!" -> Print
+    elseif (score >= 70)
+        grade := "C"
+        "Passing" -> Print
+    elseif (score >= 60)
+        grade := "D"
+        "Needs work" -> Print
+    else
+        grade := "F"
+        "Failed" -> Print
+    return grade
+
+"Testing score 85:" -> Print
+GetGrade(85)
+"Grade: " + grade -> Print
+
+"" -> Print
+"Testing score 92:" -> Print
+GetGrade(92)
+"Grade: " + grade -> Print
+
+"" -> Print
+"Testing score 55:" -> Print
+GetGrade(55)
+"Grade: " + grade -> Print
+
+// Expected Output:
+// === Grading System ===
+// Testing score 85:
+// Good job!
+// Grade: B
+//
+// Testing score 92:
+// Excellent!
+// Grade: A
+//
+// Testing score 55:
+// Failed
+// Grade: F</div>
 
         <h3>Nested Conditionals</h3>
-        <div class="code-block">if player.alive
-    if player.health < 20
-        "Critical health!" -> Print
-    elseif player.health < 50
-        "Low health" -> Print
+        <div class="code-block">// COMPLETE EXAMPLE: Nested Conditionals
+// Save as: nested_if.ouro
+
+"=== Nested Conditionals Demo ==="  -> Print
+
+Flow CheckHealth(alive, health)
+    if (alive)
+        if (health < 20)
+            "Critical health!" -> Print
+        elseif (health < 50)
+            "Low health" -> Print
+        else
+            "Healthy" -> Print
     else
-        "Healthy" -> Print
-else
-    "Game Over" -> Print</div>
+        "Game Over" -> Print
+
+"Player 1 (alive, health=15):" -> Print
+CheckHealth(true, 15)
+
+"" -> Print
+"Player 2 (alive, health=45):" -> Print
+CheckHealth(true, 45)
+
+"" -> Print
+"Player 3 (alive, health=80):" -> Print
+CheckHealth(true, 80)
+
+"" -> Print
+"Player 4 (dead, health=0):" -> Print
+CheckHealth(false, 0)
+
+// Expected Output:
+// === Nested Conditionals Demo ===
+// Player 1 (alive, health=15):
+// Critical health!
+//
+// Player 2 (alive, health=45):
+// Low health
+//
+// Player 3 (alive, health=80):
+// Healthy
+//
+// Player 4 (dead, health=0):
+// Game Over</div>
 
         <h3>While Loop</h3>
         <p>Loop while a condition is true:</p>
-        <div class="code-block">counter := 0
+        <div class="code-block">// COMPLETE EXAMPLE: While Loop
+// Save as: while_loop.ouro
 
-while counter < 5
-    counter -> Print
-    counter += 1
+"=== While Loop Demo ==="  -> Print
 
-// Outputs: 0.00, 1.00, 2.00, 3.00, 4.00</div>
+counter := 0
+
+"Counting to 5:" -> Print
+while (counter < 5)
+    "Count: " + counter -> Print
+    counter = counter + 1
+
+"" -> Print
+"Loop finished! Final counter: " + counter -> Print
+
+// Sum numbers 1 to 10
+sum := 0
+i := 1
+while (i <= 10)
+    sum = sum + i
+    i = i + 1
+
+"" -> Print
+"Sum of 1 to 10: " + sum -> Print
+
+// Expected Output:
+// === While Loop Demo ===
+// Counting to 5:
+// Count: 0.00
+// Count: 1.00
+// Count: 2.00
+// Count: 3.00
+// Count: 4.00
+//
+// Loop finished! Final counter: 5.00
+//
+// Sum of 1 to 10: 55.00</div>
 
         <h3>Loop with Break Condition</h3>
-        <div class="code-block">i := 0
+        <div class="code-block">// COMPLETE EXAMPLE: Loop with Early Exit
+// Save as: search_loop.ouro
+
+"=== Search Loop Demo ==="  -> Print
+
+// Array to search
+data := [5, 12, 8, 42, 7, 19, 3]
+target := 42
+
+i := 0
 found := false
 
-while i < 100 & !found
-    if data[i] == target
+"Searching for " + target + " in array..." -> Print
+
+while (i < Len(data) & !found)
+    "Checking index " + i + ": " + data[i] -> Print
+    if (data[i] == target)
         found = true
-        "Found at index: " -> Print
-        i -> Print
-    i += 1</div>
+        "Found at index: " + i -> Print
+    i = i + 1
+
+"" -> Print
+if (found)
+    "Search successful!" -> Print
+else
+    "Target not found" -> Print
+
+// Expected Output:
+// === Search Loop Demo ===
+// Searching for 42.00 in array...
+// Checking index 0.00: 5.00
+// Checking index 1.00: 12.00
+// Checking index 2.00: 8.00
+// Checking index 3.00: 42.00
+// Found at index: 3.00
+//
+// Search successful!</div>
 
         <h3>Conditional Gates (Inline)</h3>
         <p>Use arrow gates for inline conditional execution:</p>
@@ -593,5 +933,50 @@ right = 250
   <footer>
     <p>Ouroboros Language © 2026</p>
   </footer>
+
+  <script>
+    // Add copy buttons to all code blocks
+    document.addEventListener('DOMContentLoaded', function() {
+      const codeBlocks = document.querySelectorAll('.code-block');
+      
+      codeBlocks.forEach((block, index) => {
+        // Create wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        block.parentNode.insertBefore(wrapper, block);
+        wrapper.appendChild(block);
+        
+        // Create copy button
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-btn';
+        copyBtn.textContent = 'Copy';
+        copyBtn.setAttribute('data-code-index', index);
+        
+        wrapper.appendChild(copyBtn);
+        
+        // Copy functionality
+        copyBtn.addEventListener('click', function() {
+          const code = block.textContent;
+          navigator.clipboard.writeText(code).then(() => {
+            // Show success state
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            copyBtn.classList.add('copied');
+            
+            setTimeout(() => {
+              copyBtn.textContent = originalText;
+              copyBtn.classList.remove('copied');
+            }, 2000);
+          }).catch(err => {
+            console.error('Failed to copy:', err);
+            copyBtn.textContent = 'Failed';
+            setTimeout(() => {
+              copyBtn.textContent = 'Copy';
+            }, 2000);
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>

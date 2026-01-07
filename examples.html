@@ -53,15 +53,31 @@
         <div class="example-card">
           <h3>Hello World</h3>
           <p>The simplest Ouroboros program.</p>
-          <div class="code-block">"Hello, World!" -> Print</div>
+          <div class="code-block">// COMPLETE EXAMPLE: Hello World
+// Save as: hello.ouro
+// Run: chimera.exe hello.ouro
+
+"Hello, World!" -> Print
+
+// Expected Output:
+// Hello, World!</div>
         </div>
 
         <div class="example-card">
           <h3>Variables and Math</h3>
           <p>Basic variable declaration and arithmetic.</p>
-          <div class="code-block">// Declare variables
+          <div class="code-block">// COMPLETE EXAMPLE: Variables and Math
+// Save as: math.ouro
+
+"=== Variables and Math ==="  -> Print
+
+// Declare variables
 x := 10
 y := 5
+
+"x = " + x -> Print
+"y = " + y -> Print
+"" -> Print
 
 // Arithmetic operations
 sum := x + y
@@ -71,64 +87,140 @@ quotient := x / y
 remainder := x % y
 
 // Print results
-"Sum: " -> Print
-sum -> Print
+"sum (x + y) = " + sum -> Print
+"diff (x - y) = " + diff -> Print
+"product (x * y) = " + product -> Print
+"quotient (x / y) = " + quotient -> Print
+"remainder (x % y) = " + remainder -> Print
 
-"Product: " -> Print
-product -> Print</div>
+// Expected Output:
+// === Variables and Math ===
+// x = 10.00
+// y = 5.00
+//
+// sum (x + y) = 15.00
+// diff (x - y) = 5.00
+// product (x * y) = 50.00
+// quotient (x / y) = 2.00
+// remainder (x % y) = 0.00</div>
         </div>
 
         <div class="example-card">
           <h3>Simple Flow</h3>
           <p>Define and call a flow (function).</p>
-          <div class="code-block">Flow Double(n)
+          <div class="code-block">// COMPLETE EXAMPLE: Simple Flow
+// Save as: double.ouro
+
+"=== Simple Flow Demo ==="  -> Print
+
+Flow Double(n)
     result := n * 2
     return result
 
 // Call the flow and capture result
 answer := Double(21)
-answer -> Print  // Outputs: 42.00</div>
+"Double(21) = " + answer -> Print
+
+answer := Double(50)
+"Double(50) = " + answer -> Print
+
+// Expected Output:
+// === Simple Flow Demo ===
+// Double(21) = 42.00
+// Double(50) = 100.00</div>
         </div>
 
         <div class="example-card">
           <h3>Greeting Flow</h3>
           <p>A flow that prints a personalized greeting.</p>
-          <div class="code-block">Flow Greet(name)
-    "Hello, " -> Print
-    name -> Print
+          <div class="code-block">// COMPLETE EXAMPLE: Greeting Flow
+// Save as: greet.ouro
+
+"=== Greeting Demo ==="  -> Print
+
+Flow Greet(name)
+    "Hello, " + name + "!" -> Print
     return true
 
-"Alice" -> Greet
-"Bob" -> Greet</div>
+Greet("Alice")
+Greet("Bob")
+Greet("Charlie")
+
+// Expected Output:
+// === Greeting Demo ===
+// Hello, Alice!
+// Hello, Bob!
+// Hello, Charlie!</div>
         </div>
 
         <div class="example-card">
           <h3>Counter Loop</h3>
           <p>A simple while loop counting from 1 to 5.</p>
-          <div class="code-block">i := 1
+          <div class="code-block">// COMPLETE EXAMPLE: Counter Loop
+// Save as: counter.ouro
 
-while i ≤ 5
-    i -> Print
-    i += 1
+"=== Counter Loop ==="  -> Print
 
-"Done!" -> Print</div>
+i := 1
+
+while (i <= 5)
+    "Count: " + i -> Print
+    i = i + 1
+
+"" -> Print
+"Done counting!" -> Print
+
+// Expected Output:
+// === Counter Loop ===
+// Count: 1.00
+// Count: 2.00
+// Count: 3.00
+// Count: 4.00
+// Count: 5.00
+//
+// Done counting!</div>
         </div>
 
         <div class="example-card">
           <h3>Conditional Logic</h3>
           <p>Using if/elseif/else to grade a score.</p>
-          <div class="code-block">score := 78
+          <div class="code-block">// COMPLETE EXAMPLE: Grade Calculator
+// Save as: grades.ouro
 
-if score ≥ 90
-    "Grade: A" -> Print
-elseif score ≥ 80
-    "Grade: B" -> Print
-elseif score ≥ 70
-    "Grade: C" -> Print
-elseif score ≥ 60
-    "Grade: D" -> Print
-else
-    "Grade: F" -> Print</div>
+"=== Grade Calculator ==="  -> Print
+
+Flow GetGrade(score)
+    "Score: " + score -> Print
+    if (score >= 90)
+        "Grade: A" -> Print
+    elseif (score >= 80)
+        "Grade: B" -> Print
+    elseif (score >= 70)
+        "Grade: C" -> Print
+    elseif (score >= 60)
+        "Grade: D" -> Print
+    else
+        "Grade: F" -> Print
+    "" -> Print
+
+GetGrade(95)
+GetGrade(82)
+GetGrade(78)
+GetGrade(55)
+
+// Expected Output:
+// === Grade Calculator ===
+// Score: 95.00
+// Grade: A
+//
+// Score: 82.00
+// Grade: B
+//
+// Score: 78.00
+// Grade: C
+//
+// Score: 55.00
+// Grade: F</div>
         </div>
       </div>
 
@@ -139,27 +231,55 @@ else
         <div class="example-card">
           <h3>Multi-Return Flow</h3>
           <p>A flow that returns multiple values at once.</p>
-          <div class="code-block">Flow ComputeStats(a, b)
+          <div class="code-block">// COMPLETE EXAMPLE: Multi-Return Flow
+// Save as: multi_return.ouro
+
+"=== Multi-Return Flow ==="  -> Print
+
+Flow ComputeStats(a, b)
     sum := a + b
     product := a * b
     average := sum / 2
     return sum, product, average
 
 // Capture all three return values
+"Computing stats for 10 and 20:" -> Print
 s, p, avg <- ComputeStats(10, 20)
 
-"Sum: " -> Print
-s -> Print
-"Product: " -> Print
-p -> Print
-"Average: " -> Print
-avg -> Print</div>
+"Sum: " + s -> Print
+"Product: " + p -> Print
+"Average: " + avg -> Print
+
+"" -> Print
+"Computing stats for 7 and 3:" -> Print
+s, p, avg <- ComputeStats(7, 3)
+
+"Sum: " + s -> Print
+"Product: " + p -> Print
+"Average: " + avg -> Print
+
+// Expected Output:
+// === Multi-Return Flow ===
+// Computing stats for 10 and 20:
+// Sum: 30.00
+// Product: 200.00
+// Average: 15.00
+//
+// Computing stats for 7 and 3:
+// Sum: 10.00
+// Product: 21.00
+// Average: 5.00</div>
         </div>
 
         <div class="example-card">
           <h3>Calculator</h3>
           <p>A modular calculator using multiple flows.</p>
-          <div class="code-block">Flow Add(a, b)
+          <div class="code-block">// COMPLETE EXAMPLE: Modular Calculator
+// Save as: calculator.ouro
+
+"=== Modular Calculator ==="  -> Print
+
+Flow Add(a, b)
     return a + b
 
 Flow Subtract(a, b)
@@ -171,16 +291,45 @@ Flow Multiply(a, b)
 Flow Divide(a, b)
     return a / b
 
-// Use the calculator
+// Basic operations
+"15 + 25 = " + Add(15, 25) -> Print
+"50 - 18 = " + Subtract(50, 18) -> Print
+"7 * 8 = " + Multiply(7, 8) -> Print
+"100 / 4 = " + Divide(100, 4) -> Print
+
+"" -> Print
+
+// Chained calculation: (15 + 25) * 2 = 80
 result1 := Add(15, 25)
 result2 := Multiply(result1, 2)
-result2 -> Print  // 80.00</div>
+"(15 + 25) * 2 = " + result2 -> Print
+
+// Complex expression: ((10 + 5) * 4) / 3 = 20
+step1 := Add(10, 5)
+step2 := Multiply(step1, 4)
+step3 := Divide(step2, 3)
+"((10 + 5) * 4) / 3 = " + step3 -> Print
+
+// Expected Output:
+// === Modular Calculator ===
+// 15 + 25 = 40.00
+// 50 - 18 = 32.00
+// 7 * 8 = 56.00
+// 100 / 4 = 25.00
+//
+// (15 + 25) * 2 = 80.00
+// ((10 + 5) * 4) / 3 = 20.00</div>
         </div>
 
         <div class="example-card">
           <h3>Flow Chaining</h3>
           <p>Chain multiple flows together in a pipeline.</p>
-          <div class="code-block">Flow AddOne(n)
+          <div class="code-block">// COMPLETE EXAMPLE: Flow Chaining Pipeline
+// Save as: flow_chaining.ouro
+
+"=== Flow Chaining Pipeline ==="  -> Print
+
+Flow AddOne(n)
     return n + 1
 
 Flow Double(n)
@@ -189,14 +338,50 @@ Flow Double(n)
 Flow Square(n)
     return n * n
 
+// Single transformations
+"AddOne(5) = " + AddOne(5) -> Print
+"Double(6) = " + Double(6) -> Print
+"Square(12) = " + Square(12) -> Print
+
+"" -> Print
+"Chained transformations:" -> Print
+
 // Chain: 5 -> AddOne (6) -> Double (12) -> Square (144)
-5 -> AddOne -> Double -> Square -> Print</div>
+result := 5 -> AddOne -> Double -> Square
+"5 -> AddOne -> Double -> Square = " + result -> Print
+
+// Different chain: 3 -> Double (6) -> AddOne (7) -> Square (49)
+result2 := 3 -> Double -> AddOne -> Square
+"3 -> Double -> AddOne -> Square = " + result2 -> Print
+
+// Direct chain to Print
+"" -> Print
+"Direct chain output:" -> Print
+10 -> AddOne -> Double -> Print
+
+// Expected Output:
+// === Flow Chaining Pipeline ===
+// AddOne(5) = 6.00
+// Double(6) = 12.00
+// Square(12) = 144.00
+//
+// Chained transformations:
+// 5 -> AddOne -> Double -> Square = 144.00
+// 3 -> Double -> AddOne -> Square = 49.00
+//
+// Direct chain output:
+// 22.00</div>
         </div>
 
         <div class="example-card">
           <h3>Sequential vs Parallel Execution</h3>
           <p>Use comma for sequential and colon for parallel execution.</p>
-          <div class="code-block">Flow Log(msg)
+          <div class="code-block">// COMPLETE EXAMPLE: Sequential vs Parallel Execution
+// Save as: seq_parallel.ouro
+
+"=== Sequential vs Parallel Execution ==="  -> Print
+
+Flow Log(msg)
     "LOG: " + msg -> Print
     return msg
 
@@ -204,103 +389,286 @@ Flow FetchData(source)
     "Fetching from " + source + "..." -> Print
     return "Data_" + source
 
-// Sequential: steps happen in order
+"" -> Print
+"--- Sequential Execution (comma) ---" -> Print
+// Sequential: steps happen in order, one after another
 Log("Step 1"),
 Log("Step 2"),
 Log("Step 3")
 
-// Parallel: sources fetched simultaneously
+"" -> Print
+"--- Parallel Execution (colon) ---" -> Print
+// Parallel: all three start at once
 FetchData("SourceA") :
 FetchData("SourceB") :
-FetchData("SourceC") -> Print</div>
+FetchData("SourceC")
+
+"" -> Print
+"--- Mixed Execution ---" -> Print
+// First two parallel, then sequential
+FetchData("Alpha") : FetchData("Beta"),
+Log("Both fetches complete")
+
+// Expected Output:
+// === Sequential vs Parallel Execution ===
+//
+// --- Sequential Execution (comma) ---
+// LOG: Step 1
+// LOG: Step 2
+// LOG: Step 3
+//
+// --- Parallel Execution (colon) ---
+// Fetching from SourceA...
+// Fetching from SourceB...
+// Fetching from SourceC...
+//
+// --- Mixed Execution ---
+// Fetching from Alpha...
+// Fetching from Beta...
+// LOG: Both fetches complete</div>
         </div>
 
         <div class="example-card">
           <h3>Array Processing</h3>
           <p>Working with arrays and indexing.</p>
-          <div class="code-block">// Create arrays
+          <div class="code-block">// COMPLETE EXAMPLE: Array Processing
+// Save as: array_processing.ouro
+
+"=== Array Processing ==="  -> Print
+
+// Create arrays
 numbers := [10, 20, 30, 40, 50]
 names := ["Alice", "Bob", "Charlie"]
 
-// Access elements
+"Numbers array: " + numbers -> Print
+"Names array: " + names -> Print
+
+"" -> Print
+"--- Accessing Elements ---" -> Print
+
+// Access elements by index (0-based)
 first := numbers[0]
 last := numbers[4]
+middle := numbers[2]
 
-"First: " -> Print
-first -> Print
-"Last: " -> Print
-last -> Print
+"First number: " + first -> Print
+"Middle number: " + middle -> Print
+"Last number: " + last -> Print
 
-// Create array from flow
+firstName := names[0]
+lastName := names[2]
+"First name: " + firstName -> Print
+"Last name: " + lastName -> Print
+
+"" -> Print
+"--- Creating Arrays in Flows ---" -> Print
+
 Flow MakeTriple(a, b, c)
     return [a, b, c]
 
-triple <- MakeTriple(1, 2, 3)
-triple -> Print</div>
+Flow MakeRange(start, count)
+    arr := [start, start + 1, start + 2]
+    return arr
+
+triple := MakeTriple(100, 200, 300)
+"Triple: " + triple -> Print
+
+range := MakeRange(5, 3)
+"Range from 5: " + range -> Print
+
+// Expected Output:
+// === Array Processing ===
+// Numbers array: [10.00, 20.00, 30.00, 40.00, 50.00]
+// Names array: [Alice, Bob, Charlie]
+//
+// --- Accessing Elements ---
+// First number: 10.00
+// Middle number: 30.00
+// Last number: 50.00
+// First name: Alice
+// Last name: Charlie
+//
+// --- Creating Arrays in Flows ---
+// Triple: [100.00, 200.00, 300.00]
+// Range from 5: [5.00, 6.00, 7.00]</div>
         </div>
 
         <div class="example-card">
           <h3>Reactive Bindings</h3>
           <p>Create variables that update automatically.</p>
-          <div class="code-block">width := 10
+          <div class="code-block">// COMPLETE EXAMPLE: Reactive Bindings
+// Save as: reactive_bindings.ouro
+
+"=== Reactive Bindings ==="  -> Print
+
+// Base values
+width := 10
 height := 5
 
-// area automatically updates when width or height change
+// Reactive bindings - automatically update when dependencies change
 area <- width * height
 perimeter <- 2 * (width + height)
 
-"Initial area: " -> Print
-area -> Print  // 50
+"--- Initial State ---" -> Print
+"Width: " + width -> Print
+"Height: " + height -> Print
+"Area (auto): " + area -> Print
+"Perimeter (auto): " + perimeter -> Print
 
-// Change a dimension
+"" -> Print
+"--- After Changing Width to 20 ---" -> Print
 width = 20
+"Width: " + width -> Print
+"Height: " + height -> Print
+"Area (auto-updated): " + area -> Print
+"Perimeter (auto-updated): " + perimeter -> Print
 
-"New area: " -> Print
-area -> Print  // 100 (auto-updated)</div>
+"" -> Print
+"--- After Changing Height to 15 ---" -> Print
+height = 15
+"Width: " + width -> Print
+"Height: " + height -> Print
+"Area (auto-updated): " + area -> Print
+"Perimeter (auto-updated): " + perimeter -> Print
+
+// Expected Output:
+// === Reactive Bindings ===
+// --- Initial State ---
+// Width: 10.00
+// Height: 5.00
+// Area (auto): 50.00
+// Perimeter (auto): 30.00
+//
+// --- After Changing Width to 20 ---
+// Width: 20.00
+// Height: 5.00
+// Area (auto-updated): 100.00
+// Perimeter (auto-updated): 50.00
+//
+// --- After Changing Height to 15 ---
+// Width: 20.00
+// Height: 15.00
+// Area (auto-updated): 300.00
+// Perimeter (auto-updated): 70.00</div>
         </div>
 
         <div class="example-card">
           <h3>Bidirectional Sync</h3>
           <p>Keep two variables perfectly synchronized.</p>
-          <div class="code-block">model_value := 100
+          <div class="code-block">// COMPLETE EXAMPLE: Bidirectional Sync
+// Save as: bidirectional_sync.ouro
+
+"=== Bidirectional Sync ==="  -> Print
+
+// Two separate variables
+model_value := 100
 view_value := 0
 
-// Establish sync
+"--- Before Sync ---" -> Print
+"Model: " + model_value -> Print
+"View: " + view_value -> Print
+
+"" -> Print
+"--- Establishing Sync (<->) ---" -> Print
+// The sync arrow links them bidirectionally
 model_value <-> view_value
 
-"After sync - view: " -> Print
-view_value -> Print  // 100
+"Model: " + model_value -> Print
+"View: " + view_value -> Print
 
-// Change either side
+"" -> Print
+"--- Change View to 250 ---" -> Print
 view_value = 250
-"Model after view change: " -> Print
-model_value -> Print  // 250
+"Model (auto-synced): " + model_value -> Print
+"View: " + view_value -> Print
 
+"" -> Print
+"--- Change Model to 999 ---" -> Print
 model_value = 999
-"View after model change: " -> Print
-view_value -> Print  // 999</div>
+"Model: " + model_value -> Print
+"View (auto-synced): " + view_value -> Print
+
+"" -> Print
+"--- Change View to 42 ---" -> Print
+view_value = 42
+"Model (auto-synced): " + model_value -> Print
+"View: " + view_value -> Print
+
+// Expected Output:
+// === Bidirectional Sync ===
+// --- Before Sync ---
+// Model: 100.00
+// View: 0.00
+//
+// --- Establishing Sync (<->) ---
+// Model: 100.00
+// View: 100.00
+//
+// --- Change View to 250 ---
+// Model (auto-synced): 250.00
+// View: 250.00
+//
+// --- Change Model to 999 ---
+// Model: 999.00
+// View (auto-synced): 999.00
+//
+// --- Change View to 42 ---
+// Model (auto-synced): 42.00
+// View: 42.00</div>
         </div>
 
         <div class="example-card">
           <h3>Fork Broadcasting</h3>
           <p>Send an event to multiple handlers simultaneously.</p>
-          <div class="code-block">Flow LogEvent(event)
-    "LOG: Event received - " -> Print
-    event -> Print
+          <div class="code-block">// COMPLETE EXAMPLE: Fork Broadcasting
+// Save as: fork_broadcast.ouro
+
+"=== Fork Broadcasting ==="  -> Print
+
+Flow LogEvent(event)
+    "  LOG: Event received - " + event -> Print
     return true
 
 Flow UpdateUI(event)
-    "UI: Refreshing display for - " -> Print
-    event -> Print
+    "  UI: Refreshing display for - " + event -> Print
     return true
 
 Flow NotifyUser(event)
-    "NOTIFY: Alert sent for - " -> Print
-    event -> Print
+    "  NOTIFY: Alert sent for - " + event -> Print
     return true
 
-// Fork: send to all three handlers at once
-"user_login" -< LogEvent, UpdateUI, NotifyUser</div>
+Flow SaveToDatabase(event)
+    "  DB: Saving event - " + event -> Print
+    return true
+
+"--- Broadcasting 'user_login' ---" -> Print
+// Fork: send to all three handlers simultaneously
+"user_login" -< LogEvent, UpdateUI, NotifyUser
+
+"" -> Print
+"--- Broadcasting 'data_update' ---" -> Print
+"data_update" -< LogEvent, UpdateUI, NotifyUser, SaveToDatabase
+
+"" -> Print
+"--- Broadcasting 'system_shutdown' ---" -> Print
+"system_shutdown" -< LogEvent, SaveToDatabase
+
+// Expected Output:
+// === Fork Broadcasting ===
+// --- Broadcasting 'user_login' ---
+//   LOG: Event received - user_login
+//   UI: Refreshing display for - user_login
+//   NOTIFY: Alert sent for - user_login
+//
+// --- Broadcasting 'data_update' ---
+//   LOG: Event received - data_update
+//   UI: Refreshing display for - data_update
+//   NOTIFY: Alert sent for - data_update
+//   DB: Saving event - data_update
+//
+// --- Broadcasting 'system_shutdown' ---
+//   LOG: Event received - system_shutdown
+//   DB: Saving event - system_shutdown</div>
         </div>
       </div>
 
@@ -311,300 +679,862 @@ Flow NotifyUser(event)
         <div class="example-card">
           <h3>Conditional Gates</h3>
           <p>Route data based on conditions using gate syntax.</p>
-          <div class="code-block">Flow ProcessHigh(val)
-    "Processing HIGH value: " -> Print
-    val -> Print
-    return true
+          <div class="code-block">// COMPLETE EXAMPLE: Conditional Gates
+// Save as: conditional_gates.ouro
+
+"=== Conditional Gates ==="  -> Print
+
+Flow ProcessHigh(val)
+    "  HIGH: Processing value " + val + " (above threshold)" -> Print
+    return val * 2
 
 Flow ProcessLow(val)
-    "Processing LOW value: " -> Print
-    val -> Print
-    return true
+    "  LOW: Processing value " + val + " (below threshold)" -> Print
+    return val / 2
 
-value := 75
+Flow ProcessZero(val)
+    "  ZERO: Value is exactly zero" -> Print
+    return 0
 
+// Test multiple values
+value1 := 75
+value2 := 30
+value3 := 0
+
+"--- Testing value: 75 ---" -> Print
 // Gate: only executes if condition is true
-value -[value > 50]-> ProcessHigh
-value -[value ≤ 50]-> ProcessLow</div>
+value1 -[value1 > 50]-> ProcessHigh
+value1 -[value1 <= 50]-> ProcessLow
+
+"" -> Print
+"--- Testing value: 30 ---" -> Print
+value2 -[value2 > 50]-> ProcessHigh
+value2 -[value2 <= 50]-> ProcessLow
+
+"" -> Print
+"--- Testing value: 0 ---" -> Print
+value3 -[value3 == 0]-> ProcessZero
+value3 -[value3 > 50]-> ProcessHigh
+value3 -[value3 < 50]-> ProcessLow
+
+// Expected Output:
+// === Conditional Gates ===
+// --- Testing value: 75 ---
+//   HIGH: Processing value 75.00 (above threshold)
+//
+// --- Testing value: 30 ---
+//   LOW: Processing value 30.00 (below threshold)
+//
+// --- Testing value: 0 ---
+//   ZERO: Value is exactly zero</div>
         </div>
 
         <div class="example-card">
           <h3>Transform Gates</h3>
           <p>Transform data inline before passing to a flow.</p>
-          <div class="code-block">Flow Receiver(data)
-    "Received: " -> Print
-    data -> Print
-    return true
+          <div class="code-block">// COMPLETE EXAMPLE: Transform Gates
+// Save as: transform_gates.ouro
+
+"=== Transform Gates ==="  -> Print
+
+Flow Receiver(data)
+    "  Received: " + data -> Print
+    return data
+
+Flow ProcessNumber(val)
+    "  Processing number: " + val -> Print
+    return val
 
 input := 10
 
+"--- Basic Transform Gate ---" -> Print
 // Transform: if condition is true, pass transformed value
-input -[input > 5 ? input * 2]-> Receiver  // Receives 20
-input -[input > 5 ? "HIGH"]-> Receiver     // Receives "HIGH"</div>
+input -[input > 5 ? input * 2]-> ProcessNumber
+
+"" -> Print
+"--- String Transform ---" -> Print
+// Can transform to different types
+input -[input > 5 ? "HIGH"]-> Receiver
+input -[input <= 5 ? "LOW"]-> Receiver
+
+"" -> Print
+"--- Multiple Conditions ---" -> Print
+value := 75
+value -[value > 50 ? "LARGE"]-> Receiver
+value -[value <= 50 ? "SMALL"]-> Receiver
+
+value2 := 25
+value2 -[value2 > 50 ? "LARGE"]-> Receiver
+value2 -[value2 <= 50 ? "SMALL"]-> Receiver
+
+// Expected Output:
+// === Transform Gates ===
+// --- Basic Transform Gate ---
+//   Processing number: 20.00
+//
+// --- String Transform ---
+//   Received: HIGH
+//
+// --- Multiple Conditions ---
+//   Received: LARGE
+//   Received: SMALL</div>
         </div>
 
         <div class="example-card">
           <h3>Continuous Funnels</h3>
           <p>React to value changes automatically.</p>
-          <div class="code-block">sensor_temp := 22.0
-sensor_humidity := 45.0
+          <div class="code-block">// COMPLETE EXAMPLE: Continuous Funnels
+// Save as: continuous_funnels.ouro
+
+"=== Continuous Funnels ==="  -> Print
 
 Flow ClimateMonitor(val)
-    "Climate sensor triggered: " -> Print
-    val -> Print
+    "  CLIMATE: Sensor reading = " + val -> Print
     return true
 
-// Continuous funnel: triggers on any change
-sensor_temp ▷- ClimateMonitor
-sensor_humidity ▷- ClimateMonitor
+Flow AlertCheck(val)
+    if val > 30
+        "  ALERT: Temperature too high!" -> Print
+    elseif val < 10
+        "  ALERT: Temperature too low!" -> Print
+    else
+        "  Status: Normal range" -> Print
+    return true
 
-// Changing values triggers the monitor
-"Simulating temperature change..." -> Print
-sensor_temp = 28.5</div>
+sensor_temp := 22.0
+
+"--- Setting up continuous funnels ---" -> Print
+// Continuous funnel: triggers on any value change
+sensor_temp ▷- ClimateMonitor
+sensor_temp ▷- AlertCheck
+
+"" -> Print
+"--- Changing temperature to 28.5 ---" -> Print
+sensor_temp = 28.5
+
+"" -> Print
+"--- Changing temperature to 35.0 ---" -> Print
+sensor_temp = 35.0
+
+"" -> Print
+"--- Changing temperature to 8.0 ---" -> Print
+sensor_temp = 8.0
+
+// Expected Output:
+// === Continuous Funnels ===
+// --- Setting up continuous funnels ---
+//
+// --- Changing temperature to 28.5 ---
+//   CLIMATE: Sensor reading = 28.50
+//   Status: Normal range
+//
+// --- Changing temperature to 35.0 ---
+//   CLIMATE: Sensor reading = 35.00
+//   ALERT: Temperature too high!
+//
+// --- Changing temperature to 8.0 ---
+//   CLIMATE: Sensor reading = 8.00
+//   ALERT: Temperature too low!</div>
         </div>
 
         <div class="example-card">
           <h3>Fuzzy Logic Arrow</h3>
           <p>Soft influence—suggest rather than force values.</p>
-          <div class="code-block">target_temp := 22.0
+          <div class="code-block">// COMPLETE EXAMPLE: Fuzzy Logic Arrow
+// Save as: fuzzy_logic.ouro
+
+"=== Fuzzy Logic Arrow ==="  -> Print
 
 Flow ThermalController(t)
+    "  Controller received temp: " + t -> Print
     if t > 25.0
-        "Fuzzy: Cooling suggested" -> Print
+        "  Recommendation: Cooling suggested" -> Print
     elseif t < 18.0
-        "Fuzzy: Heating suggested" -> Print
+        "  Recommendation: Heating suggested" -> Print
     else
-        "Fuzzy: Temperature nominal" -> Print
+        "  Recommendation: Temperature nominal" -> Print
     return true
 
-// Fuzzy arrow: soft influence
-target_temp ~> ThermalController</div>
+Flow ComfortAnalyzer(t)
+    "  Analyzing comfort level..." -> Print
+    comfort := 100 - ((t - 22) * (t - 22))
+    "  Comfort score: " + comfort -> Print
+    return comfort
+
+"--- Testing warm temperature (28.0) ---" -> Print
+target_temp := 28.0
+// Fuzzy arrow: soft influence, not a hard assignment
+target_temp ~> ThermalController
+
+"" -> Print
+"--- Testing cold temperature (15.0) ---" -> Print
+target_temp = 15.0
+target_temp ~> ThermalController
+
+"" -> Print
+"--- Testing ideal temperature (22.0) ---" -> Print
+target_temp = 22.0
+target_temp ~> ThermalController
+target_temp ~> ComfortAnalyzer
+
+// Expected Output:
+// === Fuzzy Logic Arrow ===
+// --- Testing warm temperature (28.0) ---
+//   Controller received temp: 28.00
+//   Recommendation: Cooling suggested
+//
+// --- Testing cold temperature (15.0) ---
+//   Controller received temp: 15.00
+//   Recommendation: Heating suggested
+//
+// --- Testing ideal temperature (22.0) ---
+//   Controller received temp: 22.00
+//   Recommendation: Temperature nominal
+//   Analyzing comfort level...
+//   Comfort score: 100.00</div>
         </div>
 
         <div class="example-card">
           <h3>Fuzzy Pull & Sync (<~, <~>)</h3>
           <p>Soft probabilistic data relationships.</p>
-          <div class="code-block">// Fuzzy Pull: AI perceives player with uncertainty
-player_visibility := 0.8  // 0.0 to 1.0
+          <div class="code-block">// COMPLETE EXAMPLE: Fuzzy Pull and Sync
+// Save as: fuzzy_pull_sync.ouro
+
+"=== Fuzzy Pull & Sync ==="  -> Print
+
+"--- Fuzzy Pull (<~) ---" -> Print
+// Fuzzy Pull: AI perceives player with uncertainty
+player_visibility := 0.8
 enemy_alert := 0.0
 
-// Soft pull - value may be dampened/noisy
-enemy_alert <~ player_visibility
+"Player visibility: " + player_visibility -> Print
+"Enemy alert before fuzzy pull: " + enemy_alert -> Print
 
+// Soft pull - value may include uncertainty/noise
+enemy_alert <~ player_visibility
+"Enemy alert after fuzzy pull: " + enemy_alert -> Print
+
+"" -> Print
+"--- Fuzzy Sync (<~>) ---" -> Print
 // Fuzzy Sync: elastic bidirectional influence
 market_supply := 500.0
 market_demand := 600.0
 
-// Changes propagate with elasticity
+"Initial supply: " + market_supply -> Print
+"Initial demand: " + market_demand -> Print
+
+// Changes propagate with elasticity (soft sync)
 market_supply <~> market_demand
 
-"Market supply: " -> Print
-market_supply -> Print</div>
+"After fuzzy sync:" -> Print
+"Market supply: " + market_supply -> Print
+"Market demand: " + market_demand -> Print
+
+"" -> Print
+"--- Changing synced values ---" -> Print
+market_supply = 700.0
+"Supply changed to 700" -> Print
+"Market supply: " + market_supply -> Print
+"Market demand: " + market_demand -> Print
+
+// Expected Output:
+// === Fuzzy Pull & Sync ===
+// --- Fuzzy Pull (<~) ---
+// Player visibility: 0.80
+// Enemy alert before fuzzy pull: 0.00
+// Enemy alert after fuzzy pull: 0.80
+//
+// --- Fuzzy Sync (<~>) ---
+// Initial supply: 500.00
+// Initial demand: 600.00
+// After fuzzy sync:
+// Market supply: 500.00
+// Market demand: 500.00
+//
+// --- Changing synced values ---
+// Supply changed to 700
+// Market supply: 700.00
+// Market demand: 700.00</div>
         </div>
 
         <div class="example-card">
           <h3>Continuous Fork (-◁)</h3>
           <p>React to changes and broadcast to multiple handlers.</p>
-          <div class="code-block">Flow UpdateHealthBar(h)
-    "UI: Health = " + h -> Print
+          <div class="code-block">// COMPLETE EXAMPLE: Continuous Fork
+// Save as: continuous_fork.ouro
+
+"=== Continuous Fork ==="  -> Print
+
+Flow UpdateHealthBar(h)
+    "  UI: Health bar = " + h -> Print
     return true
 
 Flow CheckCritical(h)
     if h < 20
-        "WARNING: CRITICAL!" -> Print
+        "  WARNING: CRITICAL HEALTH!" -> Print
+    elseif h < 50
+        "  CAUTION: Low health" -> Print
+    else
+        "  Status: Healthy" -> Print
     return true
 
-Flow UpdateDamageOverlay(h)
-    "Overlay updated" -> Print
+Flow PlaySound(h)
+    if h < 20
+        "  AUDIO: Playing critical alert" -> Print
     return true
 
 health := 100
 
-// Continuous fork: all handlers called on every change
+"--- Setting up continuous forks ---" -> Print
+// Continuous fork: all handlers called on EVERY change
 health -◁ UpdateHealthBar
 health -◁ CheckCritical
-health -◁ UpdateDamageOverlay
+health -◁ PlaySound
 
-// Simulate damage
-health = 50
-health = 15</div>
+"" -> Print
+"--- Taking damage (health = 75) ---" -> Print
+health = 75
+
+"" -> Print
+"--- Taking more damage (health = 35) ---" -> Print
+health = 35
+
+"" -> Print
+"--- Critical damage! (health = 15) ---" -> Print
+health = 15
+
+"" -> Print
+"--- Healing (health = 60) ---" -> Print
+health = 60
+
+// Expected Output:
+// === Continuous Fork ===
+// --- Setting up continuous forks ---
+//
+// --- Taking damage (health = 75) ---
+//   UI: Health bar = 75.00
+//   Status: Healthy
+//
+// --- Taking more damage (health = 35) ---
+//   UI: Health bar = 35.00
+//   CAUTION: Low health
+//
+// --- Critical damage! (health = 15) ---
+//   UI: Health bar = 15.00
+//   WARNING: CRITICAL HEALTH!
+//   AUDIO: Playing critical alert
+//
+// --- Healing (health = 60) ---
+//   UI: Health bar = 60.00
+//   Status: Healthy</div>
         </div>
 
         <div class="example-card">
           <h3>Solver Arrow</h3>
           <p>Constraint-based solving for pathfinding or optimization.</p>
-          <div class="code-block">Flow PathSolver(start)
-    "SOLVER: Calculating optimal path from " -> Print
-    start -> Print
-    "SOLVER: Path found via A* algorithm" -> Print
-    return "optimal_path"
+          <div class="code-block">// COMPLETE EXAMPLE: Solver Arrow
+// Save as: solver_arrow.ouro
 
+"=== Solver Arrow ==="  -> Print
+
+Flow PathSolver(start)
+    "  SOLVER: Calculating optimal path from " + start -> Print
+    "  SOLVER: Analyzing terrain..." -> Print
+    "  SOLVER: Running A* algorithm..." -> Print
+    "  SOLVER: Path found!" -> Print
+    return "optimal_path_via_" + start
+
+Flow ResourceOptimizer(resources)
+    "  OPTIMIZER: Analyzing resource allocation..." -> Print
+    "  OPTIMIZER: Balancing constraints..." -> Print
+    optimal := resources * 1.15
+    "  OPTIMIZER: Optimal allocation = " + optimal -> Print
+    return optimal
+
+"--- Pathfinding Solver ---" -> Print
 current_position := "Sector_A"
+// Solver arrow: find solution to a constraint problem
+path := current_position => PathSolver
+"Result: " + path -> Print
 
-// Solver arrow: find solution
-current_position => PathSolver</div>
+"" -> Print
+"--- Resource Optimization Solver ---" -> Print
+available_resources := 1000.0
+optimized := available_resources => ResourceOptimizer
+"Final optimized value: " + optimized -> Print
+
+// Expected Output:
+// === Solver Arrow ===
+// --- Pathfinding Solver ---
+//   SOLVER: Calculating optimal path from Sector_A
+//   SOLVER: Analyzing terrain...
+//   SOLVER: Running A* algorithm...
+//   SOLVER: Path found!
+// Result: optimal_path_via_Sector_A
+//
+// --- Resource Optimization Solver ---
+//   OPTIMIZER: Analyzing resource allocation...
+//   OPTIMIZER: Balancing constraints...
+//   OPTIMIZER: Optimal allocation = 1150.00
+// Final optimized value: 1150.00</div>
         </div>
 
         <div class="example-card">
           <h3>Ownership Transfer</h3>
           <p>Transfer data ownership—source becomes invalid.</p>
-          <div class="code-block">Flow DepotReceiver(cargo)
-    "DEPOT: Received cargo:" -> Print
-    cargo -> Print
+          <div class="code-block">// COMPLETE EXAMPLE: Ownership Transfer
+// Save as: ownership_transfer.ouro
+
+"=== Ownership Transfer ==="  -> Print
+
+Flow DepotReceiver(cargo)
+    "  DEPOT: Receiving cargo..." -> Print
+    "  DEPOT: Contents = " + cargo -> Print
+    "  DEPOT: Cargo secured in warehouse" -> Print
     return true
 
+Flow ProcessorUnit(item)
+    "  PROCESSOR: Taking ownership of: " + item -> Print
+    "  PROCESSOR: Processing complete" -> Print
+    return "processed_" + item
+
+"--- Cargo Ownership Transfer ---" -> Print
 drone_cargo := ["Titanium", "Gold", "Uranium"]
+"Drone cargo before transfer: " + drone_cargo -> Print
 
-"Drone cargo before transfer:" -> Print
-drone_cargo -> Print
-
-// Transfer ownership
+// Transfer ownership using -|-> 
+// After this, drone_cargo conceptually no longer owns the data
 drone_cargo -|-> DepotReceiver
+"Drone cargo transferred to depot" -> Print
 
-// drone_cargo is now conceptually invalid</div>
+"" -> Print
+"--- Item Processing Transfer ---" -> Print
+rare_item := "Ancient_Artifact"
+"Item before transfer: " + rare_item -> Print
+
+// Transfer to processor
+result := rare_item -|-> ProcessorUnit
+"Processing result: " + result -> Print
+
+// Expected Output:
+// === Ownership Transfer ===
+// --- Cargo Ownership Transfer ---
+// Drone cargo before transfer: [Titanium, Gold, Uranium]
+//   DEPOT: Receiving cargo...
+//   DEPOT: Contents = [Titanium, Gold, Uranium]
+//   DEPOT: Cargo secured in warehouse
+// Drone cargo transferred to depot
+//
+// --- Item Processing Transfer ---
+// Item before transfer: Ancient_Artifact
+//   PROCESSOR: Taking ownership of: Ancient_Artifact
+//   PROCESSOR: Processing complete
+// Processing result: processed_Ancient_Artifact</div>
         </div>
 
         <div class="example-card">
           <h3>Sever Connection</h3>
           <p>Explicitly break a connection or trigger disconnect.</p>
-          <div class="code-block">Flow DisconnectHandler(id)
-    "Disconnecting: " -> Print
-    id -> Print
-    "Connection severed." -> Print
+          <div class="code-block">// COMPLETE EXAMPLE: Sever Connection
+// Save as: sever_connection.ouro
+
+"=== Sever Connection ==="  -> Print
+
+Flow DisconnectHandler(id)
+    "  HANDLER: Processing disconnect for: " + id -> Print
+    "  HANDLER: Cleaning up resources..." -> Print
+    "  HANDLER: Connection severed successfully" -> Print
     return true
 
-session_id := "Session_12345"
+Flow LogoutProcessor(user)
+    "  LOGOUT: User " + user + " signing out" -> Print
+    "  LOGOUT: Session terminated" -> Print
+    return true
 
-// Sever arrow: break connection
-session_id -||-> DisconnectHandler</div>
+"--- Severing Session Connection ---" -> Print
+session_id := "Session_12345"
+"Active session: " + session_id -> Print
+
+// Sever arrow: explicitly break connection
+session_id -||- DisconnectHandler
+"Session disconnect processed" -> Print
+
+"" -> Print
+"--- Severing Multiple Connections ---" -> Print
+user1 := "Alice"
+user2 := "Bob"
+user3 := "Charlie"
+
+user1 -||- LogoutProcessor
+user2 -||- LogoutProcessor
+user3 -||- LogoutProcessor
+
+"All users logged out" -> Print
+
+// Expected Output:
+// === Sever Connection ===
+// --- Severing Session Connection ---
+// Active session: Session_12345
+//   HANDLER: Processing disconnect for: Session_12345
+//   HANDLER: Cleaning up resources...
+//   HANDLER: Connection severed successfully
+// Session disconnect processed
+//
+// --- Severing Multiple Connections ---
+//   LOGOUT: User Alice signing out
+//   LOGOUT: Session terminated
+//   LOGOUT: User Bob signing out
+//   LOGOUT: Session terminated
+//   LOGOUT: User Charlie signing out
+//   LOGOUT: Session terminated
+// All users logged out</div>
         </div>
 
         <div class="example-card">
           <h3>Recursive Flow</h3>
           <p>A flow that calls itself for recursive algorithms.</p>
-          <div class="code-block">Flow Factorial(n)
-    if n ≤ 1
+          <div class="code-block">// COMPLETE EXAMPLE: Recursive Flow
+// Save as: recursive_flow.ouro
+
+"=== Recursive Flow ==="  -> Print
+
+Flow Factorial(n)
+    if n <= 1
         return 1
-    
     prev := Factorial(n - 1)
     return n * prev
 
-result := Factorial(5)
-"5! = " -> Print
-result -> Print  // 120.00</div>
+Flow Fibonacci(n)
+    if n <= 1
+        return n
+    a := Fibonacci(n - 1)
+    b := Fibonacci(n - 2)
+    return a + b
+
+"--- Factorial Calculations ---" -> Print
+"3! = " + Factorial(3) -> Print
+"5! = " + Factorial(5) -> Print
+"7! = " + Factorial(7) -> Print
+"10! = " + Factorial(10) -> Print
+
+"" -> Print
+"--- Fibonacci Sequence ---" -> Print
+"Fib(5) = " + Fibonacci(5) -> Print
+"Fib(8) = " + Fibonacci(8) -> Print
+"Fib(10) = " + Fibonacci(10) -> Print
+
+// Expected Output:
+// === Recursive Flow ===
+// --- Factorial Calculations ---
+// 3! = 6.00
+// 5! = 120.00
+// 7! = 5040.00
+// 10! = 3628800.00
+//
+// --- Fibonacci Sequence ---
+// Fib(5) = 5.00
+// Fib(8) = 21.00
+// Fib(10) = 55.00</div>
         </div>
 
         <div class="example-card">
           <h3>Conditional Pull Arrow (<-[]-)</h3>
           <p>Pull a value only when a condition is met.</p>
-          <div class="code-block">is_daytime := true
+          <div class="code-block">// COMPLETE EXAMPLE: Conditional Pull Arrow
+// Save as: conditional_pull.ouro
+
+"=== Conditional Pull Arrow ==="  -> Print
+
+"--- Solar Panel Example ---" -> Print
+is_daytime := true
 solar_reading := 500.0
 solar_output := 0.0
 
-// Conditional pull: only update if daytime
+"Daytime: " + is_daytime -> Print
+"Solar reading: " + solar_reading -> Print
+
+// Conditional pull: only update if condition is true
 solar_output <-[is_daytime]- solar_reading
+"Solar output (daytime): " + solar_output -> Print
 
-// With negation
-solar_output <-[!is_daytime]- 0.0
+"" -> Print
+"--- Night Time ---" -> Print
+is_daytime = false
+"Daytime: " + is_daytime -> Print
 
-"Solar output: " -> Print
-solar_output -> Print</div>
+// Reset and try again
+night_output := 999.0
+// This pull should NOT happen because is_daytime is false
+night_output <-[is_daytime]- solar_reading
+"Night output (unchanged): " + night_output -> Print
+
+// Pull zero when NOT daytime
+night_output <-[!is_daytime]- 0.0
+"Night output (zeroed): " + night_output -> Print
+
+// Expected Output:
+// === Conditional Pull Arrow ===
+// --- Solar Panel Example ---
+// Daytime: true
+// Solar reading: 500.00
+// Solar output (daytime): 500.00
+//
+// --- Night Time ---
+// Daytime: false
+// Night output (unchanged): 999.00
+// Night output (zeroed): 0.00</div>
         </div>
 
         <div class="example-card">
           <h3>Conditional Pull with Transform</h3>
           <p>Transform the value while pulling conditionally.</p>
-          <div class="code-block">efficiency := 0.8
+          <div class="code-block">// COMPLETE EXAMPLE: Conditional Pull with Transform
+// Save as: conditional_pull_transform.ouro
+
+"=== Conditional Pull with Transform ==="  -> Print
+
+"--- Efficiency Adjustment ---" -> Print
+efficiency := 0.8
 raw_reading := 100.0
 is_active := true
 adjusted := 0.0
 
-// Syntax: target <-[condition ? transformation]- source
-adjusted <-[is_active ? raw_reading * efficiency]- raw_reading
+"Raw reading: " + raw_reading -> Print
+"Efficiency: " + efficiency -> Print
+"System active: " + is_active -> Print
 
-"Adjusted reading: " -> Print
-adjusted -> Print  // 80.0</div>
+// Syntax: target <-[condition ? transformation]- source
+// Pull AND transform in one operation
+adjusted <-[is_active ? raw_reading * efficiency]- raw_reading
+"Adjusted reading: " + adjusted -> Print
+
+"" -> Print
+"--- Higher Efficiency ---" -> Print
+efficiency = 0.95
+adjusted2 := 0.0
+adjusted2 <-[is_active ? raw_reading * efficiency]- raw_reading
+"Adjusted with 95% efficiency: " + adjusted2 -> Print
+
+"" -> Print
+"--- System Inactive ---" -> Print
+is_active = false
+inactive_result := 999.0
+inactive_result <-[is_active ? raw_reading * efficiency]- raw_reading
+"Result when inactive (unchanged): " + inactive_result -> Print
+
+// Expected Output:
+// === Conditional Pull with Transform ===
+// --- Efficiency Adjustment ---
+// Raw reading: 100.00
+// Efficiency: 0.80
+// System active: true
+// Adjusted reading: 80.00
+//
+// --- Higher Efficiency ---
+// Adjusted with 95% efficiency: 95.00
+//
+// --- System Inactive ---
+// Result when inactive (unchanged): 999.00</div>
         </div>
 
         <div class="example-card">
           <h3>Conditional Sync Arrow (<-[]->)</h3>
           <p>Synchronize values only when a condition is met.</p>
-          <div class="code-block">local_log := "Status: Online"
+          <div class="code-block">// COMPLETE EXAMPLE: Conditional Sync Arrow
+// Save as: conditional_sync.ouro
+
+"=== Conditional Sync Arrow ==="  -> Print
+
+"--- Secure Communication Sync ---" -> Print
+local_log := "Status: Online"
 remote_hq := "Standby"
 is_secure := true
 
-// Conditional sync: only sync if secure
+"Local log: " + local_log -> Print
+"Remote HQ: " + remote_hq -> Print
+"Connection secure: " + is_secure -> Print
+
+"" -> Print
+"--- Establishing Secure Sync ---" -> Print
+// Conditional sync: only sync if secure connection
 remote_hq <-[is_secure]-> local_log
 
-"Remote HQ: " -> Print
-remote_hq -> Print  // "Status: Online"
+"Remote HQ (after sync): " + remote_hq -> Print
 
-// Block sync when insecure
+"" -> Print
+"--- Updating Local Log ---" -> Print
+local_log = "Status: Mission Active"
+"Local log updated: " + local_log -> Print
+"Remote HQ (synced): " + remote_hq -> Print
+
+"" -> Print
+"--- Connection Compromised ---" -> Print
 is_secure = false
-local_log = "Status: Critical"
-// remote_hq is NOT updated because sync is blocked</div>
+"Connection secure: " + is_secure -> Print
+local_log = "Status: CRITICAL - Code Red"
+"Local log: " + local_log -> Print
+"Remote HQ (NOT synced - insecure): " + remote_hq -> Print
+
+// Expected Output:
+// === Conditional Sync Arrow ===
+// --- Secure Communication Sync ---
+// Local log: Status: Online
+// Remote HQ: Standby
+// Connection secure: true
+//
+// --- Establishing Secure Sync ---
+// Remote HQ (after sync): Status: Online
+//
+// --- Updating Local Log ---
+// Local log updated: Status: Mission Active
+// Remote HQ (synced): Status: Mission Active
+//
+// --- Connection Compromised ---
+// Connection secure: false
+// Local log: Status: CRITICAL - Code Red
+// Remote HQ (NOT synced - insecure): Status: Mission Active</div>
         </div>
 
         <div class="example-card">
           <h3>Priority Cascade Pattern</h3>
           <p>Use conditional pulls for fallback logic.</p>
-          <div class="code-block">// Power source priorities
+          <div class="code-block">// COMPLETE EXAMPLE: Priority Cascade Pattern
+// Save as: priority_cascade.ouro
+
+"=== Priority Cascade Pattern ==="  -> Print
+
+"--- Power Source Priority System ---" -> Print
+
+// Available power sources
 solar := 500.0
 battery := 300.0
 grid := 1000.0
 demand := 450.0
 
+"Solar available: " + solar -> Print
+"Battery available: " + battery -> Print
+"Grid available: " + grid -> Print
+"Power demand: " + demand -> Print
+
 active_source := "None"
 power := 0.0
 
+"" -> Print
+"--- Evaluating Priorities ---" -> Print
+
 // Priority 1: Solar (if sufficient)
-use_solar := solar ≥ demand
+use_solar := solar >= demand
+"Solar sufficient? " + use_solar -> Print
 power <-[use_solar]- solar
 active_source <-[use_solar]- "Solar"
 
 // Priority 2: Battery (fallback)
-use_battery := !use_solar & battery ≥ demand
+use_battery := !use_solar & battery >= demand
+"Battery fallback? " + use_battery -> Print
 power <-[use_battery]- battery
 active_source <-[use_battery]- "Battery"
 
 // Priority 3: Grid (last resort)
 use_grid := !use_solar & !use_battery
+"Grid fallback? " + use_grid -> Print
 power <-[use_grid]- grid
 active_source <-[use_grid]- "Grid"
 
-"Active: " -> Print
-active_source -> Print</div>
+"" -> Print
+"--- Result ---" -> Print
+"Active source: " + active_source -> Print
+"Power level: " + power -> Print
+
+// Expected Output:
+// === Priority Cascade Pattern ===
+// --- Power Source Priority System ---
+// Solar available: 500.00
+// Battery available: 300.00
+// Grid available: 1000.00
+// Power demand: 450.00
+//
+// --- Evaluating Priorities ---
+// Solar sufficient? true
+// Battery fallback? false
+// Grid fallback? false
+//
+// --- Result ---
+// Active source: Solar
+// Power level: 500.00</div>
         </div>
 
         <div class="example-card">
           <h3>Complex Chain</h3>
           <p>Combine multiple arrow types in a single pipeline.</p>
-          <div class="code-block">Flow Decrypt(data)
-    "Decrypting..." -> Print
-    return "decrypted_data"
+          <div class="code-block">// COMPLETE EXAMPLE: Complex Chain
+// Save as: complex_chain.ouro
+
+"=== Complex Arrow Chain ==="  -> Print
+
+Flow Decrypt(data)
+    "  [1] Decrypting: " + data -> Print
+    return "decrypted_" + data
 
 Flow Analyze(data)
-    "Analyzing intent..." -> Print
-    return data
+    "  [2] Analyzing: " + data -> Print
+    return "analyzed_" + data
 
 Flow Solve(data)
-    "Solving geometry..." -> Print
-    return "solved"
+    "  [3] Solving: " + data -> Print
+    return "solved_" + data
 
 Flow LogResult(result)
-    "LOGGED: " -> Print
-    result -> Print
+    "  [4a] LOG: " + result -> Print
     return true
 
 Flow AlertTeam(result)
-    "ALERT SENT" -> Print
+    "  [4b] ALERT: " + result -> Print
     return true
 
-// The Omega Chain: Gate -> Flow -> Fuzzy -> Solver -> Fork
+Flow SaveResult(result)
+    "  [4c] SAVE: " + result -> Print
+    return true
+
+"--- Simple Chain ---" -> Print
+"test_data" -> Decrypt -> Analyze -> Print
+
+"" -> Print
+"--- Chain with Fork at End ---" -> Print
+// Data flows through pipeline, then forks to multiple handlers
+"signal_alpha" -> Decrypt -> Analyze -> Solve -< LogResult, AlertTeam
+
+"" -> Print
+"--- Conditional Chain ---" -> Print
 radiation := 3.0
 artifact := "alien_signal"
 
-artifact -[radiation < 10]-> Decrypt ~> Analyze => Solve -< LogResult, AlertTeam</div>
+"Radiation level: " + radiation -> Print
+"Artifact: " + artifact -> Print
+
+// Gate -> Flow chain: only process if radiation is safe
+artifact -[radiation < 10]-> Decrypt -> Analyze -< LogResult, SaveResult
+
+// Expected Output:
+// === Complex Arrow Chain ===
+// --- Simple Chain ---
+//   [1] Decrypting: test_data
+//   [2] Analyzing: decrypted_test_data
+// analyzed_decrypted_test_data
+//
+// --- Chain with Fork at End ---
+//   [1] Decrypting: signal_alpha
+//   [2] Analyzing: decrypted_signal_alpha
+//   [3] Solving: analyzed_decrypted_signal_alpha
+//   [4a] LOG: solved_analyzed_decrypted_signal_alpha
+//   [4b] ALERT: solved_analyzed_decrypted_signal_alpha
+//
+// --- Conditional Chain ---
+// Radiation level: 3.00
+// Artifact: alien_signal
+//   [1] Decrypting: alien_signal
+//   [2] Analyzing: decrypted_alien_signal
+//   [4a] LOG: analyzed_decrypted_alien_signal
+//   [4c] SAVE: analyzed_decrypted_alien_signal</div>
         </div>
       </div>
 
@@ -615,89 +1545,275 @@ artifact -[radiation < 10]-> Decrypt ~> Analyze => Solve -< LogResult, AlertTeam
         <div class="example-card">
           <h3>Event System</h3>
           <p>A simple event broadcasting pattern.</p>
-          <div class="code-block">// Event handlers
+          <div class="code-block">// COMPLETE EXAMPLE: Event System Pattern
+// Save as: event_system.ouro
+
+"=== Event System Pattern ==="  -> Print
+
+// Event handlers
 Flow OnPlayerJoin(player)
-    "Player joined: " -> Print
-    player -> Print
+    "  [JOIN] " + player + " has entered the game" -> Print
     return true
 
 Flow OnPlayerLeave(player)
-    "Player left: " -> Print
-    player -> Print
+    "  [LEAVE] " + player + " has left the game" -> Print
     return true
 
 Flow LogActivity(player)
-    "Activity logged for: " -> Print
-    player -> Print
+    "  [LOG] Activity recorded for: " + player -> Print
     return true
 
-// Broadcast player events
-"Alice" -< OnPlayerJoin, LogActivity
-"Bob" -< OnPlayerLeave, LogActivity</div>
+Flow UpdateLeaderboard(player)
+    "  [BOARD] Updating leaderboard for: " + player -> Print
+    return true
+
+Flow SendWelcome(player)
+    "  [WELCOME] Sending welcome message to: " + player -> Print
+    return true
+
+"--- Player Join Events ---" -> Print
+// Broadcast join event to multiple handlers
+"Alice" -< OnPlayerJoin, LogActivity, UpdateLeaderboard, SendWelcome
+
+"" -> Print
+"Bob" -< OnPlayerJoin, LogActivity, SendWelcome
+
+"" -> Print
+"--- Player Leave Events ---" -> Print
+"Alice" -< OnPlayerLeave, LogActivity, UpdateLeaderboard
+
+"" -> Print
+"Charlie" -< OnPlayerLeave, LogActivity
+
+// Expected Output:
+// === Event System Pattern ===
+// --- Player Join Events ---
+//   [JOIN] Alice has entered the game
+//   [LOG] Activity recorded for: Alice
+//   [BOARD] Updating leaderboard for: Alice
+//   [WELCOME] Sending welcome message to: Alice
+//
+//   [JOIN] Bob has entered the game
+//   [LOG] Activity recorded for: Bob
+//   [WELCOME] Sending welcome message to: Bob
+//
+// --- Player Leave Events ---
+//   [LEAVE] Alice has left the game
+//   [LOG] Activity recorded for: Alice
+//   [BOARD] Updating leaderboard for: Alice
+//
+//   [LEAVE] Charlie has left the game
+//   [LOG] Activity recorded for: Charlie</div>
         </div>
 
         <div class="example-card">
           <h3>State Machine</h3>
           <p>Using conditional gates as a state machine.</p>
-          <div class="code-block">state := "idle"
+          <div class="code-block">// COMPLETE EXAMPLE: State Machine Pattern
+// Save as: state_machine.ouro
+
+"=== State Machine Pattern ==="  -> Print
 
 Flow HandleIdle(s)
-    "State: IDLE -> Starting" -> Print
+    "  [IDLE] Machine is waiting..." -> Print
+    "  [IDLE] -> Transitioning to RUNNING" -> Print
     return "running"
 
 Flow HandleRunning(s)
-    "State: RUNNING -> Processing" -> Print
+    "  [RUNNING] Processing data..." -> Print
+    "  [RUNNING] -> Transitioning to COMPLETE" -> Print
     return "complete"
 
 Flow HandleComplete(s)
-    "State: COMPLETE -> Done!" -> Print
+    "  [COMPLETE] Task finished!" -> Print
+    "  [COMPLETE] -> Transitioning to IDLE" -> Print
     return "idle"
 
-// Process based on current state
+Flow HandleError(s)
+    "  [ERROR] Something went wrong!" -> Print
+    "  [ERROR] -> Transitioning to IDLE" -> Print
+    return "idle"
+
+// Initial state
+state := "idle"
+
+"--- State: " + state + " ---" -> Print
 state -[state == "idle"]-> HandleIdle
+
+"" -> Print
+state = "running"
+"--- State: " + state + " ---" -> Print
 state -[state == "running"]-> HandleRunning
-state -[state == "complete"]-> HandleComplete</div>
+
+"" -> Print
+state = "complete"
+"--- State: " + state + " ---" -> Print
+state -[state == "complete"]-> HandleComplete
+
+"" -> Print
+state = "error"
+"--- State: " + state + " ---" -> Print
+state -[state == "error"]-> HandleError
+
+// Expected Output:
+// === State Machine Pattern ===
+// --- State: idle ---
+//   [IDLE] Machine is waiting...
+//   [IDLE] -> Transitioning to RUNNING
+//
+// --- State: running ---
+//   [RUNNING] Processing data...
+//   [RUNNING] -> Transitioning to COMPLETE
+//
+// --- State: complete ---
+//   [COMPLETE] Task finished!
+//   [COMPLETE] -> Transitioning to IDLE
+//
+// --- State: error ---
+//   [ERROR] Something went wrong!
+//   [ERROR] -> Transitioning to IDLE</div>
         </div>
 
         <div class="example-card">
           <h3>Pipeline Processing</h3>
           <p>Data transformation pipeline.</p>
-          <div class="code-block">Flow Validate(data)
-    "Validating..." -> Print
-    return data
+          <div class="code-block">// COMPLETE EXAMPLE: Pipeline Processing Pattern
+// Save as: pipeline_processing.ouro
+
+"=== Pipeline Processing Pattern ==="  -> Print
+
+Flow Validate(data)
+    "  [1] VALIDATE: Checking " + data -> Print
+    "      -> Data is valid" -> Print
+    return "validated_" + data
 
 Flow Transform(data)
-    "Transforming..." -> Print
-    return data
+    "  [2] TRANSFORM: Processing " + data -> Print
+    "      -> Data transformed" -> Print
+    return "transformed_" + data
+
+Flow Encrypt(data)
+    "  [3] ENCRYPT: Securing " + data -> Print
+    "      -> Data encrypted" -> Print
+    return "encrypted_" + data
 
 Flow Store(data)
-    "Storing..." -> Print
+    "  [4] STORE: Saving " + data -> Print
+    "      -> Data stored successfully" -> Print
     return true
 
-// Process data through pipeline
+"--- Processing user_input ---" -> Print
 raw_data := "user_input"
-raw_data -> Validate -> Transform -> Store</div>
+raw_data -> Validate -> Transform -> Encrypt -> Store
+
+"" -> Print
+"--- Processing sensor_data ---" -> Print
+sensor_data := "sensor_reading_42"
+sensor_data -> Validate -> Transform -> Store
+
+"" -> Print
+"--- Processing with result capture ---" -> Print
+api_data := "api_response"
+final := api_data -> Validate -> Transform -> Encrypt
+"Final result: " + final -> Print
+
+// Expected Output:
+// === Pipeline Processing Pattern ===
+// --- Processing user_input ---
+//   [1] VALIDATE: Checking user_input
+//       -> Data is valid
+//   [2] TRANSFORM: Processing validated_user_input
+//       -> Data transformed
+//   [3] ENCRYPT: Securing transformed_validated_user_input
+//       -> Data encrypted
+//   [4] STORE: Saving encrypted_transformed_validated_user_input
+//       -> Data stored successfully
+//
+// --- Processing sensor_data ---
+//   [1] VALIDATE: Checking sensor_reading_42
+//       -> Data is valid
+//   [2] TRANSFORM: Processing validated_sensor_reading_42
+//       -> Data transformed
+//   [4] STORE: Saving transformed_validated_sensor_reading_42
+//       -> Data stored successfully
+//
+// --- Processing with result capture ---
+//   [1] VALIDATE: Checking api_response
+//       -> Data is valid
+//   [2] TRANSFORM: Processing validated_api_response
+//       -> Data transformed
+//   [3] ENCRYPT: Securing transformed_validated_api_response
+//       -> Data encrypted
+// Final result: encrypted_transformed_validated_api_response</div>
         </div>
 
         <div class="example-card">
           <h3>Sensor Fusion</h3>
           <p>Multiple sensors feeding into a single processor.</p>
-          <div class="code-block">Flow SensorProcessor(reading)
-    "Sensor reading: " -> Print
-    reading -> Print
+          <div class="code-block">// COMPLETE EXAMPLE: Sensor Fusion Pattern
+// Save as: sensor_fusion.ouro
+
+"=== Sensor Fusion Pattern ==="  -> Print
+
+Flow SensorProcessor(reading)
+    "  PROCESSOR: Received sensor reading = " + reading -> Print
     return true
 
-// Multiple sensors continuously feed the processor
+Flow AlertSystem(reading)
+    if reading > 30
+        "  ALERT: High temperature warning!" -> Print
+    if reading > 1020
+        "  ALERT: High pressure warning!" -> Print
+    if reading > 80
+        "  ALERT: High humidity warning!" -> Print
+    return true
+
+// Initialize sensors
 temperature := 22.5
 pressure := 1013.25
 humidity := 65.0
 
+"--- Setting up continuous sensor funnels ---" -> Print
+// Multiple sensors continuously feed the processor
 temperature ▷- SensorProcessor
+temperature ▷- AlertSystem
 pressure ▷- SensorProcessor
 humidity ▷- SensorProcessor
+humidity ▷- AlertSystem
 
-// Any change triggers processing
-temperature = 23.0</div>
+"" -> Print
+"--- Temperature change: 22.5 -> 28.0 ---" -> Print
+temperature = 28.0
+
+"" -> Print
+"--- Temperature spike: 28.0 -> 35.0 ---" -> Print
+temperature = 35.0
+
+"" -> Print
+"--- Humidity change: 65.0 -> 85.0 ---" -> Print
+humidity = 85.0
+
+"" -> Print
+"--- Pressure change: 1013.25 -> 1025.0 ---" -> Print
+pressure = 1025.0
+
+// Expected Output:
+// === Sensor Fusion Pattern ===
+// --- Setting up continuous sensor funnels ---
+//
+// --- Temperature change: 22.5 -> 28.0 ---
+//   PROCESSOR: Received sensor reading = 28.00
+//
+// --- Temperature spike: 28.0 -> 35.0 ---
+//   PROCESSOR: Received sensor reading = 35.00
+//   ALERT: High temperature warning!
+//
+// --- Humidity change: 65.0 -> 85.0 ---
+//   PROCESSOR: Received sensor reading = 85.00
+//   ALERT: High humidity warning!
+//
+// --- Pressure change: 1013.25 -> 1025.0 ---
+//   PROCESSOR: Received sensor reading = 1025.00</div>
         </div>
       </div>
     </main>
@@ -706,5 +1822,50 @@ temperature = 23.0</div>
   <footer>
     <p>Ouroboros Language © 2026</p>
   </footer>
+
+  <script>
+    // Add copy buttons to all code blocks
+    document.addEventListener('DOMContentLoaded', function() {
+      const codeBlocks = document.querySelectorAll('.code-block');
+      
+      codeBlocks.forEach((block, index) => {
+        // Create wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        block.parentNode.insertBefore(wrapper, block);
+        wrapper.appendChild(block);
+        
+        // Create copy button
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-btn';
+        copyBtn.textContent = 'Copy';
+        copyBtn.setAttribute('data-code-index', index);
+        
+        wrapper.appendChild(copyBtn);
+        
+        // Copy functionality
+        copyBtn.addEventListener('click', function() {
+          const code = block.textContent;
+          navigator.clipboard.writeText(code).then(() => {
+            // Show success state
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            copyBtn.classList.add('copied');
+            
+            setTimeout(() => {
+              copyBtn.textContent = originalText;
+              copyBtn.classList.remove('copied');
+            }, 2000);
+          }).catch(err => {
+            console.error('Failed to copy:', err);
+            copyBtn.textContent = 'Failed';
+            setTimeout(() => {
+              copyBtn.textContent = 'Copy';
+            }, 2000);
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>

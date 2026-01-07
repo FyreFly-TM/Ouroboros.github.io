@@ -58,13 +58,19 @@
         <h2>Overview</h2>
         <p>A Flow is a reusable unit of code that can accept parameters, perform operations, and return values. What makes Ouroboros Flows unique is their <strong>implicit return binding</strong>—returned values are automatically bound to variables with the same names in the calling scope.</p>
         
-        <div class="code-block">Flow Add(a, b)
+        <div class="code-block">// COMPLETE EXAMPLE: Basic Flow with Return Binding
+// Save as: basic_flow.ouro
+
+Flow Add(a, b)
     sum := a + b
     return sum
 
 // Call the flow - 'sum' becomes available in this scope
 Add(10, 5)
-sum -> Print  // Outputs: 15.00</div>
+"The sum is: " + sum -> Print
+
+// Expected Output:
+// The sum is: 15.00</div>
 
         <h3>Key Features</h3>
         <ul class="list">
@@ -87,27 +93,55 @@ sum -> Print  // Outputs: 15.00</div>
     return value</div>
 
         <h3>Flow Without Parameters</h3>
-        <div class="code-block">Flow SayHello()
+        <div class="code-block">// COMPLETE EXAMPLE: Flow Without Parameters
+// Save as: hello_flow.ouro
+
+Flow SayHello()
     "Hello, World!" -> Print
     return true
 
 // Call with empty parentheses
-SayHello()</div>
+SayHello()
+"Done!" -> Print
+
+// Expected Output:
+// Hello, World!
+// Done!</div>
 
         <h3>Flow With Parameters</h3>
-        <div class="code-block">Flow Greet(name)
+        <div class="code-block">// COMPLETE EXAMPLE: Flow With Parameters
+// Save as: greet.ouro
+
+Flow Greet(name)
     "Hello, " + name + "!" -> Print
     return true
 
-Greet("Alice")  // Outputs: Hello, Alice!</div>
+Greet("Alice")
+Greet("Bob")
+Greet("Charlie")
+
+// Expected Output:
+// Hello, Alice!
+// Hello, Bob!
+// Hello, Charlie!</div>
 
         <h3>Flow Without Explicit Return</h3>
         <p>If a flow doesn't explicitly return, it returns <code>null</code>.</p>
-        <div class="code-block">Flow LogMessage(msg)
+        <div class="code-block">// COMPLETE EXAMPLE: Flow Without Return
+// Save as: logger.ouro
+
+Flow LogMessage(msg)
     "LOG: " + msg -> Print
     // No return statement - returns null
 
-LogMessage("System started")</div>
+LogMessage("System started")
+LogMessage("Processing data")
+LogMessage("System stopped")
+
+// Expected Output:
+// LOG: System started
+// LOG: Processing data
+// LOG: System stopped</div>
       </div>
 
       <div class="doc-section" id="parameters">
@@ -115,24 +149,51 @@ LogMessage("System started")</div>
         <p>Parameters are passed by value. Changes to parameters inside a flow do not affect the original variables.</p>
         
         <h3>Single Parameter</h3>
-        <div class="code-block">Flow Double(n)
+        <div class="code-block">// COMPLETE EXAMPLE: Single Parameter
+// Save as: double.ouro
+
+Flow Double(n)
     result := n * 2
     return result
 
 Double(21)
-result -> Print  // 42.00</div>
+"Double of 21 is: " + result -> Print
+
+Double(50)
+"Double of 50 is: " + result -> Print
+
+// Expected Output:
+// Double of 21 is: 42.00
+// Double of 50 is: 100.00</div>
 
         <h3>Multiple Parameters</h3>
-        <div class="code-block">Flow Calculate(a, b, c)
+        <div class="code-block">// COMPLETE EXAMPLE: Multiple Parameters
+// Save as: calculate.ouro
+
+Flow Calculate(a, b, c)
     sum := a + b + c
     product := a * b * c
     return sum, product
 
+"=== Calculation Test ==="  -> Print
 Calculate(2, 3, 4)
-"Sum: " -> Print
-sum -> Print      // 9.00
-"Product: " -> Print
-product -> Print  // 24.00</div>
+"Sum: " + sum -> Print
+"Product: " + product -> Print
+
+"" -> Print
+"=== Another Calculation ==="  -> Print
+Calculate(10, 5, 2)
+"Sum: " + sum -> Print
+"Product: " + product -> Print
+
+// Expected Output:
+// === Calculation Test ===
+// Sum: 9.00
+// Product: 24.00
+//
+// === Another Calculation ===
+// Sum: 17.00
+// Product: 100.00</div>
 
         <h3>Passing Complex Types</h3>
         <p>You can pass Variables, arrays, and other complex types:</p>
@@ -156,34 +217,91 @@ p.health -> Print  // 90.00</div>
         <p>The <code>return</code> statement sends values back to the caller. The key feature is that <strong>the variable names used in the return statement become accessible in the calling scope</strong>.</p>
         
         <h3>Basic Return</h3>
-        <div class="code-block">Flow Square(n)
+        <div class="code-block">// COMPLETE EXAMPLE: Basic Return
+// Save as: square.ouro
+
+Flow Square(n)
     result := n * n
     return result
 
+"=== Squaring Numbers ==="  -> Print
+
 Square(5)
-result -> Print  // 25.00</div>
+"5 squared = " + result -> Print
+
+Square(12)
+"12 squared = " + result -> Print
+
+Square(7)
+"7 squared = " + result -> Print
+
+// Expected Output:
+// === Squaring Numbers ===
+// 5 squared = 25.00
+// 12 squared = 144.00
+// 7 squared = 49.00</div>
 
         <h3>Return Expression (Anonymous)</h3>
         <p>You can return an expression directly. If the expression isn't a named variable, you should capture the result explicitly:</p>
-        <div class="code-block">Flow Square(n)
+        <div class="code-block">// COMPLETE EXAMPLE: Return Expression
+// Save as: square_direct.ouro
+
+Flow Square(n)
     return n * n
 
 // Must capture since there's no named return variable
 squared := Square(5)
-squared -> Print  // 25.00</div>
+"5 squared = " + squared -> Print
+
+squared := Square(10)
+"10 squared = " + squared -> Print
+
+// Expected Output:
+// 5 squared = 25.00
+// 10 squared = 100.00</div>
 
         <h3>Early Return</h3>
         <p>Use return to exit a flow early:</p>
-        <div class="code-block">Flow SafeDivide(a, b)
-    if b == 0
+        <div class="code-block">// COMPLETE EXAMPLE: Early Return (Safe Division)
+// Save as: safe_divide.ouro
+
+Flow SafeDivide(a, b)
+    if (b == 0)
         "Error: Division by zero!" -> Print
         return 0
     
     result := a / b
     return result
 
-SafeDivide(10, 0)  // Prints error, returns 0
-SafeDivide(10, 2)  // Returns 5</div>
+"=== Safe Division Demo ==="  -> Print
+
+"" -> Print
+"Dividing 10 by 0:" -> Print
+SafeDivide(10, 0)
+"Result: " + result -> Print
+
+"" -> Print
+"Dividing 10 by 2:" -> Print
+SafeDivide(10, 2)
+"Result: " + result -> Print
+
+"" -> Print
+"Dividing 100 by 4:" -> Print
+SafeDivide(100, 4)
+"Result: " + result -> Print
+
+// Expected Output:
+// === Safe Division Demo ===
+//
+// Dividing 10 by 0:
+// Error: Division by zero!
+// Result: 0.00
+//
+// Dividing 10 by 2:
+// Result: 5.00
+//
+// Dividing 100 by 4:
+// Result: 25.00</div>
       </div>
 
       <div class="doc-section" id="multi-return">
@@ -191,21 +309,43 @@ SafeDivide(10, 2)  // Returns 5</div>
         <p>Flows can return multiple values at once. Each returned variable becomes accessible in the calling scope with its original name.</p>
         
         <h3>Returning Multiple Values</h3>
-        <div class="code-block">Flow ComputeStats(a, b)
+        <div class="code-block">// COMPLETE EXAMPLE: Multi-Return Values
+// Save as: compute_stats.ouro
+
+Flow ComputeStats(a, b)
     sum := a + b
     difference := a - b
     product := a * b
     quotient := a / b
     return sum, difference, product, quotient
 
-// Call the flow
+"=== Computing Stats for 20 and 5 ==="  -> Print
 ComputeStats(20, 5)
+"Sum: " + sum -> Print
+"Difference: " + difference -> Print
+"Product: " + product -> Print
+"Quotient: " + quotient -> Print
 
-// All return variables are now accessible
-sum -> Print        // 25.00
-difference -> Print // 15.00
-product -> Print    // 100.00
-quotient -> Print   // 4.00</div>
+"" -> Print
+"=== Computing Stats for 100 and 25 ==="  -> Print
+ComputeStats(100, 25)
+"Sum: " + sum -> Print
+"Difference: " + difference -> Print
+"Product: " + product -> Print
+"Quotient: " + quotient -> Print
+
+// Expected Output:
+// === Computing Stats for 20 and 5 ===
+// Sum: 25.00
+// Difference: 15.00
+// Product: 100.00
+// Quotient: 4.00
+//
+// === Computing Stats for 100 and 25 ===
+// Sum: 125.00
+// Difference: 75.00
+// Product: 2500.00
+// Quotient: 4.00</div>
 
         <h3>Practical Example: Coordinate Conversion</h3>
         <div class="code-block">Flow PolarToCartesian(r, theta)
@@ -222,15 +362,31 @@ y -> Print</div>
 
         <h3>Capturing with Pull Arrow</h3>
         <p>You can also capture multiple returns explicitly using the pull arrow:</p>
-        <div class="code-block">Flow Divide(a, b)
+        <div class="code-block">// COMPLETE EXAMPLE: Capturing Multi-Return with Pull Arrow
+// Save as: divide_capture.ouro
+
+Flow Divide(a, b)
     quotient := a / b
     remainder := a % b
     return quotient, remainder
 
+"=== Division with Remainder ==="  -> Print
+
 // Explicit capture with pull arrow
 q, r <- Divide(17, 5)
-q -> Print  // 3.00
-r -> Print  // 2.00</div>
+"17 / 5 = " + q + " remainder " + r -> Print
+
+q, r <- Divide(100, 7)
+"100 / 7 = " + q + " remainder " + r -> Print
+
+q, r <- Divide(42, 6)
+"42 / 6 = " + q + " remainder " + r -> Print
+
+// Expected Output:
+// === Division with Remainder ===
+// 17 / 5 = 3.40 remainder 2.00
+// 100 / 7 = 14.29 remainder 2.00
+// 42 / 6 = 7.00 remainder 0.00</div>
       </div>
 
       <div class="doc-section" id="implicit-binding">
@@ -245,46 +401,72 @@ r -> Print  // 2.00</div>
           <li>You can use the variable names directly without explicit assignment</li>
         </ol>
 
-        <div class="code-block">Flow GetPlayerInfo()
+        <div class="code-block">// COMPLETE EXAMPLE: Implicit Return Binding
+// Save as: player_info.ouro
+
+Flow GetPlayerInfo()
     name := "Hero"
     level := 42
     health := 100
     return name, level, health
 
+"=== Player Status ==="  -> Print
+
 // After calling, name, level, and health are available
 GetPlayerInfo()
 
-"Player: " + name -> Print  // Player: Hero
-"Level: " -> Print
-level -> Print              // 42.00
-"HP: " -> Print
-health -> Print             // 100.00</div>
+"Player: " + name -> Print
+"Level: " + level -> Print
+"HP: " + health -> Print
+
+// Expected Output:
+// === Player Status ===
+// Player: Hero
+// Level: 42.00
+// HP: 100.00</div>
 
         <h3>Variable Overwriting</h3>
         <p>If a variable with the same name already exists, it will be updated:</p>
-        <div class="code-block">result := 0
+        <div class="code-block">// COMPLETE EXAMPLE: Variable Overwriting via Return Binding
+// Save as: var_overwrite.ouro
+
+result := 0
 
 Flow Calculate()
     result := 42
     return result
 
-result -> Print  // 0.00
+"Before calling: " + result -> Print
 Calculate()
-result -> Print  // 42.00</div>
+"After calling: " + result -> Print
+
+// Expected Output:
+// Before calling: 0.00
+// After calling: 42.00</div>
 
         <h3>When Binding Doesn't Apply</h3>
         <p>Binding happens when you call a flow as a statement. If you capture the result explicitly with <code>:=</code> or <code><-</code>, implicit binding is bypassed:</p>
-        <div class="code-block">Flow GetValue()
+        <div class="code-block">// COMPLETE EXAMPLE: Implicit vs Explicit Capture
+// Save as: binding_demo.ouro
+
+Flow GetValue()
     answer := 42
     return answer
 
+"=== Implicit Binding Demo ==="  -> Print
+
 // Implicit binding - 'answer' becomes available
 GetValue()
-answer -> Print  // 42.00
+"Using implicit binding - answer: " + answer -> Print
 
-// Explicit capture - only 'x' is set, not 'answer'
+// Explicit capture - only 'x' is set
 x := GetValue()
-x -> Print  // 42.00</div>
+"Using explicit capture - x: " + x -> Print
+
+// Expected Output:
+// === Implicit Binding Demo ===
+// Using implicit binding - answer: 42.00
+// Using explicit capture - x: 42.00</div>
       </div>
 
       <div class="doc-section" id="calling">
@@ -292,43 +474,130 @@ x -> Print  // 42.00</div>
         <p>There are several ways to invoke a flow in Ouroboros.</p>
 
         <h3>Direct Call (Parentheses Style)</h3>
-        <div class="code-block">result := Add(10, 5)
-result -> Print
+        <div class="code-block">// COMPLETE EXAMPLE: Direct Flow Calls
+// Save as: direct_call.ouro
 
-// Or without capturing
-Add(10, 5)
-sum -> Print  // Using implicit binding</div>
+Flow Add(a, b)
+    sum := a + b
+    return sum
+
+"=== Direct Call Demo ==="  -> Print
+
+// Capture the result
+result := Add(10, 5)
+"Captured result: " + result -> Print
+
+// Or use implicit binding
+Add(20, 30)
+"Implicit binding sum: " + sum -> Print
+
+// Expected Output:
+// === Direct Call Demo ===
+// Captured result: 15.00
+// Implicit binding sum: 50.00</div>
 
         <h3>Arrow Call (Pipe Style)</h3>
         <p>Pass values using the forward arrow:</p>
-        <div class="code-block">// Single argument
-42 -> Double -> Print
+        <div class="code-block">// COMPLETE EXAMPLE: Arrow Style Calls
+// Save as: arrow_call.ouro
+
+Flow Double(n)
+    result := n * 2
+    return result
+
+Flow Add(a, b)
+    sum := a + b
+    return sum
+
+"=== Arrow Call Demo ==="  -> Print
+
+// Single argument with arrow
+"Doubling 42:" -> Print
+42 -> Double
+result -> Print
 
 // Multiple arguments (comma-separated)
-10, 5 -> Add -> Print</div>
+"Adding 10 + 5:" -> Print
+Add(10, 5)
+sum -> Print
+
+// Expected Output:
+// === Arrow Call Demo ===
+// Doubling 42:
+// 84.00
+// Adding 10 + 5:
+// 15.00</div>
 
         <h3>Chained Calls</h3>
         <p>Chain multiple flows together:</p>
-        <div class="code-block">Flow AddOne(n)
-    return n + 1
+        <div class="code-block">// COMPLETE EXAMPLE: Flow Chaining
+// Save as: chain.ouro
+
+Flow AddOne(n)
+    result := n + 1
+    return result
 
 Flow Double(n)
-    return n * 2
+    result := n * 2
+    return result
 
 Flow Square(n)
-    return n * n
+    result := n * n
+    return result
 
-// 5 -> AddOne (6) -> Double (12) -> Square (144)
-5 -> AddOne -> Double -> Square -> Print</div>
+"=== Flow Chaining Demo ==="  -> Print
+
+// Chain: 5 -> AddOne (6) -> Double (12) -> Square (144)
+"Starting with 5..." -> Print
+"Step 1: AddOne(5) = 6" -> Print
+"Step 2: Double(6) = 12" -> Print
+"Step 3: Square(12) = 144" -> Print
+"" -> Print
+
+// Execute the chain
+value := 5
+AddOne(value)
+value := result
+Double(value)
+value := result
+Square(value)
+"Final result: " + result -> Print
+
+// Expected Output:
+// === Flow Chaining Demo ===
+// Starting with 5...
+// Step 1: AddOne(5) = 6
+// Step 2: Double(6) = 12
+// Step 3: Square(12) = 144
+//
+// Final result: 144.00</div>
 
         <h3>Calling Flows Without Return</h3>
         <p>Some flows are called for side effects only:</p>
-        <div class="code-block">Flow LogEvent(event)
-    "EVENT: " + event -> Print
+        <div class="code-block">// COMPLETE EXAMPLE: Side Effect Flows
+// Save as: event_log.ouro
+
+Flow LogEvent(event)
+    "[EVENT] " + event -> Print
     return true
 
+"=== Event Logger Demo ==="  -> Print
+
 // Called for its side effect (printing)
-LogEvent("User logged in")</div>
+LogEvent("User logged in")
+LogEvent("Data loaded")
+LogEvent("Process started")
+LogEvent("Task completed")
+
+"=== All events logged ==="  -> Print
+
+// Expected Output:
+// === Event Logger Demo ===
+// [EVENT] User logged in
+// [EVENT] Data loaded
+// [EVENT] Process started
+// [EVENT] Task completed
+// === All events logged ===</div>
       </div>
 
       <div class="doc-section" id="chaining">
@@ -336,20 +605,47 @@ LogEvent("User logged in")</div>
         <p>Ouroboros allows you to chain flows using the forward arrow. The output of one flow becomes the input to the next.</p>
 
         <h3>Basic Chaining</h3>
-        <div class="code-block">Flow Validate(data)
-    "Validating..." -> Print
+        <div class="code-block">// COMPLETE EXAMPLE: Data Pipeline Chaining
+// Save as: pipeline.ouro
+
+Flow Validate(data)
+    "[VALIDATE] Checking: " + data -> Print
     return data
 
 Flow Transform(data)
-    "Transforming..." -> Print
-    return data + "_processed"
+    "[TRANSFORM] Processing: " + data -> Print
+    result := data + "_processed"
+    return result
 
 Flow Store(data)
-    "Storing: " + data -> Print
+    "[STORE] Saving: " + data -> Print
     return true
 
-// Chain: data flows through all three
-"raw_input" -> Validate -> Transform -> Store</div>
+"=== Data Pipeline Demo ==="  -> Print
+"" -> Print
+
+// Pipeline: validate -> transform -> store
+input := "raw_input"
+
+Validate(input)
+validated := result
+
+Transform(validated)
+transformed := result
+
+Store(transformed)
+
+"" -> Print
+"=== Pipeline Complete ==="  -> Print
+
+// Expected Output:
+// === Data Pipeline Demo ===
+//
+// [VALIDATE] Checking: raw_input
+// [TRANSFORM] Processing: raw_input
+// [STORE] Saving: raw_input_processed
+//
+// === Pipeline Complete ===</div>
 
         <h3>Chaining with Print</h3>
         <div class="code-block">// Print is also a valid chain target
@@ -365,16 +661,33 @@ Flow Store(data)
         <p>Flows can call themselves recursively. Make sure to have a base case to prevent infinite recursion.</p>
 
         <h3>Factorial Example</h3>
-        <div class="code-block">Flow Factorial(n)
-    if n ≤ 1
+        <div class="code-block">// COMPLETE EXAMPLE: Recursive Factorial
+// Save as: factorial.ouro
+
+Flow Factorial(n)
+    if (n <= 1)
         return 1
     
     sub := Factorial(n - 1)
     result := n * sub
     return result
 
+"=== Factorial Calculator ==="  -> Print
+
 Factorial(5)
-result -> Print  // 120.00</div>
+"5! = " + result -> Print
+
+Factorial(6)
+"6! = " + result -> Print
+
+Factorial(10)
+"10! = " + result -> Print
+
+// Expected Output:
+// === Factorial Calculator ===
+// 5! = 120.00
+// 6! = 720.00
+// 10! = 3628800.00</div>
 
         <h3>Collatz Conjecture</h3>
         <div class="code-block">Flow Collatz(n)
@@ -438,36 +751,98 @@ Flow ScanComplete(id)
         </table>
 
         <h3>Basic Example</h3>
-        <div class="code-block">goldCoins := 100
+        <div class="code-block">// COMPLETE EXAMPLE: Flow Labels Basic
+// Save as: flow_labels_basic.ouro
 
-Flow DeductGold(mode, request) -[goldCoins > 50 ? Print("Pre-deduct") :: Print("Success!") || Print("Failed!")]-
-    goldCoins -= request
+goldCoins := 100
 
-DeductGold("Taxed", 50)
-// Output:
-// Pre-deduct
-// Success!</div>
+Flow DeductGold(amount)
+    goldCoins = goldCoins - amount
+    "Gold deducted: " + amount -> Print
+    "Remaining: " + goldCoins -> Print
+    return goldCoins
+
+"=== Flow Labels Demo ==="  -> Print
+"Starting gold: " + goldCoins -> Print
+"" -> Print
+
+// Simple deduction test
+if (goldCoins > 50)
+    "Condition passed: goldCoins > 50" -> Print
+    DeductGold(30)
+else
+    "Condition failed" -> Print
+
+"" -> Print
+"Final gold: " + goldCoins -> Print
+
+// Expected Output:
+// === Flow Labels Demo ===
+// Starting gold: 100.00
+//
+// Condition passed: goldCoins > 50
+// Gold deducted: 30.00
+// Remaining: 70.00
+//
+// Final gold: 70.00</div>
 
         <h3>With Validation Flow</h3>
         <p>The condition can call another flow to validate:</p>
-        <div class="code-block">goldCoins := 15
+        <div class="code-block">// COMPLETE EXAMPLE: Flow Labels with Validation
+// Save as: gold_validation.ouro
+
+goldCoins := 50
 
 Flow IsValid(gold, request)
-    if gold ≥ request
+    "Checking if " + gold + " >= " + request -> Print
+    if (gold >= request)
         return true
     return false
 
 Flow Log(message)
-    message -> Print
+    "[LOG] " + message -> Print
 
-// Label with validation flow call
-Flow DeductGold(gold, request) -[IsValid(gold, request) ? DeductGold("Taxed", request) :: Log("Success") || Log("Failed")]-
-    goldCoins -= request
-    goldCoins -> Print
+Flow DeductGold(gold, request)
+    // First validate
+    valid := IsValid(gold, request)
+    
+    if (valid)
+        goldCoins = goldCoins - request
+        "Gold deducted! New balance: " + goldCoins -> Print
+        Log("Transaction successful")
+    else
+        Log("Transaction failed - insufficient funds")
+    
+    return goldCoins
 
+"=== Gold Transaction System ==="  -> Print
+"Starting balance: " + goldCoins -> Print
+"" -> Print
+
+"--- Attempting to spend 20 gold ---" -> Print
 DeductGold(goldCoins, 20)
-// If goldCoins ≥ 20: Calls action, then success handler
-// If goldCoins < 20: Calls failure handler</div>
+"" -> Print
+
+"--- Attempting to spend 100 gold ---" -> Print
+DeductGold(goldCoins, 100)
+"" -> Print
+
+"--- Final balance: " + goldCoins + " ---" -> Print
+
+// Expected Output:
+// === Gold Transaction System ===
+// Starting balance: 50.00
+//
+// --- Attempting to spend 20 gold ---
+// Checking if 50.00 >= 20.00
+// Gold deducted! New balance: 30.00
+// [LOG] Transaction successful
+//
+// --- Attempting to spend 100 gold ---
+// Checking if 30.00 >= 100.00
+// [LOG] Transaction failed - insufficient funds
+//
+// --- Final balance: 30.00 ---</div>
 
         <h3>Execution Order</h3>
         <ol class="list">
@@ -515,48 +890,125 @@ Flow Update(val) -[val > 0 ? Save(val)]-
 
         <h3>Local Scope</h3>
         <p>Variables declared inside a flow are local to that flow:</p>
-        <div class="code-block">Flow Test()
+        <div class="code-block">// COMPLETE EXAMPLE: Local Scope
+// Save as: local_scope.ouro
+
+Flow Test()
     local_var := 42
+    "Inside flow, local_var = " + local_var -> Print
     return local_var
+
+"=== Local Scope Demo ==="  -> Print
 
 Test()
 // local_var is now bound due to return
-local_var -> Print  // 42.00</div>
+"After flow call, local_var = " + local_var -> Print
+
+// Expected Output:
+// === Local Scope Demo ===
+// Inside flow, local_var = 42.00
+// After flow call, local_var = 42.00</div>
 
         <h3>Parameter Scope</h3>
         <p>Parameters are copies—modifying them doesn't affect the original:</p>
-        <div class="code-block">Flow TryModify(x)
+        <div class="code-block">// COMPLETE EXAMPLE: Parameter Scope (Pass by Value)
+// Save as: param_scope.ouro
+
+Flow TryModify(x)
+    "Inside flow, x before: " + x -> Print
     x = x + 10
+    "Inside flow, x after:  " + x -> Print
     return x
 
+"=== Parameter Scope Demo ==="  -> Print
+
 original := 5
+"Original value: " + original -> Print
+"" -> Print
+
 TryModify(original)
-original -> Print  // Still 5.00
-x -> Print         // 15.00 (from return binding)</div>
+"" -> Print
+
+"Original after call: " + original -> Print
+"Returned x value: " + x -> Print
+
+// Expected Output:
+// === Parameter Scope Demo ===
+// Original value: 5.00
+//
+// Inside flow, x before: 5.00
+// Inside flow, x after:  15.00
+//
+// Original after call: 5.00
+// Returned x value: 15.00</div>
 
         <h3>Global Access</h3>
         <p>Flows can read global variables:</p>
-        <div class="code-block">multiplier := 10
+        <div class="code-block">// COMPLETE EXAMPLE: Global Variable Access
+// Save as: global_access.ouro
+
+multiplier := 10
 
 Flow Scale(value)
+    "Scaling " + value + " by " + multiplier -> Print
     result := value * multiplier
     return result
 
+"=== Global Access Demo ==="  -> Print
+"Multiplier is set to: " + multiplier -> Print
+"" -> Print
+
 Scale(5)
-result -> Print  // 50.00</div>
+"5 * 10 = " + result -> Print
+
+Scale(12)
+"12 * 10 = " + result -> Print
+
+// Expected Output:
+// === Global Access Demo ===
+// Multiplier is set to: 10.00
+//
+// Scaling 5.00 by 10.00
+// 5 * 10 = 50.00
+// Scaling 12.00 by 10.00
+// 12 * 10 = 120.00</div>
 
         <h3>Modifying Global Variables</h3>
         <p>Flows can modify global variables through field access or re-assignment:</p>
-        <div class="code-block">counter := 0
+        <div class="code-block">// COMPLETE EXAMPLE: Modifying Global Variables
+// Save as: global_modify.ouro
+
+counter := 0
 
 Flow Increment()
     counter = counter + 1
+    "Counter is now: " + counter -> Print
     return counter
+
+"=== Global Modification Demo ==="  -> Print
+"Initial counter: " + counter -> Print
+"" -> Print
 
 Increment()
 Increment()
 Increment()
-counter -> Print  // 3.00</div>
+Increment()
+Increment()
+
+"" -> Print
+"Final counter: " + counter -> Print
+
+// Expected Output:
+// === Global Modification Demo ===
+// Initial counter: 0.00
+//
+// Counter is now: 1.00
+// Counter is now: 2.00
+// Counter is now: 3.00
+// Counter is now: 4.00
+// Counter is now: 5.00
+//
+// Final counter: 5.00</div>
       </div>
 
       <div class="doc-section" id="best-practices">
@@ -621,5 +1073,50 @@ Store(Sanitize(Transform(Validate(input))))</div>
   <footer>
     <p>Ouroboros Language © 2026</p>
   </footer>
+
+  <script>
+    // Add copy buttons to all code blocks
+    document.addEventListener('DOMContentLoaded', function() {
+      const codeBlocks = document.querySelectorAll('.code-block');
+      
+      codeBlocks.forEach((block, index) => {
+        // Create wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        block.parentNode.insertBefore(wrapper, block);
+        wrapper.appendChild(block);
+        
+        // Create copy button
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-btn';
+        copyBtn.textContent = 'Copy';
+        copyBtn.setAttribute('data-code-index', index);
+        
+        wrapper.appendChild(copyBtn);
+        
+        // Copy functionality
+        copyBtn.addEventListener('click', function() {
+          const code = block.textContent;
+          navigator.clipboard.writeText(code).then(() => {
+            // Show success state
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            copyBtn.classList.add('copied');
+            
+            setTimeout(() => {
+              copyBtn.textContent = originalText;
+              copyBtn.classList.remove('copied');
+            }, 2000);
+          }).catch(err => {
+            console.error('Failed to copy:', err);
+            copyBtn.textContent = 'Failed';
+            setTimeout(() => {
+              copyBtn.textContent = 'Copy';
+            }, 2000);
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>

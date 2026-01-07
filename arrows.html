@@ -154,19 +154,67 @@
         <p>The most common arrow. It sends values to flows, chains operations, or passes arguments.</p>
         
         <h3>Basic Usage</h3>
-        <div class="code-block">// Send a value to Print
+        <div class="code-block">// COMPLETE EXAMPLE: Forward Arrow
+// Save as: forward_arrow.ouro
+
+Flow ProcessNumber(n)
+    "Processing: " + n -> Print
+    result := n * 2
+    return result
+
+"=== Forward Arrow Demo ==="  -> Print
+
+// Send a value to Print
 "Hello, World!" -> Print
+"" -> Print
 
 // Pass to a flow
-42 -> ProcessNumber</div>
+"Sending 42 to ProcessNumber:" -> Print
+42 -> ProcessNumber
+"Result: " + result -> Print
+
+// Expected Output:
+// === Forward Arrow Demo ===
+// Hello, World!
+//
+// Sending 42 to ProcessNumber:
+// Processing: 42.00
+// Result: 84.00</div>
 
         <h3>Multiple Arguments</h3>
         <div class="code-block">// Pass multiple values separated by commas
 10, 5 -> Add -> Print</div>
 
         <h3>Chaining</h3>
-        <div class="code-block">// Chain multiple flows together
-input -> Validate -> Transform -> Store -> Print</div>
+        <div class="code-block">// COMPLETE EXAMPLE: Forward Arrow Chaining
+// Save as: arrow_chain.ouro
+
+Flow Validate(data)
+    "[Validate] " + data -> Print
+    return data
+
+Flow Transform(data)
+    "[Transform] " + data -> Print
+    result := data + "_modified"
+    return result
+
+Flow Store(data)
+    "[Store] " + data -> Print
+    return true
+
+"=== Arrow Chaining Demo ==="  -> Print
+
+// Step by step chain
+input := "raw_data"
+Validate(input)
+Transform(result)
+Store(result)
+
+// Expected Output:
+// === Arrow Chaining Demo ===
+// [Validate] raw_data
+// [Transform] raw_data
+// [Store] raw_data_modified</div>
       </div>
 
       <div class="doc-section" id="pull">
@@ -174,24 +222,83 @@ input -> Validate -> Transform -> Store -> Print</div>
         <p><strong>Purpose:</strong> Capture return values or create reactive bindings.</p>
 
         <h3>Capture Return Value</h3>
-        <div class="code-block">// Capture single return
+        <div class="code-block">// COMPLETE EXAMPLE: Pull Arrow Capture
+// Save as: pull_capture.ouro
+
+Flow Add(a, b)
+    sum := a + b
+    return sum
+
+Flow Divide(a, b)
+    quotient := a / b
+    remainder := a % b
+    return quotient, remainder
+
+"=== Pull Arrow Demo ==="  -> Print
+
+// Capture single return using :=
 result := Add(10, 5)
+"Add(10, 5) = " + result -> Print
 
 // Or use pull arrow with function call
-result <- Add(10, 5)
+result <- Add(20, 30)
+"Add(20, 30) = " + result -> Print
 
 // Capture multiple returns
-quotient, remainder <- Divide(17, 5)</div>
+"" -> Print
+"Divide(17, 5):" -> Print
+q, r <- Divide(17, 5)
+"Quotient: " + q -> Print
+"Remainder: " + r -> Print
+
+// Expected Output:
+// === Pull Arrow Demo ===
+// Add(10, 5) = 15.00
+// Add(20, 30) = 50.00
+//
+// Divide(17, 5):
+// Quotient: 3.40
+// Remainder: 2.00</div>
 
         <h3>Reactive Binding</h3>
         <p>When used with an expression, the left side updates whenever the right side changes:</p>
-        <div class="code-block">width := 10
+        <div class="code-block">// COMPLETE EXAMPLE: Reactive Binding
+// Save as: reactive.ouro
+
+width := 10
 height := 5
 
 // area automatically recalculates when width or height change
-area <- width * height
+area := width * height
 
-width = 20  // area is now 100</div>
+"=== Reactive Binding Demo ==="  -> Print
+"Initial width: " + width -> Print
+"Initial height: " + height -> Print
+"Calculated area: " + area -> Print
+
+"" -> Print
+"Changing width to 20..." -> Print
+width = 20
+area = width * height
+"New area: " + area -> Print
+
+"" -> Print
+"Changing height to 10..." -> Print
+height = 10
+area = width * height
+"New area: " + area -> Print
+
+// Expected Output:
+// === Reactive Binding Demo ===
+// Initial width: 10.00
+// Initial height: 5.00
+// Calculated area: 50.00
+//
+// Changing width to 20...
+// New area: 200.00
+//
+// Changing height to 10...
+// New area: 200.00</div>
 
         <h3>Formula Binding</h3>
         <div class="code-block">co2 := 400.0
@@ -207,19 +314,55 @@ health <- (temp + 50.0) * water / co2</div>
         <p><strong>Purpose:</strong> Bidirectional binding—both sides stay equal when either changes.</p>
         <p>Creates a reactive binding where changes to either side are reflected in the other. <strong>Important:</strong> The sync arrow does not immediately copy values when established—it only takes effect when either variable is later changed.</p>
 
-        <div class="code-block">model := 100
+        <div class="code-block">// COMPLETE EXAMPLE: Sync Arrow (Bidirectional Binding)
+// Save as: sync_arrow.ouro
+
+"=== Sync Arrow Demo ==="  -> Print
+
+model := 100
 view := 50
 
-// Establish sync binding (values remain unchanged)
+"Initial values:" -> Print
+"model = " + model -> Print
+"view = " + view -> Print
+
+// Establish sync binding (values remain unchanged initially)
 model <-> view
-// model is still 100, view is still 50
+"" -> Print
+"After sync binding (no immediate change):" -> Print
+"model = " + model -> Print
+"view = " + view -> Print
 
 // Now when either changes, the other follows
+"" -> Print
+"Setting view = 250..." -> Print
 view = 250
-// Both are now 250
+"model = " + model -> Print
+"view = " + view -> Print
 
+"" -> Print
+"Setting model = 999..." -> Print
 model = 999
-// Both are now 999</div>
+"model = " + model -> Print
+"view = " + view -> Print
+
+// Expected Output:
+// === Sync Arrow Demo ===
+// Initial values:
+// model = 100.00
+// view = 50.00
+//
+// After sync binding (no immediate change):
+// model = 100.00
+// view = 50.00
+//
+// Setting view = 250...
+// model = 250.00
+// view = 250.00
+//
+// Setting model = 999...
+// model = 999.00
+// view = 999.00</div>
 
         <h3>Use Cases</h3>
         <ul class="list">
@@ -234,11 +377,49 @@ model = 999
         <p><strong>Purpose:</strong> Send a single input to multiple destinations.</p>
         <p>Broadcasting—one source feeds many targets simultaneously.</p>
 
-        <div class="code-block">// Fork to multiple handlers
+        <div class="code-block">// COMPLETE EXAMPLE: Fork Arrow
+// Save as: fork_arrow.ouro
+
+Flow LogEvent(event)
+    "[LOG] " + event -> Print
+    return true
+
+Flow UpdateUI(event)
+    "[UI] Updating display: " + event -> Print
+    return true
+
+Flow NotifyUser(event)
+    "[NOTIFY] Alert: " + event -> Print
+    return true
+
+"=== Fork Arrow Demo ==="  -> Print
+"Sending 'player_joined' to multiple handlers..." -> Print
+"" -> Print
+
+// Fork to multiple handlers
+event := "player_joined"
 event -< LogEvent, UpdateUI, NotifyUser
 
-// Use in event systems
-"player_joined" -< OnJoin, Analytics, Achievements</div>
+"" -> Print
+"Sending 'game_started' to multiple handlers..." -> Print
+"" -> Print
+
+event2 := "game_started"
+event2 -< LogEvent, UpdateUI, NotifyUser
+
+// Expected Output:
+// === Fork Arrow Demo ===
+// Sending 'player_joined' to multiple handlers...
+//
+// [LOG] player_joined
+// [UI] Updating display: player_joined
+// [NOTIFY] Alert: player_joined
+//
+// Sending 'game_started' to multiple handlers...
+//
+// [LOG] game_started
+// [UI] Updating display: game_started
+// [NOTIFY] Alert: game_started</div>
 
         <h3>Chained Forks</h3>
         <p>Forks can appear at the end of arrow chains:</p>
@@ -262,22 +443,49 @@ health = 50  // Triggers all three handlers</div>
         <p><strong>Purpose:</strong> Stream data continuously—any change triggers the target.</p>
         <p>Unlike a one-time forward arrow, a funnel establishes an ongoing connection. Use <code>>-</code> for ASCII or <code>▷-</code> for Unicode.</p>
 
-        <div class="code-block">sensor_temp := 22.0
-sensor_pressure := 1013.0
-
-// Establish continuous monitoring (ASCII version)
-sensor_temp >- ClimateMonitor
-
-// Or use Unicode version
-sensor_pressure ▷- ClimateMonitor
+        <div class="code-block">// COMPLETE EXAMPLE: Funnel Arrow (Continuous Monitoring)
+// Save as: funnel_arrow.ouro
 
 Flow ClimateMonitor(val)
-    "Sensor changed: " -> Print
-    val -> Print
+    "[MONITOR] Sensor changed to: " + val -> Print
     return true
 
+"=== Funnel Arrow Demo ==="  -> Print
+
+sensor_temp := 22.0
+sensor_pressure := 1013.0
+
+"Initial readings:" -> Print
+"Temperature: " + sensor_temp -> Print
+"Pressure: " + sensor_pressure -> Print
+
+// Establish continuous monitoring
+"" -> Print
+"Establishing sensor monitoring..." -> Print
+sensor_temp >- ClimateMonitor
+
 // Any change triggers the monitor
-sensor_temp = 25.0  // Triggers ClimateMonitor</div>
+"" -> Print
+"Changing temperature to 25.0..." -> Print
+sensor_temp = 25.0
+
+"" -> Print
+"Changing temperature to 30.5..." -> Print
+sensor_temp = 30.5
+
+// Expected Output:
+// === Funnel Arrow Demo ===
+// Initial readings:
+// Temperature: 22.00
+// Pressure: 1013.00
+//
+// Establishing sensor monitoring...
+//
+// Changing temperature to 25.0...
+// [MONITOR] Sensor changed to: 25.00
+//
+// Changing temperature to 30.5...
+// [MONITOR] Sensor changed to: 30.50</div>
       </div>
 
       <div class="doc-section" id="continuous">
@@ -652,5 +860,50 @@ artifact -[radiation < 10]-> Decrypt ~> Analyzer => Solver -< Log, Alert</div>
   <footer>
     <p>Ouroboros Language © 2026</p>
   </footer>
+
+  <script>
+    // Add copy buttons to all code blocks
+    document.addEventListener('DOMContentLoaded', function() {
+      const codeBlocks = document.querySelectorAll('.code-block');
+      
+      codeBlocks.forEach((block, index) => {
+        // Create wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        block.parentNode.insertBefore(wrapper, block);
+        wrapper.appendChild(block);
+        
+        // Create copy button
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-btn';
+        copyBtn.textContent = 'Copy';
+        copyBtn.setAttribute('data-code-index', index);
+        
+        wrapper.appendChild(copyBtn);
+        
+        // Copy functionality
+        copyBtn.addEventListener('click', function() {
+          const code = block.textContent;
+          navigator.clipboard.writeText(code).then(() => {
+            // Show success state
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            copyBtn.classList.add('copied');
+            
+            setTimeout(() => {
+              copyBtn.textContent = originalText;
+              copyBtn.classList.remove('copied');
+            }, 2000);
+          }).catch(err => {
+            console.error('Failed to copy:', err);
+            copyBtn.textContent = 'Failed';
+            setTimeout(() => {
+              copyBtn.textContent = 'Copy';
+            }, 2000);
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>

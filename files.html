@@ -68,31 +68,74 @@
         <h2>.ouro Scripts</h2>
         <p>The main executable files. Contains flows, logic, and arrow expressions.</p>
         
-        <div class="code-block">// game.ouro
+        <div class="code-block">// COMPLETE EXAMPLE: Basic .ouro Script
+// Save as: game_demo.ouro
 
-Flow Attack(attacker, target)
-    damage := attacker.power - target.armor
-    target.health = target.health - damage
+"=== .ouro Script Demo ==="  -> Print
+
+// Define flows for game mechanics
+Flow CalculateDamage(attackPower, armorValue)
+    damage := attackPower - armorValue
+    if damage < 0
+        damage = 0
     return damage
 
-Flow Heal(target, amount)
-    target.health = target.health + amount
-    return target.health
+Flow ApplyDamage(health, damage)
+    newHealth := health - damage
+    if newHealth < 0
+        newHealth = 0
+    return newHealth
 
-// Game logic
-"Battle starting!" -> Print
+Flow Heal(health, amount, maxHealth)
+    newHealth := health + amount
+    if newHealth > maxHealth
+        newHealth = maxHealth
+    return newHealth
 
-player := Player
-player.health = 100
-player.power = 25
+// Game simulation
+"--- Combat Simulation ---" -> Print
 
-enemy := Enemy
-enemy.health = 80
-enemy.armor = 5
+playerHealth := 100
+playerPower := 25
+enemyHealth := 80
+enemyArmor := 5
 
-dealt := Attack(player, enemy)
-"Damage dealt: " -> Print
-dealt -> Print</div>
+"Player Health: " + playerHealth -> Print
+"Enemy Health: " + enemyHealth -> Print
+
+"" -> Print
+"Player attacks!" -> Print
+damage := CalculateDamage(playerPower, enemyArmor)
+"Damage dealt: " + damage -> Print
+enemyHealth := ApplyDamage(enemyHealth, damage)
+"Enemy health remaining: " + enemyHealth -> Print
+
+"" -> Print
+"Enemy attacks! (power: 15)" -> Print
+damage = CalculateDamage(15, 0)
+playerHealth := ApplyDamage(playerHealth, damage)
+"Player health remaining: " + playerHealth -> Print
+
+"" -> Print
+"Player heals!" -> Print
+playerHealth := Heal(playerHealth, 30, 100)
+"Player health after heal: " + playerHealth -> Print
+
+// Expected Output:
+// === .ouro Script Demo ===
+// --- Combat Simulation ---
+// Player Health: 100.00
+// Enemy Health: 80.00
+//
+// Player attacks!
+// Damage dealt: 20.00
+// Enemy health remaining: 60.00
+//
+// Enemy attacks! (power: 15)
+// Player health remaining: 85.00
+//
+// Player heals!
+// Player health after heal: 100.00</div>
       </div>
 
       <div class="doc-section" id="var">
@@ -222,5 +265,50 @@ Template Vendor
   <footer>
     <p>Ouroboros Language © 2026</p>
   </footer>
+
+  <script>
+    // Add copy buttons to all code blocks
+    document.addEventListener('DOMContentLoaded', function() {
+      const codeBlocks = document.querySelectorAll('.code-block');
+      
+      codeBlocks.forEach((block, index) => {
+        // Create wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        block.parentNode.insertBefore(wrapper, block);
+        wrapper.appendChild(block);
+        
+        // Create copy button
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-btn';
+        copyBtn.textContent = 'Copy';
+        copyBtn.setAttribute('data-code-index', index);
+        
+        wrapper.appendChild(copyBtn);
+        
+        // Copy functionality
+        copyBtn.addEventListener('click', function() {
+          const code = block.textContent;
+          navigator.clipboard.writeText(code).then(() => {
+            // Show success state
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            copyBtn.classList.add('copied');
+            
+            setTimeout(() => {
+              copyBtn.textContent = originalText;
+              copyBtn.classList.remove('copied');
+            }, 2000);
+          }).catch(err => {
+            console.error('Failed to copy:', err);
+            copyBtn.textContent = 'Failed';
+            setTimeout(() => {
+              copyBtn.textContent = 'Copy';
+            }, 2000);
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>
