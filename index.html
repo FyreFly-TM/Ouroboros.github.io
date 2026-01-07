@@ -135,10 +135,16 @@ while counter < 10
     <h2>Advanced Features</h2>
     <div class="grid">
       <div class="card">
-        <h3>Continuous Funnels (▷-)</h3>
-        <p>Stream data reactively—any change triggers the target.</p>
-        <div class="code-block">sensor_temp ▷- ThermalMonitor
-sensor_pressure ▷- ThermalMonitor</div>
+        <h3>Flow Labels</h3>
+        <p>Declarative condition/action/handler annotations on flows.</p>
+        <div class="code-block">Flow Process(x) -[x > 0 ? Log("ok") :: Done() || Fail()]-
+    // Flow body</div>
+      </div>
+      <div class="card">
+        <h3>Async Arrows (->>, -<<)</h3>
+        <p>Fire-and-forget operations in background threads.</p>
+        <div class="code-block">"task" ->> Worker  // Non-blocking
+event -<< A, B, C  // Parallel broadcast</div>
       </div>
       <div class="card">
         <h3>Fuzzy Logic (~>)</h3>
@@ -149,6 +155,12 @@ sensor_pressure ▷- ThermalMonitor</div>
         <h3>Solvers (=>)</h3>
         <p>Constraint-based pathfinding or optimization.</p>
         <div class="code-block">start_position => PathSolver</div>
+      </div>
+      <div class="card">
+        <h3>Continuous Funnels (>-)</h3>
+        <p>Stream data reactively—any change triggers the target.</p>
+        <div class="code-block">sensor_temp >- ThermalMonitor
+sensor_pressure >- ThermalMonitor</div>
       </div>
       <div class="card">
         <h3>Ownership Transfer (-|->)</h3>

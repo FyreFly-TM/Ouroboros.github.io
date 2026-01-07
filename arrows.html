@@ -451,6 +451,7 @@ final_value <-||- stream_value
           <tbody>
             <tr><td><code>->></code></td><td>Async Forward</td><td>Fire-and-forget forward</td></tr>
             <tr><td><code><<-</code></td><td>Async Pull</td><td>Non-blocking capture</td></tr>
+            <tr><td><code><<->></code></td><td>Async Sync</td><td>Non-blocking bidirectional sync</td></tr>
             <tr><td><code>-<<</code></td><td>Async Fork</td><td>Parallel broadcast</td></tr>
             <tr><td><code>>>-</code></td><td>Async Funnel</td><td>Async continuous stream</td></tr>
             <tr><td><code>->|</code></td><td>Await Forward</td><td>Wait then forward</td></tr>
@@ -458,22 +459,58 @@ final_value <-||- stream_value
           </tbody>
         </table>
 
-        <h3>Async Forward Example</h3>
-        <div class="code-block">msg := "Background Task"
+        <h3>Async Forward (->>)</h3>
+        <p>Fire-and-forget: The flow executes in a separate thread while the main script continues immediately.</p>
+        <div class="code-block">Flow SlowProcess(msg)
+    // Simulating slow work
+    "[SlowProcess] Got: " + msg -> Print
 
-// Fire-and-forget: execution continues immediately
-msg ->> BackgroundHandler</div>
+// Async forward - continues immediately
+"AsyncMessage" ->> SlowProcess
+"(This line may print BEFORE the async output above)" -> Print</div>
 
-        <h3>Async Fork Example</h3>
-        <div class="code-block">// Send to multiple handlers asynchronously
-threat -<< DeployDrones, LockSector, NotifyCaptain</div>
+        <h3>Async Fork (-<<)</h3>
+        <p>Broadcast to multiple handlers in parallel. Each handler runs in its own thread.</p>
+        <div class="code-block">Flow Handler1(val)
+    "[Handler1] " + val -> Print
+    return true
 
-        <h3>Await Forward Example</h3>
+Flow Handler2(val)
+    "[Handler2] " + val -> Print
+    return true
+
+Flow Handler3(val)
+    "[Handler3] " + val -> Print
+    return true
+
+counter := 0
+
+// Async fork - all handlers run in parallel
+"Broadcast" -<< Handler1, Handler2, Handler3
+"Counter immediately after async fork: " + counter -> Print
+// Counter will be 0 (handlers haven't finished yet)</div>
+
+        <h3>Async vs Sync Comparison</h3>
+        <div class="code-block">// Sync forward chain - waits for each step
+counter := 0
+"start" -> A -> B -> C
+"Counter after sync: " + counter -> Print  // Counter = 3
+
+// Async forward chain - fires immediately
+counter := 0
+"start" ->> A
+"start" ->> B
+"start" ->> C
+"Counter after async: " + counter -> Print  // Counter = 0 (async not done)</div>
+
+        <h3>Await Forward (->|)</h3>
+        <p>Wait for a value or condition to be ready before forwarding:</p>
         <div class="code-block">// Wait for value to be ready, then forward
 data ->| AsyncProcessor</div>
 
-        <h3>Pull Await Example</h3>
-        <div class="code-block">// Wait for conditions to be true
+        <h3>Pull Await (|<-)</h3>
+        <p>Wait for conditions to be true before pulling:</p>
+        <div class="code-block">// Wait for all conditions
 launch_signal |<- fuel_ready
 launch_signal |<- nav_ready
 launch_signal |<- crew_ready</div>

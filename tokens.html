@@ -246,12 +246,21 @@ if error | warning
           <tbody>
             <tr><td><code>,</code></td><td>Comma</td><td>Sequential separator (arguments, returns, array elements)</td></tr>
             <tr><td><code>:</code></td><td>Colon</td><td>Parallel separator or part of := and =:</td></tr>
+            <tr><td><code>::</code></td><td>Double Colon</td><td>Success handler in flow labels</td></tr>
+            <tr><td><code>||</code></td><td>Double Pipe</td><td>Failure handler in flow labels</td></tr>
             <tr><td><code>( )</code></td><td>Parentheses</td><td>Grouping expressions, function calls</td></tr>
             <tr><td><code>[ ]</code></td><td>Brackets</td><td>Array literals and indexing</td></tr>
             <tr><td><code>{ }</code></td><td>Braces</td><td>Object initialization</td></tr>
             <tr><td><code>.</code></td><td>Dot</td><td>Field access</td></tr>
+            <tr><td><code>?</code></td><td>Question Mark</td><td>Action in flow labels or transformation in gates</td></tr>
           </tbody>
         </table>
+
+        <h3>Flow Label Syntax</h3>
+        <p>Flow labels use special punctuation for condition/action/handler patterns:</p>
+        <div class="code-block">// Flow label syntax: -[condition ? action :: success || failure]-
+Flow Process(x) -[x > 0 ? Log("pre") :: Log("ok") || Log("fail")]-
+    // Flow body</div>
 
         <h3>Sequential vs Parallel Execution</h3>
         <p>Ouroboros distinguishes between sequential (<code>,</code>) and parallel (<code>:</code>) execution:</p>

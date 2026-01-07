@@ -41,6 +41,7 @@
         <li><a href="#calling">Calling Flows</a></li>
         <li><a href="#chaining">Flow Chaining</a></li>
         <li><a href="#recursion">Recursion</a></li>
+        <li><a href="#flow-labels">Flow Labels (Advanced)</a></li>
         <li><a href="#scope">Scope Rules</a></li>
         <li><a href="#best-practices">Best Practices</a></li>
       </ul>
@@ -413,6 +414,99 @@ Flow ScanComplete(id)
     return true
 
 6 -> SystemScan</div>
+      </div>
+
+      <div class="doc-section" id="flow-labels">
+        <h2>Flow Labels (Advanced)</h2>
+        <p>Flow labels are declarative annotations attached to a flow definition. They specify conditions, actions, and success/failure handlers that execute when the flow is called.</p>
+
+        <h3>Syntax</h3>
+        <div class="code-block">Flow FlowName(params) -[condition ? action :: onSuccess || onFailure]-
+    // Flow body</div>
+
+        <h3>Label Components</h3>
+        <table class="table">
+          <thead>
+            <tr><th>Component</th><th>Symbol</th><th>Purpose</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Condition</td><td>(expression)</td><td>Boolean expression that determines if the flow proceeds</td></tr>
+            <tr><td>Action</td><td><code>?</code></td><td>Code executed when condition is true, before the flow body</td></tr>
+            <tr><td>Success Handler</td><td><code>::</code></td><td>Code executed when condition is true, after the action</td></tr>
+            <tr><td>Failure Handler</td><td><code>||</code></td><td>Code executed when condition is false</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Basic Example</h3>
+        <div class="code-block">goldCoins := 100
+
+Flow DeductGold(mode, request) -[goldCoins > 50 ? Print("Pre-deduct") :: Print("Success!") || Print("Failed!")]-
+    goldCoins -= request
+
+DeductGold("Taxed", 50)
+// Output:
+// Pre-deduct
+// Success!</div>
+
+        <h3>With Validation Flow</h3>
+        <p>The condition can call another flow to validate:</p>
+        <div class="code-block">goldCoins := 15
+
+Flow IsValid(gold, request)
+    if gold ≥ request
+        return true
+    return false
+
+Flow Log(message)
+    message -> Print
+
+// Label with validation flow call
+Flow DeductGold(gold, request) -[IsValid(gold, request) ? DeductGold("Taxed", request) :: Log("Success") || Log("Failed")]-
+    goldCoins -= request
+    goldCoins -> Print
+
+DeductGold(goldCoins, 20)
+// If goldCoins ≥ 20: Calls action, then success handler
+// If goldCoins < 20: Calls failure handler</div>
+
+        <h3>Execution Order</h3>
+        <ol class="list">
+          <li><strong>Condition</strong> is evaluated</li>
+          <li>If <strong>true</strong>:
+            <ul>
+              <li><strong>Action</strong> (after <code>?</code>) is executed</li>
+              <li><strong>Success handler</strong> (after <code>::</code>) is executed</li>
+            </ul>
+          </li>
+          <li>If <strong>false</strong>:
+            <ul>
+              <li><strong>Failure handler</strong> (after <code>||</code>) is executed</li>
+            </ul>
+          </li>
+        </ol>
+        <p><strong>Note:</strong> Flow labels are executed instead of the flow body when conditions apply. The flow body executes only when no label is present or the label evaluation is complete.</p>
+
+        <h3>Partial Labels</h3>
+        <p>You can omit any component you don't need:</p>
+        <div class="code-block">// Only condition and success
+Flow Process(data) -[valid :: Log("Processed")]-
+    // Process data
+
+// Only condition and failure
+Flow Access(user) -[authenticated || Log("Access denied")]-
+    // Access logic
+
+// Only condition and action
+Flow Update(val) -[val > 0 ? Save(val)]-
+    // Update logic</div>
+
+        <h3>Use Cases</h3>
+        <ul class="list">
+          <li><strong>Validation:</strong> Check preconditions before running logic</li>
+          <li><strong>Logging:</strong> Automatic success/failure logging</li>
+          <li><strong>Guards:</strong> Prevent flow execution under certain conditions</li>
+          <li><strong>Transaction patterns:</strong> Pre-action, main logic, post-action</li>
+        </ul>
       </div>
 
       <div class="doc-section" id="scope">

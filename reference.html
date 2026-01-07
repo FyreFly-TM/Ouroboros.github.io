@@ -539,6 +539,16 @@ rect.height <-> height   // Two-way sync</div>
 
 // All three may execute concurrently</div>
 
+        <h3>Async Execution</h3>
+        <p>Async arrows (<code>->></code>, <code>-<<</code>, etc.) spawn separate threads:</p>
+        <div class="code-block">// Async operations run in background threads
+"task1" ->> Worker     // Spawns thread, continues immediately
+"task2" ->> Worker     // Spawns another thread
+"Main thread done" -> Print  // May print before workers finish
+
+// Async fork - parallel broadcast
+event -<< Handler1, Handler2, Handler3  // All run concurrently</div>
+
         <h3>Script Execution Order</h3>
         <ol class="list">
           <li><code>.var</code> files are loaded (type definitions)</li>
