@@ -93,6 +93,26 @@ return a, b, c</div></td>
     i += 1</div></td>
             </tr>
             <tr>
+              <td><code>for</code></td>
+              <td>C-style for loop with init, condition, increment</td>
+              <td><div class="code-block">for i = 0, i < 5, i++
+    i -> Print</div></td>
+            </tr>
+            <tr>
+              <td><code>case</code></td>
+              <td>Execute block when loop variable matches value</td>
+              <td><div class="code-block">for i = 0, i < 3, i++
+    case i == 1
+        "One!" -> Print</div></td>
+            </tr>
+            <tr>
+              <td><code>kill</code></td>
+              <td>Exit the current loop early</td>
+              <td><div class="code-block">for i = 0, i < 10, i++
+    if i == 5
+        kill</div></td>
+            </tr>
+            <tr>
               <td><code>true</code></td>
               <td>Boolean true literal</td>
               <td><code>active := true</code></td>
@@ -194,8 +214,21 @@ x %= 4   // x = 2</div>
             <tr><td><code>/</code></td><td>Division</td><td><code>10 / 5</code></td><td>2</td></tr>
             <tr><td><code>%</code></td><td>Modulo</td><td><code>10 % 3</code></td><td>1</td></tr>
             <tr><td><code>-</code></td><td>Negation (unary)</td><td><code>-42</code></td><td>-42</td></tr>
+            <tr><td><code>++</code></td><td>Increment</td><td><code>i++</code></td><td>i + 1</td></tr>
+            <tr><td><code>--</code></td><td>Decrement</td><td><code>i--</code></td><td>i - 1</td></tr>
           </tbody>
         </table>
+
+        <h3>Increment &amp; Decrement</h3>
+        <p>The <code>++</code> and <code>--</code> operators increment or decrement a variable by 1. These are primarily used in for loop increment expressions.</p>
+        <div class="code-block">i := 0
+i++    // i is now 1
+i++    // i is now 2
+i--    // i is now 1
+
+// Most commonly used in for loops:
+for x = 0, x < 5, x++
+    x -> Print</div>
 
         <h3>String Concatenation</h3>
         <div class="code-block">greeting := "Hello, " + "World!"  // "Hello, World!"</div>
@@ -203,7 +236,7 @@ x %= 4   // x = 2</div>
 
       <div class="doc-section" id="comparison">
         <h2>Comparison Operators</h2>
-        <p><strong>Important:</strong> Use Unicode symbols <code>≥</code> and <code>≤</code> for greater/less-or-equal comparisons.</p>
+        <p><strong>Important:</strong> Use Unicode symbols <code>≥</code> (U+2265) and <code>≤</code> (U+2264) for greater/less-or-equal comparisons. The ASCII versions <code>&gt;=</code> and <code>&lt;=</code> are <em>not</em> supported because <code>=&gt;</code> is reserved for the solver arrow.</p>
         <table class="table">
           <thead>
             <tr><th>Operator</th><th>Name</th><th>Example</th></tr>
@@ -217,6 +250,16 @@ x %= 4   // x = 2</div>
             <tr><td><code>≤</code></td><td>Less than or equal</td><td><code>a ≤ b</code></td></tr>
           </tbody>
         </table>
+
+        <div class="card" style="border-left: 4px solid #f39c12; margin: 1rem 0;">
+          <h4>💡 Typing Unicode Operators</h4>
+          <p>On Windows, you can type these using:</p>
+          <ul class="list">
+            <li><code>≤</code> — Alt + 243 (numpad) or copy/paste</li>
+            <li><code>≥</code> — Alt + 242 (numpad) or copy/paste</li>
+          </ul>
+          <p>Or use the Ouroboros VS Code extension which provides autocomplete snippets.</p>
+        </div>
 
         <h3>Logical Operators</h3>
         <table class="table">

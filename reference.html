@@ -494,16 +494,16 @@ check := (x > 5) & (y < 10) | force_override</div>
 "=== Grading System ==="  -> Print
 
 Flow GetGrade(score)
-    if (score >= 90)
+    if (score ≥ 90)
         grade := "A"
         "Excellent!" -> Print
-    elseif (score >= 80)
+    elseif (score ≥ 80)
         grade := "B"
         "Good job!" -> Print
-    elseif (score >= 70)
+    elseif (score ≥ 70)
         grade := "C"
         "Passing" -> Print
-    elseif (score >= 60)
+    elseif (score ≥ 60)
         grade := "D"
         "Needs work" -> Print
     else
@@ -605,7 +605,7 @@ while (counter < 5)
 // Sum numbers 1 to 10
 sum := 0
 i := 1
-while (i <= 10)
+while (i ≤ 10)
     sum = sum + i
     i = i + 1
 
@@ -624,6 +624,163 @@ while (i <= 10)
 // Loop finished! Final counter: 5.00
 //
 // Sum of 1 to 10: 55.00</div>
+
+        <h3>For Loop</h3>
+        <p>A C-style for loop with initialization, condition, and increment expressions separated by commas:</p>
+        <div class="code-block">// Syntax: for variable = start, condition, increment
+for i = 0, i < 5, i++
+    i -> Print</div>
+
+        <p>The for loop has three parts:</p>
+        <ol class="list">
+          <li><strong>Initialization:</strong> <code>i = 0</code> — Sets the starting value</li>
+          <li><strong>Condition:</strong> <code>i < 5</code> — Loop continues while true</li>
+          <li><strong>Increment:</strong> <code>i++</code> — Executes after each iteration</li>
+        </ol>
+
+        <div class="code-block">// COMPLETE EXAMPLE: For Loop
+// Save as: for_loop.ouro
+
+"=== For Loop Demo ==="  -> Print
+
+"Counting 0 to 4:" -> Print
+for i = 0, i < 5, i++
+    "i = " + i -> Print
+
+"" -> Print
+"Counting down from 5 to 1:" -> Print
+for j = 5, j > 0, j--
+    "j = " + j -> Print
+
+"" -> Print
+"Sum of 1 to 10:" -> Print
+sum := 0
+for n = 1, n ≤ 10, n++
+    sum = sum + n
+"Total: " + sum -> Print
+
+// Expected Output:
+// === For Loop Demo ===
+// Counting 0 to 4:
+// i = 0.00
+// i = 1.00
+// i = 2.00
+// i = 3.00
+// i = 4.00
+//
+// Counting down from 5 to 1:
+// j = 5.00
+// j = 4.00
+// j = 3.00
+// j = 2.00
+// j = 1.00
+//
+// Sum of 1 to 10:
+// Total: 55.00</div>
+
+        <h3>Chained For Loops (Nested)</h3>
+        <p>Chain multiple loops together using colons (<code>:</code>) to create nested iterations:</p>
+        <div class="code-block">// Syntax: for outer : inner : more_inner
+for x = 0, x < 3, x++ : y = 0, y < 2, y++
+    "x=" + x + ", y=" + y -> Print</div>
+
+        <p>This creates a nested loop where the inner loop runs completely for each iteration of the outer loop:</p>
+        <div class="code-block">// COMPLETE EXAMPLE: Nested For Loops
+// Save as: nested_for.ouro
+
+"=== Nested For Loops Demo ==="  -> Print
+
+"2D Grid Coordinates:" -> Print
+for row = 0, row < 3, row++ : col = 0, col < 4, col++
+    "  (" + row + ", " + col + ")" -> Print
+
+"" -> Print
+"Multiplication Table (3x3):" -> Print
+for a = 1, a ≤ 3, a++ : b = 1, b ≤ 3, b++
+    result := a * b
+    a + " × " + b + " = " + result -> Print
+
+// Expected Output:
+// === Nested For Loops Demo ===
+// 2D Grid Coordinates:
+//   (0.00, 0.00)
+//   (0.00, 1.00)
+//   (0.00, 2.00)
+//   (0.00, 3.00)
+//   (1.00, 0.00)
+//   ... and so on</div>
+
+        <h3>Case Blocks in For Loops</h3>
+        <p>Use <code>case</code> to execute code only when a loop variable matches a specific condition:</p>
+        <div class="code-block">// Syntax: case condition
+for i = 0, i < 5, i++
+    case i == 0
+        "First iteration!" -> Print
+    case i == 2
+        "Middle!" -> Print
+    case i == 4
+        "Last iteration!" -> Print
+    "i = " + i -> Print</div>
+
+        <p>Case blocks are powerful for handling specific iterations differently:</p>
+        <div class="code-block">// COMPLETE EXAMPLE: For Loop with Case
+// Save as: for_case.ouro
+
+"=== For Loop with Case Demo ==="  -> Print
+
+"Processing items 0-4:" -> Print
+for i = 0, i < 5, i++
+    case i == 0
+        "  [START] Beginning processing" -> Print
+    case i == 2
+        "  [MIDDLE] Halfway there!" -> Print
+    case i == 4
+        "  [END] Final item" -> Print
+    "  Processing item " + i -> Print
+
+// Expected Output:
+// === For Loop with Case Demo ===
+// Processing items 0-4:
+//   [START] Beginning processing
+//   Processing item 0.00
+//   Processing item 1.00
+//   [MIDDLE] Halfway there!
+//   Processing item 2.00
+//   Processing item 3.00
+//   [END] Final item
+//   Processing item 4.00</div>
+
+        <h3>Kill Statement</h3>
+        <p>Exit a loop early with the <code>kill</code> keyword:</p>
+        <div class="code-block">// COMPLETE EXAMPLE: Kill Statement
+// Save as: kill_demo.ouro
+
+"=== Kill Statement Demo ==="  -> Print
+
+"Searching for 7 in range 0-9:" -> Print
+for i = 0, i < 10, i++
+    "Checking " + i -> Print
+    if i == 7
+        "Found it! Exiting loop." -> Print
+        kill
+    
+"" -> Print
+"Loop exited." -> Print
+
+// Expected Output:
+// === Kill Statement Demo ===
+// Searching for 7 in range 0-9:
+// Checking 0.00
+// Checking 1.00
+// Checking 2.00
+// Checking 3.00
+// Checking 4.00
+// Checking 5.00
+// Checking 6.00
+// Checking 7.00
+// Found it! Exiting loop.
+//
+// Loop exited.</div>
 
         <h3>Loop with Break Condition</h3>
         <div class="code-block">// COMPLETE EXAMPLE: Loop with Early Exit

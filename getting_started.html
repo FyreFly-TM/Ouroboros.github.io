@@ -474,7 +474,7 @@ event -< LogEvent, UpdateUI, NotifyUser
         <h2>6. Control Flow</h2>
 
         <h3>If / Elseif / Else</h3>
-        <p>Blocks are defined by indentation (4 spaces). Note: use <code>>=</code> and <code><=</code> or <code>≥</code> and <code>≤</code> for comparisons.</p>
+        <p>Blocks are defined by indentation (4 spaces). Use <code>≥</code> and <code>≤</code> for comparisons (not ASCII <code>&gt;=</code> or <code>&lt;=</code>).</p>
         <div class="code-block">// COMPLETE EXAMPLE: If/Elseif/Else
 // Save as: grading.ouro
 
@@ -482,13 +482,13 @@ event -< LogEvent, UpdateUI, NotifyUser
 
 Flow GetGrade(score)
     grade := ""
-    if (score >= 90)
+    if (score ≥ 90)
         grade = "A"
         "Excellent!" -> Print
-    elseif (score >= 80)
+    elseif (score ≥ 80)
         grade = "B"
         "Good job!" -> Print
-    elseif (score >= 70)
+    elseif (score ≥ 70)
         grade = "C"
         "Passing" -> Print
     else
@@ -544,7 +544,38 @@ while (counter < 5)
 // Loop complete!
 // Final counter = 5.00</div>
 
+        <h3>For Loop</h3>
+        <p>A cleaner syntax with initialization, condition, and increment in one line:</p>
+        <div class="code-block">// COMPLETE EXAMPLE: For Loop
+// Save as: for_loop.ouro
+
+"=== For Loop Demo ==="  -> Print
+
+"Counting 0 to 4:" -> Print
+for i = 0, i < 5, i++
+    "i = " + i -> Print
+
+"" -> Print
+"Sum of 1 to 5:" -> Print
+sum := 0
+for n = 1, n ≤ 5, n++
+    sum = sum + n
+"Total: " + sum -> Print
+
+// Expected Output:
+// === For Loop Demo ===
+// Counting 0 to 4:
+// i = 0.00
+// i = 1.00
+// i = 2.00
+// i = 3.00
+// i = 4.00
+//
+// Sum of 1 to 5:
+// Total: 15.00</div>
+
         <h3>Comparison Operators</h3>
+        <p><strong>Important:</strong> Use Unicode <code>≥</code> and <code>≤</code> for greater/less-or-equal comparisons.</p>
         <table class="table">
           <thead>
             <tr><th>Operator</th><th>Meaning</th></tr>

@@ -665,7 +665,7 @@ Store(transformed)
 // Save as: factorial.ouro
 
 Flow Factorial(n)
-    if (n <= 1)
+    if (n ≤ 1)
         return 1
     
     sub := Factorial(n - 1)
@@ -794,8 +794,8 @@ else
 goldCoins := 50
 
 Flow IsValid(gold, request)
-    "Checking if " + gold + " >= " + request -> Print
-    if (gold >= request)
+    "Checking if " + gold + " ≥ " + request -> Print
+    if (gold ≥ request)
         return true
     return false
 
@@ -834,12 +834,12 @@ DeductGold(goldCoins, 100)
 // Starting balance: 50.00
 //
 // --- Attempting to spend 20 gold ---
-// Checking if 50.00 >= 20.00
+// Checking if 50.00 ≥ 20.00
 // Gold deducted! New balance: 30.00
 // [LOG] Transaction successful
 //
 // --- Attempting to spend 100 gold ---
-// Checking if 30.00 >= 100.00
+// Checking if 30.00 ≥ 100.00
 // [LOG] Transaction failed - insufficient funds
 //
 // --- Final balance: 30.00 ---</div>
