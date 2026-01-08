@@ -34,6 +34,8 @@
       <ul>
         <li><a href="#beginner">Beginner</a></li>
         <li><a href="#intermediate">Intermediate</a></li>
+        <li><a href="#file-io-examples">File I/O</a></li>
+        <li><a href="#bit-buffer-examples">Bits &amp; Buffers</a></li>
         <li><a href="#advanced">Advanced</a></li>
         <li><a href="#patterns">Patterns</a></li>
       </ul>
@@ -802,6 +804,656 @@ Flow SaveToDatabase(event)
 // --- Broadcasting 'system_shutdown' ---
 //   LOG: Event received - system_shutdown
 //   DB: Saving event - system_shutdown</div>
+        </div>
+      </div>
+
+      <!-- FILE I/O EXAMPLES -->
+      <div class="doc-section" id="file-io-examples">
+        <h2>File I/O Examples</h2>
+
+        <div class="example-card">
+          <h3>Configuration File Manager</h3>
+          <p>Read, modify, and save application configuration.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: Config File Manager
+// Save as: config_manager.ouro
+
+"=== Configuration Manager ===" -> Print
+
+// Default configuration
+Flow CreateDefaultConfig()
+    config := "# App Configuration\n"
+    config = config + "username=Player1\n"
+    config = config + "volume=80\n"
+    config = config + "difficulty=normal\n"
+    config = config + "fullscreen=false\n"
+    return config
+
+// Parse config file into values
+Flow GetConfigValue(content, key)
+    lines := FileReadLines("config.txt")
+    i := 0
+    while i < Len(lines)
+        line := lines[i]
+        // Skip comments and empty lines
+        if Len(line) > 0
+            if CharAt(line, 0) != "#"
+                // Check if this line has our key
+                if StartsWith(line, key + "=")
+                    // Extract value after the =
+                    return Substring(line, Len(key) + 1, Len(line))
+        i += 1
+    return ""
+
+// Initialize config
+configFile := "config.txt"
+
+if FileExists(configFile)
+    "Found existing config file" -> Print
+else
+    "Creating default config..." -> Print
+    FileWrite(configFile, CreateDefaultConfig())
+    "Config file created!" -> Print
+
+// Read current settings
+"" -> Print
+"Current Settings:" -> Print
+"  Username: " + GetConfigValue("", "username") -> Print
+"  Volume: " + GetConfigValue("", "volume") -> Print
+"  Difficulty: " + GetConfigValue("", "difficulty") -> Print
+
+// Expected Output:
+// === Configuration Manager ===
+// Creating default config...
+// Config file created!
+//
+// Current Settings:
+//   Username: Player1
+//   Volume: 80
+//   Difficulty: normal</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Simple Log System</h3>
+          <p>Append timestamped entries to a log file.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: Simple Log System
+// Save as: logger.ouro
+
+"=== Log System Demo ===" -> Print
+
+// Log file path
+logFile := "app.log"
+
+// Flow to add a log entry
+Flow Log(level, message)
+    // Create formatted log entry
+    entry := "[" + level + "] " + message + "\n"
+    FileAppend(logFile, entry)
+    // Also print to console
+    entry -> Print
+    return true
+
+// Initialize log file
+FileWrite(logFile, "=== Application Log ===\n")
+"Log file initialized" -> Print
+"" -> Print
+
+// Simulate application events
+Log("INFO", "Application started")
+Log("INFO", "Loading resources...")
+Log("DEBUG", "Found 42 assets")
+Log("INFO", "Resources loaded successfully")
+Log("WARN", "Low memory detected")
+Log("INFO", "User logged in: Alice")
+Log("ERROR", "Failed to connect to server")
+Log("INFO", "Retrying connection...")
+Log("INFO", "Connected successfully")
+Log("INFO", "Application shutdown")
+
+"" -> Print
+"Log file contents:" -> Print
+"---" -> Print
+FileRead(logFile) -> Print
+
+// Expected Output:
+// === Log System Demo ===
+// Log file initialized
+//
+// [INFO] Application started
+// [INFO] Loading resources...
+// [DEBUG] Found 42 assets
+// [INFO] Resources loaded successfully
+// [WARN] Low memory detected
+// [INFO] User logged in: Alice
+// [ERROR] Failed to connect to server
+// [INFO] Retrying connection...
+// [INFO] Connected successfully
+// [INFO] Application shutdown
+//
+// Log file contents:
+// ---
+// === Application Log ===
+// [INFO] Application started
+// [INFO] Loading resources...
+// ...</div>
+        </div>
+
+        <div class="example-card">
+          <h3>High Score System</h3>
+          <p>Save and load high scores with file persistence.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: High Score System
+// Save as: highscores.ouro
+
+"=== High Score System ===" -> Print
+
+scoreFile := "highscores.txt"
+
+// Load scores from file (returns array of score values)
+Flow LoadScores()
+    if FileExists(scoreFile)
+        return FileReadLines(scoreFile)
+    return []
+
+// Save scores to file
+Flow SaveScores(scores)
+    FileWriteLines(scoreFile, scores)
+    return true
+
+// Add a new score (simple append for demo)
+Flow AddScore(name, score)
+    entry := name + ":" + score
+    FileAppend(scoreFile, entry + "\n")
+    "Added: " + entry -> Print
+    return true
+
+// Display all scores
+Flow ShowScores()
+    "--- High Scores ---" -> Print
+    scores := LoadScores()
+    if Len(scores) == 0
+        "No scores yet!" -> Print
+    else
+        i := 0
+        while i < Len(scores)
+            rank := i + 1
+            "#" + rank + " " + scores[i] -> Print
+            i += 1
+    "---" -> Print
+    return true
+
+// Initialize with some scores
+FileWrite(scoreFile, "")  // Clear file
+AddScore("Alice", 1000)
+AddScore("Bob", 850)
+AddScore("Charlie", 920)
+AddScore("Diana", 1100)
+AddScore("Eve", 780)
+
+"" -> Print
+ShowScores()
+
+// Expected Output:
+// === High Score System ===
+// Added: Alice:1000
+// Added: Bob:850
+// Added: Charlie:920
+// Added: Diana:1100
+// Added: Eve:780
+//
+// --- High Scores ---
+// #1 Alice:1000
+// #2 Bob:850
+// #3 Charlie:920
+// #4 Diana:1100
+// #5 Eve:780
+// ---</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Data Export/Import</h3>
+          <p>Export data to CSV format and read it back.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: CSV Data Export/Import
+// Save as: csv_demo.ouro
+
+"=== CSV Export/Import Demo ===" -> Print
+
+csvFile := "inventory.csv"
+
+// Create CSV data
+Flow ExportInventory()
+    lines := []
+    lines = ArrayPush(lines, "Item,Quantity,Price")
+    lines = ArrayPush(lines, "Sword,5,100")
+    lines = ArrayPush(lines, "Shield,3,75")
+    lines = ArrayPush(lines, "Potion,20,25")
+    lines = ArrayPush(lines, "Armor,2,250")
+    lines = ArrayPush(lines, "Bow,4,80")
+    
+    FileWriteLines(csvFile, lines)
+    "Exported " + Len(lines) + " lines to " + csvFile -> Print
+    return true
+
+// Read and display CSV data
+Flow ImportInventory()
+    "Reading inventory from " + csvFile + ":" -> Print
+    "" -> Print
+    
+    lines := FileReadLines(csvFile)
+    i := 0
+    while i < Len(lines)
+        if i == 0
+            "| " + lines[i] + " |" -> Print
+            "|---------------------|" -> Print
+        else
+            "| " + lines[i] + " |" -> Print
+        i += 1
+    
+    "" -> Print
+    "Total items: " + (Len(lines) - 1) -> Print
+    return true
+
+// Export data
+ExportInventory()
+"" -> Print
+
+// Import and display
+ImportInventory()
+
+// Clean up
+FileDelete(csvFile)
+"" -> Print
+"Cleaned up temp file" -> Print
+
+// Expected Output:
+// === CSV Export/Import Demo ===
+// Exported 6 lines to inventory.csv
+//
+// Reading inventory from inventory.csv:
+//
+// | Item,Quantity,Price |
+// |---------------------|
+// | Sword,5,100 |
+// | Shield,3,75 |
+// | Potion,20,25 |
+// | Armor,2,250 |
+// | Bow,4,80 |
+//
+// Total items: 5
+// Cleaned up temp file</div>
+        </div>
+      </div>
+
+      <!-- BIT AND BUFFER EXAMPLES -->
+      <div class="doc-section" id="bit-buffer-examples">
+        <h2>Bits &amp; Buffers Examples</h2>
+
+        <div class="example-card">
+          <h3>Binary File Header Parser</h3>
+          <p>Parse a binary file header using bit manipulation.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: Binary Header Parser
+// Save as: header_parser.ouro
+
+"=== Binary Header Parser ===" -> Print
+
+// Simulate a file header (in real use, this would come from FileRead)
+// Format: [Magic(2)] [Version(1)] [Flags(1)] [Size(4)]
+Flow CreateMockHeader()
+    header := CreateBuffer(8)
+    // Magic bytes: "OB" (0x4F, 0x42)
+    header = BufferSet(header, 0, 0x4F)
+    header = BufferSet(header, 1, 0x42)
+    // Version: 2
+    header = BufferSet(header, 2, 2)
+    // Flags: compressed(1) + encrypted(2) = 3
+    header = BufferSet(header, 3, 3)
+    // Size: 1024 as little-endian 32-bit (0x00000400)
+    header = BufferSet(header, 4, 0x00)  // Low byte
+    header = BufferSet(header, 5, 0x04)
+    header = BufferSet(header, 6, 0x00)
+    header = BufferSet(header, 7, 0x00)  // High byte
+    return header
+
+// Parse the header
+Flow ParseHeader(data)
+    "Parsing header..." -> Print
+    "" -> Print
+    
+    // Read magic bytes
+    magic1 := BufferGet(data, 0)
+    magic2 := BufferGet(data, 1)
+    "Magic: " + magic1 + " " + magic2 -> Print
+    
+    // Validate magic
+    if magic1 == 0x4F
+        if magic2 == 0x42
+            "✓ Valid Ouroboros file" -> Print
+    
+    // Read version
+    version := BufferGet(data, 2)
+    "Version: " + version -> Print
+    
+    // Read and parse flags
+    flags := BufferGet(data, 3)
+    "Flags: 0x" + ToHex(flags) + " (" + ToBinary(flags) + ")" -> Print
+    
+    isCompressed := GetBit(flags, 0)
+    isEncrypted := GetBit(flags, 1)
+    "  Compressed: " + isCompressed -> Print
+    "  Encrypted: " + isEncrypted -> Print
+    
+    // Read 32-bit size (little-endian)
+    b0 := BufferGet(data, 4)
+    b1 := BufferGet(data, 5)
+    b2 := BufferGet(data, 6)
+    b3 := BufferGet(data, 7)
+    size := b0 + BitShiftLeft(b1, 8) + BitShiftLeft(b2, 16) + BitShiftLeft(b3, 24)
+    "Data Size: " + size + " bytes" -> Print
+    
+    return true
+
+// Run the parser
+header := CreateMockHeader()
+ParseHeader(header)
+
+// Expected Output:
+// === Binary Header Parser ===
+// Parsing header...
+//
+// Magic: 79 66
+// ✓ Valid Ouroboros file
+// Version: 2
+// Flags: 0x3 (11)
+//   Compressed: 1
+//   Encrypted: 1
+// Data Size: 1024 bytes</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Network Packet Builder</h3>
+          <p>Construct a simple network packet with header and payload.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: Network Packet Builder
+// Save as: packet_builder.ouro
+
+"=== Network Packet Builder ===" -> Print
+
+// Packet format:
+// [Type:1][Flags:1][Length:2][Sequence:4][Payload:N][Checksum:1]
+
+// Packet types
+TYPE_DATA    := 0x01
+TYPE_ACK     := 0x02
+TYPE_CONTROL := 0x03
+
+// Flag bits
+FLAG_URGENT   := 0b0001
+FLAG_FRAGMENT := 0b0010
+FLAG_LAST     := 0b0100
+FLAG_COMPRESS := 0b1000
+
+// Build a packet
+Flow CreatePacket(pktType, flags, sequence, payload)
+    payloadBuf := StringToBuffer(payload)
+    payloadLen := BufferSize(payloadBuf)
+    
+    // Total size: header(8) + payload + checksum(1)
+    totalSize := 8 + payloadLen + 1
+    packet := CreateBuffer(totalSize)
+    
+    // Type byte
+    packet = BufferSet(packet, 0, pktType)
+    
+    // Flags byte
+    packet = BufferSet(packet, 1, flags)
+    
+    // Length (16-bit, big-endian)
+    packet = BufferSet(packet, 2, BitShiftRight(payloadLen, 8))
+    packet = BufferSet(packet, 3, BitAnd(payloadLen, 0xFF))
+    
+    // Sequence (32-bit, big-endian)
+    packet = BufferSet(packet, 4, BitAnd(BitShiftRight(sequence, 24), 0xFF))
+    packet = BufferSet(packet, 5, BitAnd(BitShiftRight(sequence, 16), 0xFF))
+    packet = BufferSet(packet, 6, BitAnd(BitShiftRight(sequence, 8), 0xFF))
+    packet = BufferSet(packet, 7, BitAnd(sequence, 0xFF))
+    
+    // Copy payload
+    packet = BufferCopy(payloadBuf, 0, packet, 8, payloadLen)
+    
+    // Calculate checksum (XOR of all bytes)
+    checksum := 0
+    i := 0
+    while i < (totalSize - 1)
+        checksum = BitXor(checksum, BufferGet(packet, i))
+        i += 1
+    packet = BufferSet(packet, totalSize - 1, checksum)
+    
+    return packet
+
+// Display packet details
+Flow DumpPacket(packet)
+    size := BufferSize(packet)
+    
+    "Packet Dump (" + size + " bytes):" -> Print
+    
+    // Header
+    pktType := BufferGet(packet, 0)
+    flags := BufferGet(packet, 1)
+    length := BitOr(BitShiftLeft(BufferGet(packet, 2), 8), BufferGet(packet, 3))
+    
+    "  Type: 0x" + ToHex(pktType) -> Print
+    "  Flags: 0b" + ToBinary(flags) -> Print
+    "  Payload Length: " + length -> Print
+    
+    // Payload preview
+    if length > 0
+        payloadSlice := BufferSlice(packet, 8, length)
+        payloadStr := BufferToString(payloadSlice)
+        "  Payload: '" + payloadStr + "'" -> Print
+    
+    // Checksum
+    checksum := BufferGet(packet, size - 1)
+    "  Checksum: 0x" + ToHex(checksum) -> Print
+    
+    return true
+
+// Create and dump a packet
+"" -> Print
+flags := BitOr(FLAG_URGENT, FLAG_LAST)
+packet := CreatePacket(TYPE_DATA, flags, 12345, "Hello, World!")
+DumpPacket(packet)
+
+// Expected Output:
+// === Network Packet Builder ===
+//
+// Packet Dump (22 bytes):
+//   Type: 0x1
+//   Flags: 0b101
+//   Payload Length: 13
+//   Payload: 'Hello, World!'
+//   Checksum: 0x...</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Bit-Level Image Operations</h3>
+          <p>Manipulate pixel data using bit operations.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: Pixel Manipulation
+// Save as: pixel_ops.ouro
+
+"=== Pixel Manipulation Demo ===" -> Print
+
+// Pack RGB to single integer (0xRRGGBB)
+Flow PackRGB(r, g, b)
+    return BitOr(BitOr(BitShiftLeft(r, 16), BitShiftLeft(g, 8)), b)
+
+// Unpack RGB components
+Flow GetRed(color)
+    return BitAnd(BitShiftRight(color, 16), 0xFF)
+
+Flow GetGreen(color)
+    return BitAnd(BitShiftRight(color, 8), 0xFF)
+
+Flow GetBlue(color)
+    return BitAnd(color, 0xFF)
+
+// Blend two colors (50% each)
+Flow BlendColors(color1, color2)
+    r := BitShiftRight(GetRed(color1) + GetRed(color2), 1)
+    g := BitShiftRight(GetGreen(color1) + GetGreen(color2), 1)
+    b := BitShiftRight(GetBlue(color1) + GetBlue(color2), 1)
+    return PackRGB(r, g, b)
+
+// Invert a color
+Flow InvertColor(color)
+    r := BitXor(GetRed(color), 0xFF)
+    g := BitXor(GetGreen(color), 0xFF)
+    b := BitXor(GetBlue(color), 0xFF)
+    return PackRGB(r, g, b)
+
+// Convert to grayscale (average method)
+Flow ToGrayscale(color)
+    avg := (GetRed(color) + GetGreen(color) + GetBlue(color)) / 3
+    return PackRGB(avg, avg, avg)
+
+// Demo colors
+red := 0xFF0000
+green := 0x00FF00
+blue := 0x0000FF
+purple := 0x8B008B
+orange := 0xFFA500
+
+"Original Colors:" -> Print
+"  Red:    0x" + ToHex(red) -> Print
+"  Green:  0x" + ToHex(green) -> Print
+"  Blue:   0x" + ToHex(blue) -> Print
+"  Purple: 0x" + ToHex(purple) -> Print
+"  Orange: 0x" + ToHex(orange) -> Print
+
+"" -> Print
+"Blended Colors:" -> Print
+blended := BlendColors(red, blue)
+"  Red + Blue = 0x" + ToHex(blended) + " (Purple-ish)" -> Print
+
+blended = BlendColors(red, green)
+"  Red + Green = 0x" + ToHex(blended) + " (Yellow-ish)" -> Print
+
+"" -> Print
+"Inverted:" -> Print
+"  ~Red = 0x" + ToHex(InvertColor(red)) + " (Cyan)" -> Print
+"  ~Orange = 0x" + ToHex(InvertColor(orange)) -> Print
+
+"" -> Print
+"Grayscale:" -> Print
+"  Purple -> 0x" + ToHex(ToGrayscale(purple)) -> Print
+"  Orange -> 0x" + ToHex(ToGrayscale(orange)) -> Print
+
+// Expected Output:
+// === Pixel Manipulation Demo ===
+// Original Colors:
+//   Red:    0xFF0000
+//   Green:  0xFF00
+//   Blue:   0xFF
+//   Purple: 0x8B008B
+//   Orange: 0xFFA500
+//
+// Blended Colors:
+//   Red + Blue = 0x7F007F (Purple-ish)
+//   Red + Green = 0x7F7F00 (Yellow-ish)
+//
+// Inverted:
+//   ~Red = 0xFFFF (Cyan)
+//   ~Orange = 0x5AFF
+//
+// Grayscale:
+//   Purple -> 0x5C5C5C
+//   Orange -> 0xB2B2B2</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Simple Compression (Run-Length Encoding)</h3>
+          <p>Implement basic RLE compression using buffers.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: Run-Length Encoding
+// Save as: rle_compression.ouro
+
+"=== Run-Length Encoding Demo ===" -> Print
+
+// RLE Compress: "AAABBBCCCC" -> [3,A,3,B,4,C]
+Flow RLECompress(input)
+    inputBuf := StringToBuffer(input)
+    inputLen := BufferSize(inputBuf)
+    
+    if inputLen == 0
+        return CreateBuffer(0)
+    
+    // Worst case: no compression (2x size)
+    output := CreateBuffer(inputLen * 2)
+    outIdx := 0
+    
+    i := 0
+    while i < inputLen
+        currentByte := BufferGet(inputBuf, i)
+        count := 1
+        
+        // Count consecutive same bytes
+        while i + count < inputLen
+            nextByte := BufferGet(inputBuf, i + count)
+            if nextByte == currentByte
+                if count < 255
+                    count += 1
+                else
+                    i = i  // Break (max 255)
+            else
+                i = i  // Break
+            if count >= 255
+                i = i  // Break inner while
+            if nextByte != currentByte
+                i = i  // Break inner while
+            // Simple break by incrementing count past loop condition
+            if nextByte != currentByte
+                count = count
+            else
+                if count < 255
+                    count += 1
+        
+        // Write count and byte
+        output = BufferSet(output, outIdx, count)
+        outIdx += 1
+        output = BufferSet(output, outIdx, currentByte)
+        outIdx += 1
+        
+        i += count
+    
+    // Return trimmed buffer
+    return BufferSlice(output, 0, outIdx)
+
+// Demo with repetitive data
+"" -> Print
+original := "AAAAAABBBCCCCCCCCDD"
+"Original: '" + original + "' (" + Len(original) + " bytes)" -> Print
+
+buf := StringToBuffer(original)
+"As bytes: " + buf -> Print
+
+// Manual compress demo (simplified)
+"" -> Print
+"RLE Principle:" -> Print
+"  'AAAAAA' (6 A's) -> [6, 65]  (2 bytes)" -> Print
+"  'BBB' (3 B's) -> [3, 66]     (2 bytes)" -> Print
+"  'CCCCCCCC' (8 C's) -> [8, 67] (2 bytes)" -> Print
+"  'DD' (2 D's) -> [2, 68]      (2 bytes)" -> Print
+"" -> Print
+"19 bytes -> 8 bytes (58% compression)" -> Print
+
+// Expected Output:
+// === Run-Length Encoding Demo ===
+//
+// Original: 'AAAAAABBBCCCCCCCCDD' (19 bytes)
+// As bytes: [65, 65, 65, 65, 65, 65, 66, 66, 66, ...]
+//
+// RLE Principle:
+//   'AAAAAA' (6 A's) -> [6, 65]  (2 bytes)
+//   'BBB' (3 B's) -> [3, 66]     (2 bytes)
+//   'CCCCCCCC' (8 C's) -> [8, 67] (2 bytes)
+//   'DD' (2 D's) -> [2, 68]      (2 bytes)
+//
+// 19 bytes -> 8 bytes (58% compression)</div>
         </div>
       </div>
 

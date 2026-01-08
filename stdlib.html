@@ -35,10 +35,14 @@
         <li><a href="#io">I/O Functions</a></li>
         <li><a href="#console-input">Console Input</a></li>
         <li><a href="#console-utils">Console Utilities</a></li>
+        <li><a href="#file-io">File I/O</a></li>
         <li><a href="#math">Math Operations</a></li>
         <li><a href="#arrays">Array Operations</a></li>
         <li><a href="#string-funcs">String Functions</a></li>
+        <li><a href="#bit-manipulation">Bit Manipulation</a></li>
+        <li><a href="#buffers">Buffers &amp; Memory</a></li>
         <li><a href="#flow-control">Flow Control</a></li>
+        <li><a href="#build-exe">Building Executables</a></li>
       </ul>
     </aside>
 
@@ -175,6 +179,181 @@ Pause("Press Enter to continue...")
 // Pause without prompt
 "Ready?" -> Print
 Pause()</div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="file-io">
+        <h2>File I/O</h2>
+        <p>Functions for reading from and writing to files on the filesystem.</p>
+
+        <div class="card">
+          <h3>FileRead</h3>
+          <p>Read the entire contents of a text file into a string.</p>
+          <div class="code-block">// Read entire file contents
+content := FileRead("config.txt")
+"File contents:" -> Print
+content -> Print
+
+// Check if file was read successfully
+if content != ""
+    "File loaded successfully!" -> Print
+else
+    "File is empty or could not be read" -> Print</div>
+        </div>
+
+        <div class="card">
+          <h3>FileWrite</h3>
+          <p>Write a string to a file, creating or overwriting it.</p>
+          <div class="code-block">// Write text to a file (overwrites existing content)
+FileWrite("output.txt", "Hello, World!")
+
+// Write multiple lines using newline characters
+data := "Line 1\nLine 2\nLine 3"
+FileWrite("multiline.txt", data)
+
+// Save program data
+score := 1000
+name := "Player1"
+saveData := name + "," + score
+FileWrite("save.txt", saveData)</div>
+        </div>
+
+        <div class="card">
+          <h3>FileAppend</h3>
+          <p>Append text to the end of an existing file without overwriting.</p>
+          <div class="code-block">// Create a log file
+FileWrite("events.log", "=== Event Log ===\n")
+
+// Append events as they happen
+FileAppend("events.log", "Event 1: User logged in\n")
+FileAppend("events.log", "Event 2: Game started\n")
+FileAppend("events.log", "Event 3: Level completed\n")
+
+// Useful for keeping records over time
+timestamp := "2026-01-07"
+FileAppend("history.txt", timestamp + ": Task completed\n")</div>
+        </div>
+
+        <div class="card">
+          <h3>FileExists</h3>
+          <p>Check if a file exists at the specified path. Returns true or false.</p>
+          <div class="code-block">// Check before reading
+if FileExists("config.txt")
+    config := FileRead("config.txt")
+    "Config loaded!" -> Print
+else
+    "No config file found, using defaults" -> Print
+
+// Check before overwriting
+if FileExists("important.txt")
+    "Warning: File already exists!" -> Print
+    confirm := Confirm("Overwrite?")
+    if confirm
+        FileWrite("important.txt", newData)</div>
+        </div>
+
+        <div class="card">
+          <h3>FileDelete</h3>
+          <p>Delete a file from the filesystem.</p>
+          <div class="code-block">// Delete a temporary file
+FileDelete("temp.txt")
+
+// Safe delete with existence check
+if FileExists("old_save.txt")
+    FileDelete("old_save.txt")
+    "Old save file removed" -> Print</div>
+        </div>
+
+        <div class="card">
+          <h3>FileReadLines</h3>
+          <p>Read a file and split it into an array of lines.</p>
+          <div class="code-block">// Read file as array of lines
+lines := FileReadLines("data.txt")
+
+// Process each line
+i := 0
+while i < Len(lines)
+    "Line " + i + ": " + lines[i] -> Print
+    i += 1
+
+// Useful for CSV-like data
+records := FileReadLines("users.csv")
+// Each element is one line from the file</div>
+        </div>
+
+        <div class="card">
+          <h3>FileWriteLines</h3>
+          <p>Write an array of strings as separate lines to a file.</p>
+          <div class="code-block">// Create array of lines
+lines := ["Header", "Data 1", "Data 2", "Data 3"]
+
+// Write all lines at once
+FileWriteLines("output.txt", lines)
+
+// Result in file:
+// Header
+// Data 1
+// Data 2
+// Data 3</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Complete File I/O Example</h3>
+          <p>A working example demonstrating all file operations.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: File I/O Operations
+// Save as: file_demo.ouro
+
+"=== File I/O Demo ===" -> Print
+
+// 1. Write a new file
+FileWrite("demo.txt", "Hello from Ouroboros!")
+"Created demo.txt" -> Print
+
+// 2. Check if it exists
+if FileExists("demo.txt")
+    "✓ File exists!" -> Print
+
+// 3. Read it back
+content := FileRead("demo.txt")
+"Content: " + content -> Print
+
+// 4. Append more data
+FileAppend("demo.txt", "\nThis line was appended!")
+"Appended to file" -> Print
+
+// 5. Read again to see both lines
+content = FileRead("demo.txt")
+"Updated content:\n" + content -> Print
+
+// 6. Read as separate lines
+lines := FileReadLines("demo.txt")
+"Number of lines: " + Len(lines) -> Print
+
+// 7. Write array of lines
+data := ["Name: Alice", "Score: 1000", "Level: 5"]
+FileWriteLines("player.txt", data)
+"Created player.txt with " + Len(data) + " lines" -> Print
+
+// 8. Clean up
+FileDelete("demo.txt")
+FileDelete("player.txt")
+"Cleaned up temp files" -> Print
+
+"=== Demo Complete ===" -> Print
+
+// Expected Output:
+// === File I/O Demo ===
+// Created demo.txt
+// ✓ File exists!
+// Content: Hello from Ouroboros!
+// Appended to file
+// Updated content:
+// Hello from Ouroboros!
+// This line was appended!
+// Number of lines: 2
+// Created player.txt with 3 lines
+// Cleaned up temp files
+// === Demo Complete ===</div>
         </div>
       </div>
 
@@ -405,6 +584,427 @@ IsAlpha("Hello1")   // false</div>
         </div>
       </div>
 
+      <div class="doc-section" id="bit-manipulation">
+        <h2>Bit Manipulation</h2>
+        <p>Functions for performing bitwise operations on integers. Essential for working with flags, permissions, binary protocols, and low-level data manipulation.</p>
+
+        <div class="grid">
+          <div class="card">
+            <h3>Bitwise Logic</h3>
+            <p>Perform AND, OR, XOR, and NOT operations on integer values.</p>
+            <div class="code-block">// BitAnd - both bits must be 1
+BitAnd(12, 10)     // 12 = 1100, 10 = 1010
+                    // Result: 8 (1000)
+
+// BitOr - either bit can be 1
+BitOr(12, 10)      // Result: 14 (1110)
+
+// BitXor - bits must differ
+BitXor(12, 10)     // Result: 6 (0110)
+
+// BitNot - flip all bits
+BitNot(5)          // Result: -6</div>
+          </div>
+
+          <div class="card">
+            <h3>Bit Shifting</h3>
+            <p>Shift bits left or right to multiply/divide by powers of 2.</p>
+            <div class="code-block">// Shift left (multiply by 2^n)
+BitShiftLeft(1, 4)    // 1 << 4 = 16
+BitShiftLeft(3, 2)    // 3 << 2 = 12
+
+// Shift right (divide by 2^n)
+BitShiftRight(16, 2)  // 16 >> 2 = 4
+BitShiftRight(100, 1) // 100 >> 1 = 50</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>GetBit / SetBit</h3>
+          <p>Read and modify individual bits at specific positions (0-indexed from right).</p>
+          <div class="code-block">// GetBit(value, position) - returns 0 or 1
+GetBit(5, 0)        // 5 = 101, bit 0 = 1
+GetBit(5, 1)        // 5 = 101, bit 1 = 0
+GetBit(5, 2)        // 5 = 101, bit 2 = 1
+
+// SetBit(value, position, bit) - returns modified value
+SetBit(0, 0, 1)     // Set bit 0: Result = 1
+SetBit(0, 2, 1)     // Set bit 2: Result = 4
+SetBit(5, 0, 0)     // Clear bit 0 of 5: Result = 4</div>
+        </div>
+
+        <div class="card">
+          <h3>CountBits</h3>
+          <p>Count the number of 1-bits set in a value (population count).</p>
+          <div class="code-block">CountBits(0)        // 0 (no bits set)
+CountBits(1)        // 1 (one bit set)
+CountBits(7)        // 3 (111 binary)
+CountBits(255)      // 8 (11111111 binary)
+CountBits(0xFF00)   // 8</div>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <h3>Number Conversions</h3>
+            <p>Convert numbers to hex or binary string representation.</p>
+            <div class="code-block">// ToHex(value) - convert to hex string
+ToHex(255)          // "FF"
+ToHex(4096)         // "1000"
+ToHex(0xDEADBEEF)   // "DEADBEEF"
+
+// ToBinary(value) - convert to binary string
+ToBinary(5)         // "101"
+ToBinary(255)       // "11111111"
+ToBinary(1024)      // "10000000000"</div>
+          </div>
+
+          <div class="card">
+            <h3>String Parsing</h3>
+            <p>Parse hex or binary strings into numbers.</p>
+            <div class="code-block">// FromHex(string) - parse hex string
+FromHex("FF")       // 255
+FromHex("0xFF")     // 255 (0x prefix ok)
+FromHex("DEAD")     // 57005
+
+// FromBinary(string) - parse binary string
+FromBinary("1010")     // 10
+FromBinary("0b1010")   // 10 (0b prefix ok)
+FromBinary("11111111") // 255</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Hex &amp; Binary Literals</h3>
+          <p>Ouroboros supports hex and binary number literals directly in code.</p>
+          <div class="code-block">// Hexadecimal literals (0x prefix)
+red := 0xFF0000
+green := 0x00FF00
+blue := 0x0000FF
+color := 0xDEADBEEF
+
+// Binary literals (0b prefix)
+flags := 0b1010
+mask := 0b11110000
+byte := 0b11111111
+
+// Mix with decimal
+combined := 0xFF + 100 + 0b1010</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Practical Example: Permission Flags</h3>
+          <p>Using bit manipulation for a permission system.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: Permission Flags System
+// Save as: permissions.ouro
+
+"=== Permission Flags Demo ===" -> Print
+
+// Define permission bits (powers of 2)
+READ    := 0b0001   // Bit 0 = 1
+WRITE   := 0b0010   // Bit 1 = 2
+EXECUTE := 0b0100   // Bit 2 = 4
+ADMIN   := 0b1000   // Bit 3 = 8
+
+// Start with no permissions
+permissions := 0
+"Initial: " + ToBinary(permissions) -> Print
+
+// Grant permissions using OR
+permissions = BitOr(permissions, READ)
+permissions = BitOr(permissions, WRITE)
+"After READ+WRITE: " + ToBinary(permissions) -> Print
+
+// Check permissions using AND
+hasRead := BitAnd(permissions, READ) > 0
+hasAdmin := BitAnd(permissions, ADMIN) > 0
+"Has READ: " + hasRead -> Print
+"Has ADMIN: " + hasAdmin -> Print
+
+// Revoke permission using AND + NOT
+permissions = BitAnd(permissions, BitNot(WRITE))
+"After revoking WRITE: " + ToBinary(permissions) -> Print
+
+// Toggle permission using XOR
+permissions = BitXor(permissions, ADMIN)
+"After toggling ADMIN: " + ToBinary(permissions) -> Print
+
+// Count active permissions
+"Active permissions: " + CountBits(permissions) -> Print
+
+// Expected Output:
+// === Permission Flags Demo ===
+// Initial: 0
+// After READ+WRITE: 11
+// Has READ: true
+// Has ADMIN: false
+// After revoking WRITE: 1
+// After toggling ADMIN: 1001
+// Active permissions: 2</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Practical Example: RGB Color Packing</h3>
+          <p>Pack and unpack RGB color values into a single integer.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: RGB Color Packing
+// Save as: rgb_colors.ouro
+
+"=== RGB Color Packing ===" -> Print
+
+// Pack RGB values (0-255 each) into one integer
+// Format: 0xRRGGBB (red in high bits, blue in low bits)
+Flow PackRGB(r, g, b)
+    result := BitShiftLeft(r, 16)        // Red to bits 16-23
+    result = BitOr(result, BitShiftLeft(g, 8))  // Green to bits 8-15
+    result = BitOr(result, b)            // Blue to bits 0-7
+    return result
+
+// Unpack integer back to RGB components
+Flow UnpackRed(color)
+    return BitAnd(BitShiftRight(color, 16), 0xFF)
+
+Flow UnpackGreen(color)
+    return BitAnd(BitShiftRight(color, 8), 0xFF)
+
+Flow UnpackBlue(color)
+    return BitAnd(color, 0xFF)
+
+// Test it
+r := 255
+g := 128
+b := 64
+
+packed := PackRGB(r, g, b)
+"Original: RGB(" + r + ", " + g + ", " + b + ")" -> Print
+"Packed:   0x" + ToHex(packed) -> Print
+
+// Unpack and verify
+ur := UnpackRed(packed)
+ug := UnpackGreen(packed)
+ub := UnpackBlue(packed)
+"Unpacked: RGB(" + ur + ", " + ug + ", " + ub + ")" -> Print
+
+// Expected Output:
+// === RGB Color Packing ===
+// Original: RGB(255, 128, 64)
+// Packed:   0xFF8040
+// Unpacked: RGB(255, 128, 64)</div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="buffers">
+        <h2>Buffers &amp; Memory</h2>
+        <p>Buffers provide byte-level memory operations for working with binary data, implementing protocols, or efficient string manipulation.</p>
+
+        <div class="card">
+          <h3>CreateBuffer / BufferSize</h3>
+          <p>Create a new byte buffer and query its size.</p>
+          <div class="code-block">// CreateBuffer(size) - create buffer filled with zeros
+buffer := CreateBuffer(10)    // 10-byte buffer
+"Size: " + BufferSize(buffer) -> Print  // "Size: 10"
+
+// Buffers start with all zeros
+first := BufferGet(buffer, 0)
+first -> Print  // 0</div>
+        </div>
+
+        <div class="card">
+          <h3>BufferGet / BufferSet</h3>
+          <p>Read and write individual bytes at specific indices.</p>
+          <div class="code-block">// Create a buffer
+buf := CreateBuffer(5)
+
+// Set bytes (0-255 values)
+buf = BufferSet(buf, 0, 72)    // 'H'
+buf = BufferSet(buf, 1, 101)   // 'e'
+buf = BufferSet(buf, 2, 108)   // 'l'
+buf = BufferSet(buf, 3, 108)   // 'l'
+buf = BufferSet(buf, 4, 111)   // 'o'
+
+// Read bytes back
+byte0 := BufferGet(buf, 0)     // 72
+byte0 -> Print
+
+// Note: BufferSet returns the modified buffer
+// Always capture the return value!</div>
+        </div>
+
+        <div class="card">
+          <h3>BufferFill</h3>
+          <p>Fill an entire buffer with a single byte value.</p>
+          <div class="code-block">// Create and fill with zeros
+buf := CreateBuffer(100)
+buf = BufferFill(buf, 0)       // Clear to zeros
+
+// Fill with a specific value
+buf = BufferFill(buf, 65)      // Fill with 'A' (ASCII 65)
+str := BufferToString(buf)
+str -> Print  // "AAAAAAAAAA..." (100 A's)</div>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <h3>StringToBuffer</h3>
+            <p>Convert a string to a buffer of ASCII byte values.</p>
+            <div class="code-block">// Convert string to bytes
+text := "Hello!"
+buf := StringToBuffer(text)
+
+"Size: " + BufferSize(buf) -> Print
+// "Size: 6"
+
+// Access individual characters as bytes
+h := BufferGet(buf, 0)  // 72 ('H')
+e := BufferGet(buf, 1)  // 101 ('e')</div>
+          </div>
+
+          <div class="card">
+            <h3>BufferToString</h3>
+            <p>Convert a buffer of bytes back to a string.</p>
+            <div class="code-block">// Create buffer with ASCII values
+buf := CreateBuffer(5)
+buf = BufferSet(buf, 0, 87)   // 'W'
+buf = BufferSet(buf, 1, 111)  // 'o'
+buf = BufferSet(buf, 2, 114)  // 'r'
+buf = BufferSet(buf, 3, 108)  // 'l'
+buf = BufferSet(buf, 4, 100)  // 'd'
+
+text := BufferToString(buf)
+text -> Print  // "World"</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>BufferCopy</h3>
+          <p>Copy bytes from one buffer to another. Parameters: (source, srcOffset, dest, destOffset, length).</p>
+          <div class="code-block">// Create source buffer
+src := StringToBuffer("Hello, World!")
+
+// Create destination buffer
+dst := CreateBuffer(5)
+
+// Copy "World" (bytes 7-11) to destination
+dst = BufferCopy(src, 7, dst, 0, 5)
+
+text := BufferToString(dst)
+text -> Print  // "World"
+
+// Important: Always capture return value!
+// BufferCopy returns the modified destination buffer</div>
+        </div>
+
+        <div class="card">
+          <h3>BufferSlice</h3>
+          <p>Extract a portion of a buffer as a new buffer. Parameters: (buffer, start, length).</p>
+          <div class="code-block">// Original buffer
+original := StringToBuffer("Hello, Ouroboros!")
+
+// Extract "Ouroboros" (starts at index 7, length 9)
+slice := BufferSlice(original, 7, 9)
+
+text := BufferToString(slice)
+text -> Print  // "Ouroboros"
+
+// Slice is a copy - modifying it doesn't affect original
+slice = BufferSet(slice, 0, 88)  // Change 'O' to 'X'
+BufferToString(original) -> Print  // Still "Hello, Ouroboros!"</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Practical Example: XOR Encryption</h3>
+          <p>Implement simple XOR cipher using buffers and bit operations.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: XOR Cipher
+// Save as: xor_cipher.ouro
+
+"=== XOR Cipher Demo ===" -> Print
+
+// XOR encrypt/decrypt (same operation for both!)
+Flow XorCipher(text, key)
+    buf := StringToBuffer(text)
+    i := 0
+    while i < BufferSize(buf)
+        byte := BufferGet(buf, i)
+        encrypted := BitXor(byte, key)
+        buf = BufferSet(buf, i, encrypted)
+        i += 1
+    return BufferToString(buf)
+
+// Original message
+message := "SECRET"
+key := 42
+
+"Original:  '" + message + "'" -> Print
+"Key:       " + key -> Print
+
+// Encrypt
+encrypted := XorCipher(message, key)
+"Encrypted: '" + encrypted + "'" -> Print
+
+// Decrypt (XOR again with same key)
+decrypted := XorCipher(encrypted, key)
+"Decrypted: '" + decrypted + "'" -> Print
+
+// Verify
+if decrypted == message
+    "✅ Cipher works correctly!" -> Print
+
+// Expected Output:
+// === XOR Cipher Demo ===
+// Original:  'SECRET'
+// Key:       42
+// Encrypted: 'yoixo~'
+// Decrypted: 'SECRET'
+// ✅ Cipher works correctly!</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Practical Example: Checksum Calculation</h3>
+          <p>Calculate and verify a simple XOR checksum for data integrity.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: Checksum Calculation
+// Save as: checksum.ouro
+
+"=== Checksum Demo ===" -> Print
+
+// Calculate XOR checksum of a buffer
+Flow CalculateChecksum(dataBuffer)
+    cs := 0
+    idx := 0
+    while idx < BufferSize(dataBuffer)
+        cs = BitXor(cs, BufferGet(dataBuffer, idx))
+        idx += 1
+    return cs
+
+// Original data
+data := StringToBuffer("Hello!")
+checksum := CalculateChecksum(data)
+
+"Data: 'Hello!'" -> Print
+"Checksum: " + checksum + " (hex: 0x" + ToHex(checksum) + ")" -> Print
+
+// Create packet: data + checksum
+packet := CreateBuffer(BufferSize(data) + 1)
+packet = BufferCopy(data, 0, packet, 0, BufferSize(data))
+packet = BufferSet(packet, BufferSize(data), checksum)
+"Packet created with checksum appended" -> Print
+
+// Verify: XOR of all bytes including checksum should be 0
+verification := CalculateChecksum(packet)
+"Verification: " + verification -> Print
+
+if verification == 0
+    "✅ Packet is valid!" -> Print
+else
+    "❌ Packet is corrupted!" -> Print
+
+// Expected Output:
+// === Checksum Demo ===
+// Data: 'Hello!'
+// Checksum: 99 (hex: 0x63)
+// Packet created with checksum appended
+// Verification: 0
+// ✅ Packet is valid!</div>
+        </div>
+      </div>
+
       <div class="doc-section" id="flow-control">
         <h2>Flow Control</h2>
 
@@ -446,6 +1046,124 @@ value -[value > threshold]-> Handler
 
 // Transform value if condition is true
 input -[input > 0 ? input * 2]-> Process</div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="build-exe">
+        <h2>Building Executables</h2>
+        <p>Compile your Ouroboros scripts into standalone Windows executables that run without requiring the Chimera Compiler installed.</p>
+
+        <div class="card">
+          <h3>BuildExe Command</h3>
+          <p>Use the <code>-buildexe</code> flag to compile your project into a standalone executable.</p>
+          <div class="code-block">// Basic usage - builds all .ouro files in current directory
+chimera.exe -buildexe
+
+// Build specific file
+chimera.exe -buildexe MyApp.ouro
+
+// Build with custom output name
+chimera.exe -buildexe -o MyApplication.exe</div>
+        </div>
+
+        <div class="card">
+          <h3>How It Works</h3>
+          <p>The BuildExe feature creates a self-contained executable that includes:</p>
+          <ul class="list">
+            <li><strong>Your compiled bytecode</strong> - All your .ouro scripts are compiled and embedded</li>
+            <li><strong>Support files</strong> - Any .var, .comp, and .ent files are included</li>
+            <li><strong>Runtime</strong> - The Chimera Compiler runtime is bundled in</li>
+          </ul>
+          <p>The resulting .exe can be distributed and run on any Windows machine without needing to install Ouroboros.</p>
+        </div>
+
+        <div class="card">
+          <h3>Project Structure</h3>
+          <p>BuildExe processes your entire project folder. Organize your files like this:</p>
+          <div class="code-block">MyProject/
+├── chimera.exe          // The compiler
+├── main.ouro            // Entry point
+├── utils.ouro           // Additional scripts
+├── types.var            // Variable type definitions
+├── components.comp      // Component definitions
+└── entities.ent         // Entity definitions</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Complete Example: Building a Standalone App</h3>
+          <p>Create a simple application and compile it to an executable.</p>
+          <div class="code-block">// Step 1: Create main.ouro
+"╔═══════════════════════════════════════╗" -> Print
+"║     My Standalone Ouroboros App       ║" -> Print
+"╚═══════════════════════════════════════╝" -> Print
+"" -> Print
+
+name := ReadLine("Enter your name: ")
+"Hello, " + name + "!" -> Print
+"" -> Print
+
+// Simple calculator
+"=== Calculator ===" -> Print
+a := ReadNumber("First number: ")
+b := ReadNumber("Second number: ")
+
+"" -> Print
+"Results:" -> Print
+"  " + a + " + " + b + " = " + (a + b) -> Print
+"  " + a + " - " + b + " = " + (a - b) -> Print
+"  " + a + " * " + b + " = " + (a * b) -> Print
+"  " + a + " / " + b + " = " + (a / b) -> Print
+"" -> Print
+
+Pause("Press Enter to exit...")
+
+// Step 2: Open terminal in project folder and run:
+// chimera.exe -buildexe
+
+// Step 3: Output
+// Building executable...
+// ✓ Embedded main.ouro
+// ✓ Created MyProject.exe
+// Build complete!
+
+// Step 4: Run the standalone executable
+// MyProject.exe
+
+// The app now runs without needing chimera.exe!</div>
+        </div>
+
+        <div class="card">
+          <h3>Distribution</h3>
+          <p>After building, you can distribute your application:</p>
+          <ul class="list">
+            <li>The <code>.exe</code> file is completely standalone</li>
+            <li>No runtime installation required on target machines</li>
+            <li>Works on Windows systems (64-bit)</li>
+            <li>All your code is embedded - users only need the single .exe file</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Build Options</h3>
+          <div class="code-block">// Standard build (uses folder name for output)
+chimera.exe -buildexe
+
+// Custom output filename
+chimera.exe -buildexe -o MyApp.exe
+
+// Build from specific source
+chimera.exe -buildexe src/main.ouro -o dist/app.exe</div>
+        </div>
+
+        <div class="card">
+          <h3>Requirements</h3>
+          <p>To use BuildExe, you need:</p>
+          <ul class="list">
+            <li><strong>chimera.exe</strong> - The Chimera Compiler</li>
+            <li>Windows 64-bit operating system</li>
+            <li>Your .ouro source files in the project folder</li>
+          </ul>
+          <p>No additional tools or compilers are required - the Chimera Compiler handles everything internally using embedded bytecode.</p>
         </div>
       </div>
     </main>
