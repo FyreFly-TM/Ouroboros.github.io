@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Windowing System - Ouroboros</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo"><span class="brand-text">Ouroboros</span></a>
+      <div class="search-container">
+        <div class="search-wrapper">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+          </svg>
+          <input type="text" id="doc-search" class="search-input" placeholder="Search (Ctrl+K)" autocomplete="off" />
+          <div id="search-results" class="search-results"></div>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="getting_started.html">Get Started</a>
+        <a href="examples.html">Examples</a>
+        <a href="flows.html">Flows</a>
+        <a href="domains.html">Domains</a>
+        <a href="reference.html">Reference</a>
+        <a href="rex_aot.html">REX &amp; AOT</a>
+        <a href="arrows.html">Arrows</a>
+        <a href="tokens.html">Tokens</a>
+        <a href="files.html">Files</a>
+        <a href="stdlib.html">Std Lib</a>
+        <a href="windows.html">Windows</a>
+        <a href="downloads.html">Downloads</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="doc-layout">
+    <aside class="doc-panel toc">
+      <h3>Windowing System</h3>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#quick-start">Quick Start</a></li>
+        <li><a href="#idiomatic-patterns">Idiomatic Patterns</a></li>
+        <li><a href="#window-management">Window Management</a></li>
+        <li><a href="#drawing-primitives">Drawing Primitives</a></li>
+        <li><a href="#mouse-input">Mouse Input</a></li>
+        <li><a href="#keyboard-input">Keyboard Input</a></li>
+        <li><a href="#window-state">Window State</a></li>
+        <li><a href="#double-buffering">Double Buffering</a></li>
+        <li><a href="#anchor-system">Anchor System</a></li>
+        <li><a href="#building-ui-library">Building a UI Library</a></li>
+        <li><a href="#interactive-example">Interactive Example</a></li>
+        <li><a href="#ecs-approach">ECS Approach</a></li>
+      </ul>
+    </aside>
+
+    <main class="doc-panel doc-content">
+      <div class="doc-header">
+        <div class="badge">Native GUI</div>
+        <h1>Windowing System</h1>
+        <p>Create interactive native windows with drawing primitives, mouse/keyboard input, and auto-scaling UI.</p>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!--                              OVERVIEW                                   -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div class="doc-section" id="overview">
+        <h2>Overview</h2>
+        <p>The Ouroboros windowing system provides a complete toolkit for building native GUI applications:</p>
+        <ul class="list">
+          <li><strong>Window Management</strong> — Create, resize, move, show, and close windows</li>
+          <li><strong>Drawing Primitives</strong> — Rectangles, rounded rectangles, circles, lines, and text</li>
+          <li><strong>Mouse Input</strong> — Position tracking, button clicks, and hit testing</li>
+          <li><strong>Keyboard Input</strong> — Key press detection</li>
+          <li><strong>Double Buffering</strong> — Flicker-free rendering that persists on resize</li>
+          <li><strong>Anchor System</strong> — Auto-scaling UI that adapts to window size</li>
+        </ul>
+        <div class="card" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-left: 4px solid #0af;">
+          <h3>🎯 Key Features</h3>
+          <p>All drawing is automatically double-buffered — your UI won't flicker or disappear when the window is resized. Mouse and keyboard events are tracked per-frame for responsive interactive applications.</p>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!--                            QUICK START                                  -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div class="doc-section" id="quick-start">
+        <h2>Quick Start</h2>
+        <p>Create an interactive window in just a few lines:</p>
+        <div class="card">
+          <h3>Hello Window</h3>
+          <div class="code-block">// Create and show a window
+win := WindowCreate("Hello Ouroboros", 100, 100, 800, 600)
+WindowSetBackground(win, 30, 30, 35)
+WindowShow(win)
+
+// Draw some content
+WindowDrawText(win, "Hello, World!", 50, 50, 255, 255, 255, 24)
+WindowDrawRoundedRect(win, 50, 100, 200, 50, 8, 0, 122, 204)
+WindowDrawText(win, "Click Me!", 110, 115, 255, 255, 255, 14)
+WindowRefresh(win)
+
+// Main loop - no need for '== true' 
+running := true
+while running
+    WindowPollEvents()
+    
+    // Use compound conditions with &
+    if WindowMouseClicked(win, 0) & WindowMouseInRect(win, 50, 100, 200, 50)
+        "Button clicked!" -> Print
+    
+    Sleep(16)</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!--                       IDIOMATIC PATTERNS                                -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div class="doc-section" id="idiomatic-patterns">
+        <h2>Idiomatic Patterns</h2>
+        <p>Write cleaner, more readable UI code using these Ouroboros conventions:</p>
+
+        <div class="card">
+          <h3>Constants with <code>=:</code></h3>
+          <p>Use <code>=:</code> for values that never change. This makes intent clear and prevents accidental modification:</p>
+          <div class="code-block">// ✅ Good - clearly immutable
+DESIGN_W =: 800
+DESIGN_H =: 600
+TOP_LEFT =: 0
+TOP_RIGHT =: 1
+CENTER =: 4
+
+// ❌ Avoid - looks like it might change
+designW := 800</div>
+        </div>
+
+        <div class="card">
+          <h3>Boolean Conditions</h3>
+          <p>Booleans are already true/false — no need for <code>== true</code>:</p>
+          <div class="code-block">// ✅ Good - direct and clean
+while running
+    if isHovered
+        DrawHoverState()
+
+// ❌ Avoid - redundant comparison
+while running == true
+    if isHovered == true</div>
+        </div>
+
+        <div class="card">
+          <h3>Compound Conditions with <code>&amp;</code> and <code>|</code></h3>
+          <p>Combine conditions instead of nesting <code>if</code> statements:</p>
+          <div class="code-block">// ✅ Good - single compound condition
+if WindowMouseClicked(win, 0) & MouseInRect(mx, my, bx, by, bw, bh)
+    HandleClick()
+
+// ✅ Good - OR for grouping similar cases
+if anchor == TOP_LEFT | anchor == BOTTOM_LEFT
+    return baseX
+
+// ❌ Avoid - nested ifs harder to read
+if WindowMouseClicked(win, 0)
+    if MouseInRect(mx, my, bx, by, bw, bh)
+        HandleClick()</div>
+        </div>
+
+        <div class="card">
+          <h3>For Loops</h3>
+          <p>Use <code>for</code> for indexed iteration with comma-separated clauses:</p>
+          <div class="code-block">// ✅ Idiomatic for loop: init, condition, increment
+for i = 0, i < count, i++
+    DrawButton(buttons[i])
+
+// ✅ Nested array access
+for i = 0, i < 3, i++
+    bx := AnchorX(btns[i][0], btns[i][1], curW)
+    by := AnchorY(btns[i][0], btns[i][2], curH)</div>
+        </div>
+
+        <div class="card">
+          <h3>Compound Assignment</h3>
+          <p>Use <code>+=</code>, <code>-=</code>, <code>++</code>, <code>--</code> for cleaner updates:</p>
+          <div class="code-block">// ✅ Good - concise
+clicks += 1
+score -= damage
+i++
+
+// ❌ Avoid - verbose
+clicks = clicks + 1
+score = score - damage
+i = i + 1</div>
+        </div>
+
+        <div class="card">
+          <h3>Arrow Syntax for Output</h3>
+          <p>Use the fork arrow <code>-></code> for printing and side effects:</p>
+          <div class="code-block">// ✅ Good - data flows to output
+"Button clicked!" -> Print
+"Score: " + score -> Print
+
+// Also works - but arrow is more idiomatic
+Print("Button clicked!")</div>
+        </div>
+
+        <div class="card">
+          <h3>Helper Flows for Hit Testing</h3>
+          <p>Create reusable flows for common UI operations:</p>
+          <div class="code-block">// Reusable bounds check with compound condition
+Flow InBounds(mx, my, x, y, w, h)
+    return (mx > x - 1) & (mx < x + w + 1) & (my > y - 1) & (my < y + h + 1)
+
+// Usage in main loop
+for i = 0, i < buttonCount, i++
+    hovers[i] = InBounds(mx, my, btns[i].x, btns[i].y, btns[i].w, btns[i].h)</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!--                        WINDOW MANAGEMENT                                -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div class="doc-section" id="window-management">
+        <h2>Window Management</h2>
+
+        <div class="card">
+          <h3>WindowCreate(title, x, y, width, height)</h3>
+          <p>Creates a new window and returns its handle ID.</p>
+          <div class="code-block">handle := WindowCreate("My App", 100, 100, 800, 600)</div>
+          <p><strong>Returns:</strong> Integer window handle (use for all other window operations)</p>
+        </div>
+
+        <div class="card">
+          <h3>WindowShow(handle) / WindowHide(handle)</h3>
+          <p>Shows or hides a window without destroying it.</p>
+          <div class="code-block">WindowShow(handle)   // Make visible
+WindowHide(handle)   // Hide from view</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowClose(handle)</h3>
+          <p>Closes and destroys a window, freeing all resources.</p>
+          <div class="code-block">WindowClose(handle)</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowMove(handle, x, y)</h3>
+          <p>Moves a window to a new screen position.</p>
+          <div class="code-block">WindowMove(handle, 200, 150)</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowResize(handle, width, height)</h3>
+          <p>Resizes a window to new dimensions.</p>
+          <div class="code-block">WindowResize(handle, 1024, 768)</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowSetTitle(handle, title)</h3>
+          <p>Changes the window's title bar text.</p>
+          <div class="code-block">WindowSetTitle(handle, "New Title - Unsaved")</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowSetBackground(handle, r, g, b)</h3>
+          <p>Sets the window's background color (RGB 0-255).</p>
+          <div class="code-block">// Dark theme
+WindowSetBackground(handle, 30, 30, 35)
+
+// Light theme
+WindowSetBackground(handle, 245, 245, 250)</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowPollEvents()</h3>
+          <p>Processes pending window events. <strong>Call this every frame</strong> in your main loop to handle input and keep the window responsive.</p>
+          <div class="code-block">while running
+    WindowPollEvents()  // Required every frame!
+    // ... your update and render code ...
+    Sleep(16)</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!--                        DRAWING PRIMITIVES                               -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div class="doc-section" id="drawing-primitives">
+        <h2>Drawing Primitives</h2>
+        <p>All drawing functions render to an off-screen buffer. Call <code>WindowRefresh()</code> to display your drawings.</p>
+
+        <div class="card">
+          <h3>WindowClear(handle)</h3>
+          <p>Clears the drawing buffer to the background color. Call this at the start of each frame before drawing.</p>
+          <div class="code-block">WindowClear(win)  // Clear before drawing new frame</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowRefresh(handle)</h3>
+          <p>Copies the drawing buffer to the screen. Call this after all drawing is complete.</p>
+          <div class="code-block">// Draw everything first
+WindowDrawRect(win, 0, 0, 100, 100, 255, 0, 0)
+WindowDrawText(win, "Hello", 10, 10, 255, 255, 255, 14)
+// Then refresh to display
+WindowRefresh(win)</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowDrawRect(handle, x, y, width, height, r, g, b)</h3>
+          <p>Draws a filled rectangle.</p>
+          <div class="code-block">// Red square
+WindowDrawRect(win, 50, 50, 100, 100, 255, 0, 0)
+
+// Dark panel
+WindowDrawRect(win, 0, 0, 300, 200, 45, 45, 50)</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowDrawRoundedRect(handle, x, y, width, height, radius, r, g, b)</h3>
+          <p>Draws a filled rectangle with rounded corners.</p>
+          <div class="code-block">// Button with 8px corner radius
+WindowDrawRoundedRect(win, 50, 50, 150, 40, 8, 0, 122, 204)
+
+// Card with subtle rounding
+WindowDrawRoundedRect(win, 20, 20, 300, 200, 4, 50, 50, 55)</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowDrawCircle(handle, x, y, radius, r, g, b)</h3>
+          <p>Draws a filled circle centered at (x, y).</p>
+          <div class="code-block">// Red circle, radius 50
+WindowDrawCircle(win, 200, 200, 50, 255, 0, 0)
+
+// Small indicator dot
+WindowDrawCircle(win, 100, 100, 5, 0, 255, 0)</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowDrawLine(handle, x1, y1, x2, y2, r, g, b)</h3>
+          <p>Draws a line between two points.</p>
+          <div class="code-block">// Diagonal line
+WindowDrawLine(win, 0, 0, 100, 100, 255, 255, 255)
+
+// Horizontal divider
+WindowDrawLine(win, 0, 50, 800, 50, 80, 80, 85)</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowDrawText(handle, text, x, y, r, g, b, fontSize)</h3>
+          <p>Draws text at the specified position with given color and font size.</p>
+          <div class="code-block">// Title text (24pt)
+WindowDrawText(win, "My Application", 50, 30, 240, 240, 245, 24)
+
+// Body text (14pt)
+WindowDrawText(win, "Click a button to continue", 50, 60, 150, 150, 160, 14)
+
+// Small label (10pt)
+WindowDrawText(win, "v1.0.0", 750, 580, 100, 100, 100, 10)</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!--                           MOUSE INPUT                                   -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div class="doc-section" id="mouse-input">
+        <h2>Mouse Input</h2>
+        <p>Track mouse position and button clicks for interactive UI elements.</p>
+
+        <div class="card">
+          <h3>WindowGetMouseX(handle) / WindowGetMouseY(handle)</h3>
+          <p>Returns the current mouse position relative to the window's client area.</p>
+          <div class="code-block">mx := WindowGetMouseX(win)
+my := WindowGetMouseY(win)
+"Mouse at: " + ToString(mx) + ", " + ToString(my) -> Print</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowGetMouseButton(handle, button)</h3>
+          <p>Returns true if the specified mouse button is currently held down.</p>
+          <div class="code-block">// Button codes: 0 = Left, 1 = Right, 2 = Middle
+if WindowGetMouseButton(win, 0) == true
+    "Left mouse button is held" -> Print</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowMouseClicked(handle, button)</h3>
+          <p>Returns true if the button was <em>just pressed</em> this frame. Only true for one frame per click.</p>
+          <div class="code-block">// Detect single click (fires once per press)
+if WindowMouseClicked(win, 0) == true
+    "Left button clicked!" -> Print
+    click_count = click_count + 1</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowMouseReleased(handle, button)</h3>
+          <p>Returns true if the button was <em>just released</em> this frame.</p>
+          <div class="code-block">if WindowMouseReleased(win, 0) == true
+    "Left button released!" -> Print</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowMouseInRect(handle, x, y, width, height)</h3>
+          <p>Returns true if the mouse is inside the specified rectangle. Perfect for hit testing buttons.</p>
+          <div class="code-block">// Check if mouse is over a button
+if WindowMouseInRect(win, btnX, btnY, btnW, btnH) == true
+    // Mouse is hovering over button
+    isHovering = true</div>
+        </div>
+
+        <div class="card" style="background: linear-gradient(135deg, #1a2a1a 0%, #162e16 100%); border-left: 4px solid #0f0;">
+          <h3>💡 Click Detection Pattern</h3>
+          <p>Combine <code>WindowMouseClicked</code> with <code>WindowMouseInRect</code> for button click handling:</p>
+          <div class="code-block">// Button bounds
+btnX := 50
+btnY := 100
+btnW := 150
+btnH := 40
+
+// In your main loop
+if WindowMouseClicked(win, 0) == true
+    if WindowMouseInRect(win, btnX, btnY, btnW, btnH) == true
+        "Button was clicked!" -> Print
+        HandleButtonClick()</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!--                         KEYBOARD INPUT                                  -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div class="doc-section" id="keyboard-input">
+        <h2>Keyboard Input</h2>
+
+        <div class="card">
+          <h3>WindowGetKey(handle)</h3>
+          <p>Returns the key code of the last key pressed.</p>
+          <div class="code-block">key := WindowGetKey(win)
+// 27 = Escape, 13 = Enter, 32 = Space, etc.</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowKeyPressed(handle)</h3>
+          <p>Returns true if a key was just pressed this frame.</p>
+          <div class="code-block">if WindowKeyPressed(win) == true
+    key := WindowGetKey(win)
+    if key == 27  // Escape
+        running = false
+    if key == 32  // Space
+        "Space pressed!" -> Print</div>
+        </div>
+
+        <div class="card">
+          <h3>Common Key Codes</h3>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <tr style="border-bottom: 1px solid #444;">
+              <th style="text-align: left; padding: 8px;">Key</th>
+              <th style="text-align: left; padding: 8px;">Code</th>
+              <th style="text-align: left; padding: 8px;">Key</th>
+              <th style="text-align: left; padding: 8px;">Code</th>
+            </tr>
+            <tr><td style="padding: 6px;">Escape</td><td>27</td><td>Enter</td><td>13</td></tr>
+            <tr><td style="padding: 6px;">Space</td><td>32</td><td>Backspace</td><td>8</td></tr>
+            <tr><td style="padding: 6px;">Tab</td><td>9</td><td>Delete</td><td>46</td></tr>
+            <tr><td style="padding: 6px;">Arrow Up</td><td>38</td><td>Arrow Down</td><td>40</td></tr>
+            <tr><td style="padding: 6px;">Arrow Left</td><td>37</td><td>Arrow Right</td><td>39</td></tr>
+            <tr><td style="padding: 6px;">A-Z</td><td>65-90</td><td>0-9</td><td>48-57</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!--                          WINDOW STATE                                   -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div class="doc-section" id="window-state">
+        <h2>Window State</h2>
+
+        <div class="card">
+          <h3>WindowGetWidth(handle) / WindowGetHeight(handle)</h3>
+          <p>Returns the current client area dimensions of the window.</p>
+          <div class="code-block">w := WindowGetWidth(win)
+h := WindowGetHeight(win)
+"Window size: " + ToString(w) + "x" + ToString(h) -> Print</div>
+        </div>
+
+        <div class="card">
+          <h3>WindowWasResized(handle)</h3>
+          <p>Returns true if the window was resized this frame. Use this to trigger re-layout of UI elements.</p>
+          <div class="code-block">if WindowWasResized(win) == true
+    "Window resized!" -> Print
+    RecalculateLayout(win)
+    needsRedraw = true</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!--                        DOUBLE BUFFERING                                 -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div class="doc-section" id="double-buffering">
+        <h2>Double Buffering</h2>
+        <p>All drawing in Ouroboros is <strong>automatically double-buffered</strong>. This provides two key benefits:</p>
+        <ul class="list">
+          <li><strong>No Flickering</strong> — All drawing happens off-screen, then is copied to the window in one operation</li>
+          <li><strong>Resize Persistence</strong> — Your UI doesn't disappear when the window is resized</li>
+        </ul>
+
+        <div class="card">
+          <h3>The Render Loop Pattern</h3>
+          <div class="code-block">Flow Render(win)
+    WindowClear(win)           // 1. Clear the buffer
+    
+    // 2. Draw all your UI elements
+    WindowDrawRect(win, ...)
+    WindowDrawText(win, ...)
+    
+    WindowRefresh(win)         // 3. Copy buffer to screen
+
+// Main loop - idiomatic: no '== true' needed
+while running
+    WindowPollEvents()
+    
+    if needsRedraw
+        Render(win)
+        needsRedraw = false
+    
+    Sleep(16)  // ~60 FPS</div>
+        </div>
+
+        <div class="card" style="background: linear-gradient(135deg, #2a1a1a 0%, #2e1616 100%); border-left: 4px solid #f55;">
+          <h3>⚠️ Important</h3>
+          <p>Always call <code>WindowClear()</code> before drawing and <code>WindowRefresh()</code> after drawing. Without <code>WindowRefresh()</code>, your drawings won't appear on screen!</p>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!--                          ANCHOR SYSTEM                                  -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div class="doc-section" id="anchor-system">
+        <h2>Anchor System</h2>
+        <p>When building responsive UIs, elements need to maintain their relative positions when the window is resized. The anchor system lets you define where elements are "attached" to the window.</p>
+
+        <div class="card">
+          <h3>Anchor Types</h3>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #444;">
+              <th style="text-align: left; padding: 8px;">Anchor</th>
+              <th style="text-align: left; padding: 8px;">Code</th>
+              <th style="text-align: left; padding: 8px;">Behavior</th>
+            </tr>
+            <tr><td style="padding: 6px;">TOP_LEFT</td><td>0</td><td>Fixed distance from top-left corner</td></tr>
+            <tr><td style="padding: 6px;">TOP_RIGHT</td><td>1</td><td>Fixed distance from top-right corner</td></tr>
+            <tr><td style="padding: 6px;">BOTTOM_LEFT</td><td>2</td><td>Fixed distance from bottom-left corner</td></tr>
+            <tr><td style="padding: 6px;">BOTTOM_RIGHT</td><td>3</td><td>Fixed distance from bottom-right corner</td></tr>
+            <tr><td style="padding: 6px;">CENTER</td><td>4</td><td>Centered in the window</td></tr>
+            <tr><td style="padding: 6px;">TOP_CENTER</td><td>5</td><td>Centered horizontally, fixed from top</td></tr>
+            <tr><td style="padding: 6px;">BOTTOM_CENTER</td><td>6</td><td>Centered horizontally, fixed from bottom</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>Anchor Calculation Flows</h3>
+          <p>Define these helper flows to calculate anchored positions. Use <code>=:</code> for constants and <code>|</code> for OR conditions:</p>
+          <div class="code-block">// Design size - use =: for constants (immutable)
+DESIGN_W =: 800
+DESIGN_H =: 600
+
+// Anchor enum constants
+TOP_LEFT =: 0
+TOP_RIGHT =: 1
+BOTTOM_LEFT =: 2
+BOTTOM_RIGHT =: 3
+CENTER =: 4
+TOP_CENTER =: 5
+BOTTOM_CENTER =: 6
+
+// Calculate X position based on anchor
+// Use | for OR conditions to group similar cases
+Flow AnchorX(anchor, baseX, curW)
+    if anchor == TOP_LEFT | anchor == BOTTOM_LEFT
+        return baseX
+    if anchor == TOP_RIGHT | anchor == BOTTOM_RIGHT
+        return curW - (DESIGN_W - baseX)
+    if anchor == CENTER | anchor == TOP_CENTER | anchor == BOTTOM_CENTER
+        offset := baseX - (DESIGN_W / 2)
+        return (curW / 2) + offset
+    return baseX
+
+// Calculate Y position based on anchor
+Flow AnchorY(anchor, baseY, curH)
+    if anchor == TOP_LEFT | anchor == TOP_RIGHT | anchor == TOP_CENTER
+        return baseY
+    if anchor == BOTTOM_LEFT | anchor == BOTTOM_RIGHT | anchor == BOTTOM_CENTER
+        return curH - (DESIGN_H - baseY)
+    if anchor == CENTER
+        offset := baseY - (DESIGN_H / 2)
+        return (curH / 2) + offset
+    return baseY</div>
+        </div>
+
+        <div class="card">
+          <h3>Using Anchors</h3>
+          <div class="code-block">// Define a button anchored to TOP_LEFT
+btn_anchor := 0
+btn_baseX := 50
+btn_baseY := 100
+btn_w := 150
+btn_h := 40
+
+// In your render loop, calculate actual position
+Flow Render(win)
+    WindowClear(win)
+    curW := WindowGetWidth(win)
+    curH := WindowGetHeight(win)
+    
+    // Calculate anchored position
+    btnX := AnchorX(btn_anchor, btn_baseX, curW)
+    btnY := AnchorY(btn_anchor, btn_baseY, curH)
+    
+    // Draw at calculated position
+    WindowDrawRoundedRect(win, btnX, btnY, btn_w, btn_h, 6, 0, 122, 204)
+    WindowDrawText(win, "Click Me", btnX + 35, btnY + 12, 255, 255, 255, 14)
+    
+    WindowRefresh(win)</div>
+        </div>
+
+        <div class="card">
+          <h3>Anchor Examples</h3>
+          <div class="code-block">// Use constants for anchors (better readability!)
+BOTTOM_LEFT =: 2
+TOP_RIGHT =: 1
+CENTER =: 4
+
+// Status bar - anchored to BOTTOM_LEFT, stretches full width
+statusBar_anchor := BOTTOM_LEFT
+statusBar_baseY := 570  // 600 - 30
+
+// Close button - anchored to TOP_RIGHT
+closeBtn_anchor := TOP_RIGHT
+closeBtn_baseX := 760   // 800 - 40
+
+// Center panel - anchored to CENTER
+panel_anchor := CENTER
+panel_baseX := 250      // Will stay centered
+panel_baseY := 200</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!--                      BUILDING A UI LIBRARY                              -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div class="doc-section" id="building-ui-library">
+        <h2>Building a UI Library</h2>
+        <p>Create reusable UI components by combining ECS definitions with rendering flows.</p>
+
+        <div class="card">
+          <h3>Step 1: Define UI Types (.var)</h3>
+          <p>Create basic data structures for your UI system:</p>
+          <div class="code-block">// UI_Types.var
+
+// Anchor types as constants
+Variable UI_Anchor
+    TOP_LEFT := 0
+    TOP_RIGHT := 1
+    BOTTOM_LEFT := 2
+    BOTTOM_RIGHT := 3
+    CENTER := 4
+
+// Rectangle bounds
+Variable UI_Rect
+    x := 0
+    y := 0
+    width := 100
+    height := 30
+
+// Color with alpha
+Variable UI_Color
+    r := 255
+    g := 255
+    b := 255
+    a := 255
+
+// Padding/margins
+Variable UI_Spacing
+    top := 0
+    right := 0
+    bottom := 0
+    left := 0</div>
+        </div>
+
+        <div class="card">
+          <h3>Step 2: Define UI Components (.comp)</h3>
+          <p>Group related properties into reusable components:</p>
+          <div class="code-block">// UI_Components.comp
+
+// Base widget properties
+Component UI_Widget
+    id := ""
+    visible := true
+    enabled := true
+    anchor := 0
+    bounds := UI_Rect
+    
+// Visual styling
+Component UI_Style
+    background := UI_Color
+    foreground := UI_Color
+    border := UI_Color
+    borderWidth := 0
+    borderRadius := 0
+    padding := UI_Spacing
+
+// Button-specific
+Component UI_Button_Props
+    text := "Button"
+    fontSize := 14
+    isHovered := false
+    isPressed := false
+
+// Label-specific
+Component UI_Label_Props
+    text := "Label"
+    fontSize := 14
+    align := 0  // 0=left, 1=center, 2=right</div>
+        </div>
+
+        <div class="card">
+          <h3>Step 3: Define UI Entities (.ent)</h3>
+          <p>Combine components into complete widget definitions:</p>
+          <div class="code-block">// UI_Entities.ent
+
+Entity UI_Button
+    UI_Widget
+    UI_Style
+    UI_Button_Props
+
+Entity UI_Label
+    UI_Widget
+    UI_Style
+    UI_Label_Props
+
+Entity UI_Panel
+    UI_Widget
+    UI_Style</div>
+        </div>
+
+        <div class="card">
+          <h3>Step 4: Create Rendering Flows (.ouro)</h3>
+          <p>Write flows that render your UI entities:</p>
+          <div class="code-block">// UI_Library.ouro
+// Include your .var, .comp, .ent files
+
+// Design dimensions
+designW := 800
+designH := 600
+
+// ═══════════════════════════════════════════════════════════
+//                   ANCHOR HELPERS
+// ═══════════════════════════════════════════════════════════
+
+Flow AnchorX(anchor, baseX, curW)
+    if anchor == 0
+        return baseX
+    if anchor == 1
+        return curW - (designW - baseX)
+    if anchor == 4
+        offset := baseX - (designW / 2)
+        return (curW / 2) + offset
+    return baseX
+
+Flow AnchorY(anchor, baseY, curH)
+    if anchor == 0
+        return baseY
+    if anchor == 2
+        return curH - (designH - baseY)
+    if anchor == 4
+        offset := baseY - (designH / 2)
+        return (curH / 2) + offset
+    return baseY
+
+// ═══════════════════════════════════════════════════════════
+//                   BUTTON RENDERING
+// ═══════════════════════════════════════════════════════════
+
+Flow DrawButton(win, btn, curW, curH)
+    // Use !visible instead of visible == false
+    if !btn.UI_Widget.visible
+        return
+    
+    // Calculate anchored position
+    x := AnchorX(btn.UI_Widget.anchor, btn.UI_Widget.bounds.x, curW)
+    y := AnchorY(btn.UI_Widget.anchor, btn.UI_Widget.bounds.y, curH)
+    w := btn.UI_Widget.bounds.width
+    h := btn.UI_Widget.bounds.height
+    
+    // Choose color based on state
+    r := btn.UI_Style.background.r
+    g := btn.UI_Style.background.g
+    b := btn.UI_Style.background.b
+    
+    // No need for '== true' on booleans
+    if btn.UI_Button_Props.isHovered
+        r += 30
+        g += 30
+        b += 30
+    
+    if btn.UI_Button_Props.isPressed
+        r -= 20
+        g -= 20
+        b -= 20
+    
+    // Draw button
+    radius := btn.UI_Style.borderRadius
+    WindowDrawRoundedRect(win, x, y, w, h, radius, r, g, b)
+    
+    // Draw text centered
+    tr := btn.UI_Style.foreground.r
+    tg := btn.UI_Style.foreground.g
+    tb := btn.UI_Style.foreground.b
+    fontSize := btn.UI_Button_Props.fontSize
+    
+    // Approximate centering
+    textX := x + (w / 4)
+    textY := y + (h / 3)
+    WindowDrawText(win, btn.UI_Button_Props.text, textX, textY, tr, tg, tb, fontSize)
+
+// ═══════════════════════════════════════════════════════════
+//                   BUTTON HIT TESTING
+// ═══════════════════════════════════════════════════════════
+
+Flow UpdateButton(win, btn, curW, curH)
+    // Calculate anchored position
+    x := AnchorX(btn.UI_Widget.anchor, btn.UI_Widget.bounds.x, curW)
+    y := AnchorY(btn.UI_Widget.anchor, btn.UI_Widget.bounds.y, curH)
+    w := btn.UI_Widget.bounds.width
+    h := btn.UI_Widget.bounds.height
+    
+    // Check hover
+    btn.UI_Button_Props.isHovered = WindowMouseInRect(win, x, y, w, h)
+    
+    // Check click - compound condition with &
+    if WindowMouseClicked(win, 0) & btn.UI_Button_Props.isHovered
+        return true  // Button was clicked!
+    
+    return false
+
+// ═══════════════════════════════════════════════════════════
+//                   FACTORY FUNCTIONS
+// ═══════════════════════════════════════════════════════════
+
+Flow CreateButton(id, text, x, y, w, h)
+    btn := UI_Button
+    btn.UI_Widget.id = id
+    btn.UI_Widget.bounds.x = x
+    btn.UI_Widget.bounds.y = y
+    btn.UI_Widget.bounds.width = w
+    btn.UI_Widget.bounds.height = h
+    btn.UI_Button_Props.text = text
+    
+    // Default styling
+    btn.UI_Style.background.r = 0
+    btn.UI_Style.background.g = 122
+    btn.UI_Style.background.b = 204
+    btn.UI_Style.foreground.r = 255
+    btn.UI_Style.foreground.g = 255
+    btn.UI_Style.foreground.b = 255
+    btn.UI_Style.borderRadius = 6
+    
+    return btn</div>
+        </div>
+
+        <div class="card">
+          <h3>Step 5: Using Your UI Library</h3>
+          <div class="code-block">// MyApp.ouro
+
+// Create window
+win := WindowCreate("My App", 100, 100, 800, 600)
+WindowSetBackground(win, 30, 30, 35)
+WindowShow(win)
+
+// Create UI elements
+saveBtn := CreateButton("save", "Save", 50, 100, 120, 40)
+loadBtn := CreateButton("load", "Load", 190, 100, 120, 40)
+exitBtn := CreateButton("exit", "Exit", 330, 100, 120, 40)
+exitBtn.UI_Style.background.r = 204
+exitBtn.UI_Style.background.g = 50
+exitBtn.UI_Style.background.b = 50
+
+// Main loop - no '== true' needed
+running := true
+while running
+    WindowPollEvents()
+    
+    curW := WindowGetWidth(win)
+    curH := WindowGetHeight(win)
+    
+    // Update buttons (check hover/click) - direct condition without '== true'
+    if UpdateButton(win, saveBtn, curW, curH)
+        "Save clicked!" -> Print
+    
+    if UpdateButton(win, loadBtn, curW, curH)
+        "Load clicked!" -> Print
+    
+    if UpdateButton(win, exitBtn, curW, curH)
+        running = false
+    
+    // Render
+    WindowClear(win)
+    WindowDrawText(win, "My Application", 50, 40, 220, 220, 230, 24)
+    DrawButton(win, saveBtn, curW, curH)
+    DrawButton(win, loadBtn, curW, curH)
+    DrawButton(win, exitBtn, curW, curH)
+    WindowRefresh(win)
+    
+    Sleep(16)
+
+WindowClose(win)</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!--                      INTERACTIVE EXAMPLE                                -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div class="doc-section" id="interactive-example">
+        <h2>Interactive Example</h2>
+        <p>A complete example demonstrating idiomatic Ouroboros patterns with <code>=:</code> constants, compound conditions (<code>&amp;</code>, <code>|</code>), and <code>for</code> loops:</p>
+        <div class="card">
+          <h3>Window_Interactive.ouro</h3>
+          <div class="code-block">// ═══════════════════════════════════════════════════════════
+//                     CONSTANTS (immutable with =:)
+// ═══════════════════════════════════════════════════════════
+DESIGN_W =: 800
+DESIGN_H =: 600
+
+// Anchor enum - readable names instead of magic numbers
+TOP_LEFT =: 0
+TOP_RIGHT =: 1
+BOTTOM_LEFT =: 2
+CENTER =: 4
+
+// ═══════════════════════════════════════════════════════════
+//                       ANCHOR FLOWS
+// ═══════════════════════════════════════════════════════════
+
+Flow AnchorX(anchor, base, cur)
+    // Use | for OR conditions to group similar cases
+    if anchor == TOP_RIGHT | anchor == 3
+        return cur - (DESIGN_W - base)
+    if anchor == CENTER | anchor == 5 | anchor == 6
+        return (cur / 2) + (base - DESIGN_W / 2)
+    return base
+
+Flow AnchorY(anchor, base, cur)
+    if anchor == BOTTOM_LEFT | anchor == 3
+        return cur - (DESIGN_H - base)
+    if anchor == CENTER
+        return (cur / 2) + (base - DESIGN_H / 2)
+    return base
+
+// ═══════════════════════════════════════════════════════════
+//                       UI HELPERS
+// ═══════════════════════════════════════════════════════════
+
+Flow DrawBtn(w, x, y, width, height, text, hover, r, g, b)
+    // Simple conditional - no '== true' needed
+    if hover
+        WindowDrawRoundedRect(w, x, y, width, height, 6, r + 30, g + 30, b + 30)
+    else
+        WindowDrawRoundedRect(w, x, y, width, height, 6, r, g, b)
+    WindowDrawText(w, text, x + 30, y + 12, 255, 255, 255, 14)
+
+Flow InBounds(mx, my, x, y, w, h)
+    // Single return with compound condition using &
+    return (mx > x - 1) & (mx < x + w + 1) & (my > y - 1) & (my < y + h + 1)
+
+// Click handler - uses fork arrow to print
+Flow OnClick(label, count)
+    label + " clicked! Total: " + count -> Print
+    return count
+
+// ═══════════════════════════════════════════════════════════
+//                         SETUP
+// ═══════════════════════════════════════════════════════════
+
+"=== Interactive Window ===" -> Print
+
+win := WindowCreate("Interactive UI", 100, 100, 800, 600)
+WindowSetBackground(win, 30, 30, 35)
+WindowShow(win)
+
+// Button data: [anchor, x, y, w, h, r, g, b]
+btns := [
+    [TOP_LEFT, 50, 100, 150, 40, 0, 122, 204],
+    [TOP_LEFT, 220, 100, 150, 40, 76, 175, 80],
+    [TOP_LEFT, 390, 100, 150, 40, 244, 67, 54]
+]
+labels := ["Click Me!", "Success!", "Danger!"]
+hovers := [false, false, false]
+
+// State
+panelX := 250
+panelY := 250
+clicks := 0
+running := true
+
+// ═══════════════════════════════════════════════════════════
+//                       MAIN LOOP
+// ═══════════════════════════════════════════════════════════
+
+while running   // No '== true' needed!
+    WindowPollEvents()
+    
+    curW := WindowGetWidth(win)
+    curH := WindowGetHeight(win)
+    mx := WindowGetMouseX(win)
+    my := WindowGetMouseY(win)
+    
+    // Update buttons using for loop: for init, condition, increment
+    for i = 0, i < 3, i++
+        bx := AnchorX(btns[i][0], btns[i][1], curW)
+        by := AnchorY(btns[i][0], btns[i][2], curH)
+        hovers[i] = InBounds(mx, my, bx, by, btns[i][3], btns[i][4])
+        
+        // Compound condition: clicked AND hovering
+        if WindowMouseClicked(win, 0) & hovers[i]
+            clicks += 1   // Use += instead of clicks = clicks + 1
+            OnClick(labels[i], clicks)
+    
+    // ═══════════════════════════════════════════════════════
+    //                       RENDER
+    // ═══════════════════════════════════════════════════════
+    
+    WindowClear(win)
+    
+    // Title
+    WindowDrawText(win, "Interactive UI Demo", 50, 30, 240, 240, 245, 24)
+    WindowDrawText(win, "Resize window - anchored elements!", 50, 55, 140, 140, 150, 12)
+    
+    // Draw buttons using for loop
+    for i = 0, i < 3, i++
+        bx := AnchorX(btns[i][0], btns[i][1], curW)
+        by := AnchorY(btns[i][0], btns[i][2], curH)
+        DrawBtn(win, bx, by, btns[i][3], btns[i][4], labels[i], hovers[i], 
+                btns[i][5], btns[i][6], btns[i][7])
+    
+    // Click counter
+    WindowDrawText(win, "Clicks: " + clicks, 50, 160, 200, 200, 210, 16)
+    
+    // Center panel (CENTER anchor)
+    px := AnchorX(CENTER, panelX, curW)
+    py := AnchorY(CENTER, panelY, curH)
+    WindowDrawRoundedRect(win, px, py, 300, 180, 8, 45, 45, 55)
+    WindowDrawText(win, "CENTER ANCHORED", px + 70, py + 20, 180, 180, 190, 14)
+    WindowDrawText(win, "Mouse: " + mx + ", " + my, px + 80, py + 60, 150, 150, 160, 12)
+    
+    // Status bar (BOTTOM_LEFT anchor)
+    sby := AnchorY(BOTTOM_LEFT, 570, curH)
+    WindowDrawRect(win, 0, sby, curW, 30, 35, 35, 42)
+    WindowDrawText(win, "Ready | Clicks: " + clicks, 15, sby + 8, 120, 120, 130, 12)
+    
+    WindowRefresh(win)
+    Sleep(16)
+
+"Done." -> Print</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <!--                          ECS APPROACH                                   -->
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <div class="doc-section" id="ecs-approach">
+        <h2>ECS Approach</h2>
+        <p>For complex applications, the Entity-Component-System pattern provides better separation of data and behavior.</p>
+        
+        <div class="card">
+          <h3>ECS Benefits</h3>
+          <ul class="list">
+            <li>Define UI as structured data, separate from rendering logic</li>
+            <li>Manipulate state without immediate native calls</li>
+            <li>Create reusable widget templates</li>
+            <li>Easy serialization/deserialization of UI state</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>File Types</h3>
+          <ul class="list">
+            <li><strong>.var</strong> — Variable types (data structures)</li>
+            <li><strong>.comp</strong> — Components (groups of related data)</li>
+            <li><strong>.ent</strong> — Entities (collections of components)</li>
+            <li><strong>.ouro</strong> — Application logic and rendering flows</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Bridge Pattern</h3>
+          <p>Connect ECS entities to native windows using bridge flows:</p>
+          <div class="code-block">// Bridge an ECS window entity to a native window
+Flow RenderWindow(winEntity)
+    x := winEntity.Win_Transform.position.x
+    y := winEntity.Win_Transform.position.y
+    w := winEntity.Win_Transform.size.width
+    h := winEntity.Win_Transform.size.height
+    title := winEntity.Win_Props.title
+    
+    handle := WindowCreate(title, x, y, w, h)
+    
+    r := winEntity.Win_Appearance.background.r
+    g := winEntity.Win_Appearance.background.g
+    b := winEntity.Win_Appearance.background.b
+    WindowSetBackground(handle, r, g, b)
+    
+    WindowShow(handle)
+    return handle</div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Ouroboros Language. Data flows. Code follows.</p>
+  </footer>
+  <script src="search.js"></script>
+</body>
+</html>

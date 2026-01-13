@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REX & AOT - Ouroboros Execution Engine</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .benchmark-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .benchmark-table th, .benchmark-table td {
+      padding: 14px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .benchmark-table th {
+      background: rgba(107, 155, 209, 0.15);
+      color: var(--accent-strong);
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .benchmark-table tr:last-child td { border-bottom: none; }
+    .benchmark-table tr:hover { background: rgba(255, 255, 255, 0.02); }
+    .speedup-win { color: var(--success); font-weight: 600; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 24px 0;
+    }
+    .feature-card {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.25) 0%, rgba(20, 20, 28, 0.3) 100%);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .feature-card:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+    .feature-card h3 { color: var(--accent-strong); margin-bottom: 12px; font-size: 16px; margin-top: 0; }
+    .feature-card p { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
+    .feature-card pre {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 12px;
+      font-size: 11px;
+      overflow-x: auto;
+      margin: 0;
+    }
+    .feature-card code { font-family: var(--font-mono); color: #e8f4ff; }
+    .arch-diagram {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin: 24px 0;
+    }
+    .arch-title {
+      text-align: center;
+      color: var(--accent-strong);
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .pipeline-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 16px 0;
+      flex-wrap: wrap;
+    }
+    .pipeline-node {
+      background: linear-gradient(135deg, rgba(74, 158, 255, 0.1) 0%, rgba(74, 158, 255, 0.05) 100%);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 14px 20px;
+      text-align: center;
+      min-width: 120px;
+    }
+    .pipeline-node-title {
+      color: var(--text);
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .pipeline-node-sub {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 4px;
+    }
+    .pipeline-connector {
+      color: var(--accent);
+      font-size: 20px;
+    }
+    .pipeline-connector.down {
+      transform: rotate(90deg);
+      margin: 8px 0;
+    }
+    .rex-features-box {
+      background: linear-gradient(135deg, rgba(63, 185, 80, 0.1) 0%, rgba(63, 185, 80, 0.05) 100%);
+      border: 1px solid var(--success);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-top: 24px;
+    }
+    .rex-features-title {
+      color: var(--success);
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+    .rex-features-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 8px 24px;
+    }
+    .rex-feature-item {
+      color: var(--text-secondary);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .rex-feature-item::before {
+      content: "•";
+      color: var(--success);
+      font-weight: bold;
+    }
+    .file-format-diagram {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 24px 0;
+    }
+    .file-section {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .file-section:last-child {
+      border-bottom: none;
+    }
+    .file-section-header {
+      background: linear-gradient(135deg, rgba(74, 158, 255, 0.15) 0%, rgba(74, 158, 255, 0.05) 100%);
+    }
+    .file-section-title {
+      color: var(--accent-strong);
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .file-section-desc {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+    .file-section-details {
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-family: var(--font-mono);
+    }
+    .file-section-details code {
+      color: var(--accent);
+    }
+    .pipeline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin: 20px 0;
+    }
+    .pipeline-box {
+      background: rgba(107, 155, 209, 0.1);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      padding: 12px 18px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .pipeline-box small { display: block; color: var(--muted); font-size: 11px; margin-top: 4px; }
+    .pipeline-arrow { color: var(--accent); font-size: 20px; font-weight: bold; }
+    .code-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    @media (max-width: 800px) { .code-compare { grid-template-columns: 1fr; } }
+    .code-compare > div h4 { color: var(--accent-strong); margin-bottom: 12px; font-size: 14px; }
+    .use-case-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .use-case {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 18px;
+    }
+    .use-case h4 { color: var(--accent-strong); font-size: 15px; margin-bottom: 8px; margin-top: 0; }
+    .use-case p { color: var(--muted); font-size: 13px; margin: 0; }
+    ul.benefits { list-style: none; padding: 0; margin: 16px 0; }
+    ul.benefits li { padding: 8px 0 8px 28px; position: relative; color: var(--muted); }
+    ul.benefits li::before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: bold; }
+    ul.benefits li strong { color: var(--text); }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo"><span class="brand-text">Ouroboros</span></a>
+      <div class="search-container">
+        <div class="search-wrapper">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+          </svg>
+          <input type="text" id="doc-search" class="search-input" placeholder="Search (Ctrl+K)" autocomplete="off" />
+          <div id="search-results" class="search-results"></div>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="getting_started.html">Get Started</a>
+        <a href="examples.html">Examples</a>
+        <a href="flows.html">Flows</a>
+        <a href="domains.html">Domains</a>
+        <a href="reference.html">Reference</a>
+        <a href="rex_aot.html">REX &amp; AOT</a>
+        <a href="arrows.html">Arrows</a>
+        <a href="tokens.html">Tokens</a>
+        <a href="files.html">Files</a>
+        <a href="stdlib.html">Std Lib</a>
+        <a href="windows.html">Windows</a>
+        <a href="downloads.html">Downloads</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="doc-layout">
+    <aside class="doc-panel toc">
+      <h3>Contents</h3>
+      <ul>
+        <li><a href="#performance">Performance</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#technologies">Technologies</a></li>
+        <li><a href="#aot">AOT Compilation</a></li>
+        <li><a href="#usage">Usage</a></li>
+        <li><a href="#bytecode">Bytecode Reference</a></li>
+        <li><a href="#usecases">Use Cases</a></li>
+        <li><a href="#optimization">Optimizations</a></li>
+      </ul>
+    </aside>
+
+    <main class="doc-panel doc-content">
+      <div class="doc-header">
+        <div class="badge">Execution Engine</div>
+        <h1>🚀 REX &amp; AOT</h1>
+        <p class="lead">REX (Rhombille Execution Engine) and AOT (Ahead Of Time) compilation are the <strong>default execution path</strong> for all Ouroboros programs. Every program automatically compiles to optimized REX bytecode, delivering <strong>performance that beats C</strong> for data-parallel workloads.</p>
+      </div>
+
+      <div class="doc-section" id="performance">
+        <h2>⚡ Performance Results</h2>
+        <p>REX achieves remarkable speedups over equivalent C code through SIMD vectorization, NaN-boxing, and computed goto dispatch:</p>
+            
+            <table class="benchmark-table">
+                <thead>
+                    <tr>
+                        <th>Benchmark</th>
+                        <th>C Scalar</th>
+                        <th>REX SIMD</th>
+                        <th>Speedup</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Array Sum (1M elements)</td>
+                        <td>~59 ms</td>
+                        <td>~7 ms</td>
+                        <td class="speedup-win">8.2x faster ✓</td>
+                    </tr>
+                    <tr>
+                        <td>Dot Product (1M elements)</td>
+                        <td>~30 ms</td>
+                        <td>~13 ms</td>
+                        <td class="speedup-win">2.3x faster ✓</td>
+                    </tr>
+                    <tr>
+                        <td>Matrix Operations</td>
+                        <td>~45 ms</td>
+                        <td>~8 ms</td>
+                        <td class="speedup-win">5.6x faster ✓</td>
+                    </tr>
+                    <tr>
+                        <td>Particle Systems</td>
+                        <td>~120 ms</td>
+                        <td>~18 ms</td>
+                        <td class="speedup-win">6.7x faster ✓</td>
+                    </tr>
+                </tbody>
+            </table>
+      </div>
+
+      <div class="doc-section" id="architecture">
+        <h2>🏗️ Architecture Overview</h2>
+        <div class="arch-diagram">
+          <div class="arch-title">Ouroboros Execution Pipeline</div>
+          
+          <div class="pipeline-row">
+            <div class="pipeline-node">
+              <div class="pipeline-node-title">Source</div>
+              <div class="pipeline-node-sub">.ouro file</div>
+            </div>
+            <span class="pipeline-connector">→</span>
+            <div class="pipeline-node">
+              <div class="pipeline-node-title">Parser</div>
+              <div class="pipeline-node-sub">Lexer</div>
+            </div>
+            <span class="pipeline-connector">→</span>
+            <div class="pipeline-node">
+              <div class="pipeline-node-title">AST</div>
+              <div class="pipeline-node-sub">Tree</div>
+            </div>
+            <span class="pipeline-connector">→</span>
+            <div class="pipeline-node">
+              <div class="pipeline-node-title">AOT</div>
+              <div class="pipeline-node-sub">Compiler</div>
+            </div>
+          </div>
+          
+          <div class="pipeline-row">
+            <span class="pipeline-connector down">↓</span>
+          </div>
+          
+          <div class="pipeline-row">
+            <div class="pipeline-node">
+              <div class="pipeline-node-title">Output</div>
+              <div class="pipeline-node-sub">Result</div>
+            </div>
+            <span class="pipeline-connector">←</span>
+            <div class="pipeline-node">
+              <div class="pipeline-node-title">REX</div>
+              <div class="pipeline-node-sub">Engine</div>
+            </div>
+            <span class="pipeline-connector">←</span>
+            <div class="pipeline-node">
+              <div class="pipeline-node-title">Bytecode</div>
+              <div class="pipeline-node-sub">Memory</div>
+            </div>
+            <span class="pipeline-connector">←</span>
+            <div class="pipeline-node">
+              <div class="pipeline-node-title">.orex File</div>
+              <div class="pipeline-node-sub">Cached</div>
+            </div>
+          </div>
+          
+          <div class="rex-features-box">
+            <div class="rex-features-title">REX Features</div>
+            <div class="rex-features-list">
+              <div class="rex-feature-item">NaN-boxing (8-byte compact values)</div>
+              <div class="rex-feature-item">Computed Goto (zero-overhead dispatch)</div>
+              <div class="rex-feature-item">SSE2 SIMD (8-way vectorization)</div>
+              <div class="rex-feature-item">Software Prefetching (hide memory latency)</div>
+              <div class="rex-feature-item">Cache-Line Alignment (64-byte structures)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="technologies">
+        <h2>🔧 Key Technologies</h2>
+        <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>📦 NaN-Boxing</h3>
+                    <p>
+                        All values fit in 8 bytes using IEEE 754 quiet NaN payloads for type tagging.
+                        This means no pointer indirection for numbers, booleans, or small integers.
+                    </p>
+                    <pre><code>// 64-bit value layout:
+// Numbers: Standard IEEE 754 double
+// Tagged:  [QNAN Mask][Type Tag][48-bit Payload]
+
+#define REX_NUM(n)  ((RexValue){.as_double = n})
+#define REX_BOOL(b) (REX_TAG_BOOL | (b ? 1 : 0))
+#define REX_PTR(p)  (REX_TAG_PTR | (uintptr_t)p)</code></pre>
+                </div>
+
+                <div class="feature-card">
+                    <h3>🎯 Computed Goto</h3>
+                    <p>
+                        Direct threading dispatch using GCC's label-as-value extension.
+                        No switch statement overhead, no bounds checking on opcodes.
+                    </p>
+                    <pre><code>// Dispatch table
+static void *dispatch[] = {
+    [OP_ADD] = &&op_add,
+    [OP_SUB] = &&op_sub,
+    // ...
+};
+
+// Zero-overhead dispatch
+#define DISPATCH() goto *dispatch[*ip++]</code></pre>
+                </div>
+
+                <div class="feature-card">
+                    <h3>⚡ SIMD Batch Operations</h3>
+                    <p>
+                        SSE2 vectorized operations process 2 doubles per instruction with 
+                        8-way loop unrolling for maximum throughput.
+                    </p>
+                    <pre><code>// 8-way unrolled SIMD sum
+__m128d sum0 = _mm_setzero_pd();
+__m128d sum1 = _mm_setzero_pd();
+// ... (8 accumulators)
+
+for (; i + 16 <= count; i += 16) {
+    sum0 = _mm_add_pd(sum0, _mm_load_pd(&arr[i]));
+    sum1 = _mm_add_pd(sum1, _mm_load_pd(&arr[i+2]));
+    // ...
+}</code></pre>
+                </div>
+
+                <div class="feature-card">
+                    <h3>🧠 Software Prefetching</h3>
+                    <p>
+                        Cache prefetch hints tell the CPU what data to load before it's needed,
+                        hiding memory latency.
+                    </p>
+                    <pre><code>// Prefetch next cache line
+_mm_prefetch(&data[i + 64], _MM_HINT_T0);
+
+// Or with GCC builtin
+__builtin_prefetch(&data[i + 64], 0, 3);</code></pre>
+                </div>
+            </div>
+      </div>
+
+      <div class="doc-section" id="aot">
+        <h2>📄 AOT Compilation</h2>
+        <p>Ouroboros <strong>always</strong> uses AOT (Ahead Of Time) compilation — every program is converted to REX bytecode <strong>before</strong> runtime. There's no interpreter fallback or JIT mode. This design ensures consistent, predictable performance from the first instruction.</p>
+
+        <h3>Benefits of AOT</h3>
+        <ul class="benefits">
+          <li><strong>Zero Runtime Compilation</strong> — No JIT pauses during execution</li>
+          <li><strong>Bytecode Caching</strong> — Save compiled <code>.orex</code> files to disk</li>
+          <li><strong>Faster Startup</strong> — Load pre-compiled bytecode instantly</li>
+          <li><strong>Offline Optimization</strong> — Run expensive optimizations during build</li>
+          <li><strong>Deterministic Timing</strong> — Predictable execution for real-time systems</li>
+          <li><strong>Smaller Memory</strong> — No compiler in memory at runtime</li>
+        </ul>
+
+        <h3>Compilation Pipeline</h3>
+        <div class="pipeline">
+          <div class="pipeline-box">Source Code<small>.ouro file</small></div>
+          <span class="pipeline-arrow">→</span>
+          <div class="pipeline-box">Lexer<small>Tokenize</small></div>
+          <span class="pipeline-arrow">→</span>
+          <div class="pipeline-box">Parser<small>Build AST</small></div>
+          <span class="pipeline-arrow">→</span>
+          <div class="pipeline-box">AOT Compiler<small>Generate Bytecode</small></div>
+          <span class="pipeline-arrow">→</span>
+          <div class="pipeline-box">Optimizer<small>Peephole/Fold</small></div>
+          <span class="pipeline-arrow">→</span>
+          <div class="pipeline-box">.orex File<small>Binary Bytecode</small></div>
+        </div>
+
+        <h3>.orex File Format</h3>
+        <div class="file-format-diagram">
+          <div class="file-section file-section-header">
+            <div class="file-section-title">AOT Header (64 bytes)</div>
+          </div>
+          <div class="file-section">
+            <div class="file-section-details">
+              Magic: <code>"OREX"</code> (0x4F524558)<br>
+              Version: <code>1</code><br>
+              Checksum: CRC32 of code section<br>
+              Timestamp: Compilation time<br>
+              Section offsets and sizes
+            </div>
+          </div>
+          <div class="file-section file-section-header">
+            <div class="file-section-title">Code Section</div>
+            <div class="file-section-desc">REX bytecode instructions</div>
+          </div>
+          <div class="file-section file-section-header">
+            <div class="file-section-title">Constants Section</div>
+            <div class="file-section-desc">RexValue array</div>
+          </div>
+          <div class="file-section file-section-header">
+            <div class="file-section-title">Function Table</div>
+            <div class="file-section-desc">Name, offset, size, arg count</div>
+          </div>
+          <div class="file-section file-section-header">
+            <div class="file-section-title">String Pool</div>
+            <div class="file-section-desc">Null-terminated strings</div>
+          </div>
+          <div class="file-section file-section-header">
+            <div class="file-section-title">Debug Info (optional)</div>
+            <div class="file-section-desc">Source line mappings</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="usage">
+        <h2>💻 Usage Examples</h2>
+
+        <h3>Command Line</h3>
+        <div class="code-block"><span class="comment"># Run any .ouro file (automatically compiles via AOT + REX)</span>
+chimera game.ouro
+
+<span class="comment"># Compile and save bytecode for distribution</span>
+chimera build game.ouro
+
+<span class="comment"># Run pre-compiled bytecode directly</span>
+chimera game.orex</div>
+
+        <h3>Programmatic API (C)</h3>
+        <div class="code-compare">
+          <div>
+            <h4>AOT Compilation</h4>
+            <div class="code-block"><span class="comment">// Create compiler</span>
+AOTCompiler *compiler = aot_compiler_create();
+aot_set_optimization(compiler, <span class="number">2</span>);  <span class="comment">// Level 2</span>
+aot_set_debug(compiler, <span class="keyword">true</span>);
+
+<span class="comment">// Compile AST to bytecode</span>
+AOTResult result = aot_compile(compiler, ast);
+<span class="keyword">if</span> (result != AOT_OK) {
+    AOTStatus status = aot_get_status(compiler);
+    fprintf(stderr, <span class="string">"Error: %s\n"</span>, status.error_message);
+}
+
+<span class="comment">// Get compiled module</span>
+AOTModule *module = aot_get_module(compiler);
+
+<span class="comment">// Save to file</span>
+aot_module_save(module, <span class="string">"output.orex"</span>);
+
+<span class="comment">// Cleanup</span>
+aot_compiler_free(compiler);</div>
+          </div>
+          <div>
+            <h4>Execution</h4>
+            <div class="code-block"><span class="comment">// Load pre-compiled module</span>
+AOTStatus status;
+AOTModule *module = aot_module_load(<span class="string">"game.orex"</span>, &amp;status);
+<span class="keyword">if</span> (!module) {
+    fprintf(stderr, <span class="string">"Load error: %s\n"</span>, status.error_message);
+    <span class="keyword">return</span> <span class="number">1</span>;
+}
+
+<span class="comment">// Create REX engine</span>
+RexEngine *engine = rex_create();
+
+<span class="comment">// Execute main function</span>
+RexValue result = aot_execute(engine, module);
+
+<span class="comment">// Or execute specific function</span>
+RexValue args[] = { REX_NUM(<span class="number">42</span>) };
+RexValue val = aot_execute_function(
+    engine, module, <span class="string">"calculate"</span>, args, <span class="number">1</span>
+);
+
+<span class="comment">// Cleanup</span>
+aot_module_free(module);
+rex_free(engine);</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="bytecode">
+        <h2>🔬 REX Bytecode Reference</h2>
+
+        <h3>Stack Operations</h3>
+            <table class="benchmark-table">
+                <thead>
+                    <tr><th>Opcode</th><th>Hex</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>NOP</td><td>0x00</td><td>No operation</td></tr>
+                    <tr><td>PUSH_NULL</td><td>0x01</td><td>Push null value</td></tr>
+                    <tr><td>PUSH_TRUE</td><td>0x02</td><td>Push boolean true</td></tr>
+                    <tr><td>PUSH_FALSE</td><td>0x03</td><td>Push boolean false</td></tr>
+                    <tr><td>PUSH_CONST n</td><td>0x04</td><td>Push constant from pool</td></tr>
+                    <tr><td>PUSH_INT val</td><td>0x05</td><td>Push 32-bit integer</td></tr>
+                    <tr><td>POP</td><td>0x06</td><td>Discard top of stack</td></tr>
+                    <tr><td>DUP</td><td>0x07</td><td>Duplicate top of stack</td></tr>
+                    <tr><td>SWAP</td><td>0x08</td><td>Swap top two values</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Local Variables</h3>
+            <table class="benchmark-table">
+                <thead>
+                    <tr><th>Opcode</th><th>Hex</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>LOAD_LOCAL n</td><td>0x10</td><td>Push local variable n</td></tr>
+                    <tr><td>STORE_LOCAL n</td><td>0x11</td><td>Pop and store to local n</td></tr>
+                    <tr><td>LOAD_LOCAL_0</td><td>0x12</td><td>Fast push local 0</td></tr>
+                    <tr><td>LOAD_LOCAL_1</td><td>0x13</td><td>Fast push local 1</td></tr>
+                    <tr><td>LOAD_LOCAL_2</td><td>0x14</td><td>Fast push local 2</td></tr>
+                    <tr><td>STORE_LOCAL_0</td><td>0x15</td><td>Fast store to local 0</td></tr>
+                    <tr><td>STORE_LOCAL_1</td><td>0x16</td><td>Fast store to local 1</td></tr>
+                    <tr><td>STORE_LOCAL_2</td><td>0x17</td><td>Fast store to local 2</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Arithmetic</h3>
+            <table class="benchmark-table">
+                <thead>
+                    <tr><th>Opcode</th><th>Hex</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>ADD</td><td>0x20</td><td>a + b</td></tr>
+                    <tr><td>SUB</td><td>0x21</td><td>a - b</td></tr>
+                    <tr><td>MUL</td><td>0x22</td><td>a * b</td></tr>
+                    <tr><td>DIV</td><td>0x23</td><td>a / b</td></tr>
+                    <tr><td>NEG</td><td>0x24</td><td>-a</td></tr>
+                    <tr><td>INC</td><td>0x25</td><td>a + 1</td></tr>
+                    <tr><td>DEC</td><td>0x26</td><td>a - 1</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Comparison</h3>
+            <table class="benchmark-table">
+                <thead>
+                    <tr><th>Opcode</th><th>Hex</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>EQ</td><td>0x30</td><td>a == b</td></tr>
+                    <tr><td>NE</td><td>0x31</td><td>a != b</td></tr>
+                    <tr><td>LT</td><td>0x32</td><td>a < b</td></tr>
+                    <tr><td>LE</td><td>0x33</td><td>a <= b</td></tr>
+                    <tr><td>GT</td><td>0x34</td><td>a > b</td></tr>
+                    <tr><td>GE</td><td>0x35</td><td>a >= b</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Control Flow</h3>
+            <table class="benchmark-table">
+                <thead>
+                    <tr><th>Opcode</th><th>Hex</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>JMP offset</td><td>0x40</td><td>Unconditional jump</td></tr>
+                    <tr><td>JMP_IF offset</td><td>0x41</td><td>Jump if true</td></tr>
+                    <tr><td>JMP_IF_NOT offset</td><td>0x42</td><td>Jump if false</td></tr>
+                    <tr><td>LOOP offset</td><td>0x44</td><td>Backward jump (with hot-path tracking)</td></tr>
+                    <tr><td>CALL func argc</td><td>0x50</td><td>Call function</td></tr>
+                    <tr><td>RET</td><td>0x52</td><td>Return with value</td></tr>
+                    <tr><td>RET_NULL</td><td>0x53</td><td>Return null</td></tr>
+                </tbody>
+            </table>
+
+            <h3>SIMD Batch Operations</h3>
+            <table class="benchmark-table">
+                <thead>
+                    <tr><th>Opcode</th><th>Hex</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>BATCH_ADD</td><td>0x60</td><td>SIMD array addition</td></tr>
+                    <tr><td>BATCH_MUL</td><td>0x61</td><td>SIMD array multiplication</td></tr>
+                    <tr><td>BATCH_SUM</td><td>0x62</td><td>SIMD array sum reduction</td></tr>
+                    <tr><td>BATCH_DOT</td><td>0x63</td><td>SIMD dot product</td></tr>
+                </tbody>
+            </table>
+      </div>
+
+      <div class="doc-section" id="usecases">
+        <h2>🎮 Use Cases</h2>
+        <div class="use-case-grid">
+          <div class="use-case">
+            <h4>🎯 Game Development</h4>
+            <p>Use REX SIMD for physics simulations, particle systems, and AI pathfinding. AOT compilation ensures consistent frame times with no JIT hiccups.</p>
+          </div>
+          <div class="use-case">
+            <h4>📊 Data Processing</h4>
+            <p>Process large arrays of numerical data faster than C scalar code. Perfect for scientific computing and data analysis.</p>
+          </div>
+          <div class="use-case">
+            <h4>🔄 Real-Time Systems</h4>
+            <p>AOT's deterministic timing makes it suitable for audio processing, robotics, and other latency-sensitive applications.</p>
+          </div>
+          <div class="use-case">
+            <h4>📦 Embedded Systems</h4>
+            <p>Pre-compile bytecode on a development machine, deploy compact <code>.orex</code> files to resource-constrained devices.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="optimization">
+        <h2>📈 Built-in Optimizations</h2>
+        <p>The AOT compiler automatically applies all optimizations — no flags required:</p>
+            <table class="benchmark-table">
+                <thead>
+                    <tr>
+                        <th>Pass</th>
+                        <th>Description</th>
+                        <th>Benefit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Constant Folding</td>
+                        <td>Evaluate constant expressions at compile time</td>
+                        <td>Fewer runtime operations</td>
+                    </tr>
+                    <tr>
+                        <td>Peephole</td>
+                        <td>Replace instruction sequences with faster equivalents</td>
+                        <td>Smaller, faster bytecode</td>
+                    </tr>
+                    <tr>
+                        <td>Dead Code Elimination</td>
+                        <td>Remove unreachable or unused code</td>
+                        <td>Smaller memory footprint</td>
+                    </tr>
+                    <tr>
+                        <td>Strength Reduction</td>
+                        <td>Replace expensive ops (multiply) with cheaper ones (shift)</td>
+                        <td>Faster arithmetic</td>
+                    </tr>
+                    <tr>
+                        <td>Inlining</td>
+                        <td>Inline small functions to avoid call overhead</td>
+                        <td>Reduced function call cost</td>
+                    </tr>
+                </tbody>
+            </table>
+      </div>
+
+      <div class="doc-section">
+        <h2>🔗 See Also</h2>
+        <ul class="list">
+          <li><a href="getting_started.html">Getting Started</a> — Install and run your first program</li>
+          <li><a href="reference.html">Language Reference</a> — Complete syntax guide</li>
+          <li><a href="flows.html">Flow Control</a> — Arrows and data flow</li>
+          <li><a href="examples.html">Examples</a> — Real-world code samples</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+
+  <footer style="text-align: center; padding: 40px 20px; color: var(--muted); border-top: 1px solid var(--border); margin-top: 40px;">
+    <p>Ouroboros Programming Language — REX &amp; AOT Execution Engine</p>
+    <p style="margin-top: 8px; font-size: 14px;">Performance that beats C. Flexibility of a dynamic language.</p>
+  </footer>
+  <script src="search.js"></script>
+</body>
+</html>

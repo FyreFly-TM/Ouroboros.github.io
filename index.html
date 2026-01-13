@@ -4,25 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ouroboros - Flow-Oriented Programming Language</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <nav>
     <div class="nav-inner">
-      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo">Ouroboros</a>
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo"><span class="brand-text">Ouroboros</span></a>
+      <div class="search-container">
+        <div class="search-wrapper">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+          </svg>
+          <input type="text" id="doc-search" class="search-input" placeholder="Search (Ctrl+K)" autocomplete="off" />
+          <div id="search-results" class="search-results"></div>
+        </div>
+      </div>
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="getting_started.html">Get Started</a>
         <a href="examples.html">Examples</a>
         <a href="flows.html">Flows</a>
+        <a href="domains.html">Domains</a>
         <a href="reference.html">Reference</a>
+        <a href="rex_aot.html">REX &amp; AOT</a>
         <a href="arrows.html">Arrows</a>
         <a href="tokens.html">Tokens</a>
         <a href="files.html">Files</a>
         <a href="stdlib.html">Std Lib</a>
+        <a href="windows.html">Windows</a>
         <a href="downloads.html">Downloads</a>
       </div>
     </div>
@@ -53,119 +62,157 @@
   </section>
 
   <section class="section">
-    <h2>Core Concepts</h2>
+    <h2>🆕 What's New</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 24px;">Major features added to Ouroboros since the initial release:</p>
     <div class="grid">
-      <div class="card">
-        <h3>Forward Arrow (->)</h3>
-        <p>Push data forward to flows or print output.</p>
-        <div class="code-block">"Hello, World!" -> Print
-
-5 -> AddTwo -> AddTwo -> Print</div>
+      <div class="card" style="border-left: 3px solid var(--success);">
+        <h3>🚀 REX Engine & AOT Compilation</h3>
+        <p>The new <strong>Rhombille Execution Engine</strong> delivers native performance through ahead-of-time compilation to optimized bytecode. Features include:</p>
+        <ul class="list" style="margin-top: 12px; font-size: 13px;">
+          <li><strong>8x faster</strong> than equivalent C for data-parallel workloads</li>
+          <li><strong>NaN-boxing</strong> — All values in 8 bytes with no pointer indirection</li>
+          <li><strong>SIMD Vectorization</strong> — SSE2 batch operations with 8-way unrolling</li>
+          <li><strong>Computed Goto</strong> — Zero-overhead opcode dispatch</li>
+          <li><strong>.orex Caching</strong> — Save compiled bytecode for instant startup</li>
+        </ul>
+        <a href="rex_aot.html" class="card-link" style="margin-top: 12px; display: inline-block;">Learn about REX & AOT →</a>
       </div>
-      <div class="card">
-        <h3>Pull Arrow (<-)</h3>
-        <p>Capture return values or create reactive bindings.</p>
-        <div class="code-block">result <- Add(10, 5)
-
-// Reactive: area updates when width/height change
-area <- width * height</div>
+      <div class="card" style="border-left: 3px solid var(--accent);">
+        <h3>🖼️ Native Windowing System</h3>
+        <p>Build interactive GUI applications without external libraries. The windowing system is fully integrated:</p>
+        <ul class="list" style="margin-top: 12px; font-size: 13px;">
+          <li><strong>Window Management</strong> — Create, resize, move, and style windows</li>
+          <li><strong>Drawing Primitives</strong> — Rectangles, circles, lines, and text rendering</li>
+          <li><strong>Input Handling</strong> — Mouse position, clicks, and keyboard events</li>
+          <li><strong>Double Buffering</strong> — Flicker-free rendering that persists on resize</li>
+          <li><strong>Anchor System</strong> — Auto-scaling UI that adapts to any window size</li>
+        </ul>
+        <a href="windows.html" class="card-link" style="margin-top: 12px; display: inline-block;">Explore windowing →</a>
       </div>
-      <div class="card">
-        <h3>Sync Arrow (<->)</h3>
-        <p>Bidirectional binding—changes on either side mirror to the other.</p>
-        <div class="code-block">player_hp <-> ui_hp_display
-
-player_hp = 75  // ui_hp_display now 75</div>
+      <div class="card" style="border-left: 3px solid var(--warning);">
+        <h3>📐 Domain System</h3>
+        <p>Write scientific equations in their natural notation—copy formulas directly from textbooks:</p>
+        <ul class="list" style="margin-top: 12px; font-size: 13px;">
+          <li><strong>Natural Math</strong> — Write <code>E = ½mv²</code> instead of <code>E = 0.5 * m * v * v</code></li>
+          <li><strong>16+ Domains</strong> — Physics, Chemistry, Math, Statistics, and more</li>
+          <li><strong>Unicode Support</strong> — Greek letters, superscripts, subscripts, √, ∑, ∫</li>
+          <li><strong>Built-in Constants</strong> — c, g, G, π, e automatically available</li>
+          <li><strong>Bidirectional Solving</strong> — Solve for any variable in an equation</li>
+        </ul>
+        <a href="domains.html" class="card-link" style="margin-top: 12px; display: inline-block;">Discover domains →</a>
       </div>
-      <div class="card">
-        <h3>Fork Arrow (-<)</h3>
-        <p>Broadcast a value to multiple destinations simultaneously.</p>
-        <div class="code-block">event_data -< LogEvent, UpdateUI, PlaySound</div>
+      <div class="card" style="border-left: 3px solid #9b59b6;">
+        <h3>🔍 Documentation Search</h3>
+        <p>Find what you need instantly with the new client-side search:</p>
+        <ul class="list" style="margin-top: 12px; font-size: 13px;">
+          <li><strong>150+ Indexed Topics</strong> — Every function, concept, and example</li>
+          <li><strong>Keyboard Navigation</strong> — Arrow keys and Enter to select</li>
+          <li><strong>Ranked Results</strong> — Most relevant matches appear first</li>
+          <li><strong>No Server Required</strong> — Works offline and loads instantly</li>
+        </ul>
+        <p style="margin-top: 12px; font-size: 13px; color: var(--muted);">Try it now — press <kbd style="background: var(--panel-light); padding: 2px 6px; border-radius: 3px; font-size: 11px;">Ctrl+K</kbd> or click the search bar above.</p>
       </div>
     </div>
   </section>
 
   <section class="section">
-    <h2>Quick Examples</h2>
+    <h2>What is Ouroboros?</h2>
     <div class="grid">
       <div class="card">
-        <h3>Define a Flow</h3>
-        <div class="code-block">Flow Add(a, b)
-    result := a + b
-    return result
-
-sum := Add(10, 5)
-sum -> Print  // Outputs: 15.00</div>
+        <h3>A New Paradigm</h3>
+        <p>Ouroboros is a <strong>flow-oriented programming language</strong> designed from the ground up to make data movement explicit and visual. Instead of hiding how values travel through your program, arrows show the exact path data takes—making code easier to read, debug, and reason about.</p>
       </div>
       <div class="card">
-        <h3>Multi-Return</h3>
+        <h3>Built for Clarity</h3>
+        <p>Traditional languages obscure data flow behind assignments and return values. Ouroboros uses directional arrows (<code>-></code>, <code><-</code>, <code><-></code>) to make every data transfer visible at a glance. You'll always know where your data came from and where it's going.</p>
+      </div>
+      <div class="card">
+        <h3>Native Performance</h3>
+        <p>Powered by the <strong>REX Engine</strong> (Rhombille Execution), Ouroboros compiles to optimized bytecode with SIMD acceleration. Whether you're building games, simulations, or tools, your code runs fast without sacrificing the language's expressive syntax.</p>
+      </div>
+      <div class="card">
+        <h3>Integrated Windowing</h3>
+        <p>Create native windows, draw graphics, and handle input—all with built-in functions. No external libraries required. Build interactive applications, visualizations, and games directly in Ouroboros.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>The Arrow System</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Forward Arrow <code>-></code></h3>
+        <p>Push data to a destination. Send values to functions, print to console, or chain operations together in a clear left-to-right flow.</p>
+        <div class="code-block">"Hello, World!" -> Print
+value -> Transform -> Process -> Output</div>
+      </div>
+      <div class="card">
+        <h3>Pull Arrow <code><-</code></h3>
+        <p>Capture results into variables. Also creates reactive bindings—when source values change, the bound variable updates automatically.</p>
+        <div class="code-block">result <- Calculate(x, y)
+area <- width * height  // Reactive!</div>
+      </div>
+      <div class="card">
+        <h3>Sync Arrow <code><-></code></h3>
+        <p>Bidirectional binding keeps two values perfectly synchronized. Change either side and the other updates instantly—ideal for UI state.</p>
+        <div class="code-block">player_health <-> health_display
+// Either change reflects on both</div>
+      </div>
+      <div class="card">
+        <h3>Fork Arrow <code>-<</code></h3>
+        <p>Broadcast a single value to multiple destinations simultaneously. Perfect for event systems, logging, and parallel processing.</p>
+        <div class="code-block">event -< Logger, Analytics, UI</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Language Highlights</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Flows, Not Functions</h3>
+        <p>In Ouroboros, reusable code blocks are called <strong>Flows</strong>. They can return multiple values without tuples, accept any number of parameters, and chain naturally with arrows.</p>
         <div class="code-block">Flow Stats(a, b, c)
     sum := a + b + c
     avg := sum / 3
     return sum, avg
 
-total, average <- Stats(4, 6, 10)
-total -> Print
-average -> Print</div>
+total, average <- Stats(4, 6, 10)</div>
       </div>
       <div class="card">
-        <h3>Conditional Gates</h3>
-        <div class="code-block">// Only execute if condition is true
-value -[value > 50]-> ProcessHigh
-
-// Transform data inline
-input -[input > 0 ? input * 2]-> Process</div>
+        <h3>Domain System</h3>
+        <p>Organize data with an <strong>Entity-Component</strong> architecture. Define reusable data structures in <code>.var</code> files, behaviors in <code>.comp</code> files, and compose them into entities with <code>.ent</code> files.</p>
+        <div class="code-block">// Player.ent
+@use Position, Health, Inventory
+name := "Hero"
+max_health := 100</div>
       </div>
       <div class="card">
-        <h3>Control Flow</h3>
-        <div class="code-block">if score ≥ 90
-    grade := "A"
-elseif score ≥ 80
-    grade := "B"
-else
-    grade := "C"
-
-while counter < 10
-    counter += 1</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>Advanced Features</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Flow Labels</h3>
-        <p>Declarative condition/action/handler annotations on flows.</p>
-        <div class="code-block">Flow Process(x) -[x > 0 ? Log("ok") :: Done() || Fail()]-
-    // Flow body</div>
+        <h3>Constants with <code>=:</code></h3>
+        <p>Declare immutable values using the constant assignment operator. These values are set once and cannot be changed—perfect for configuration and magic numbers.</p>
+        <div class="code-block">MAX_PLAYERS =: 4
+PI =: 3.14159
+WINDOW_TITLE =: "My Game"</div>
       </div>
       <div class="card">
-        <h3>Async Arrows (->>, -<<)</h3>
-        <p>Fire-and-forget operations in background threads.</p>
-        <div class="code-block">"task" ->> Worker  // Non-blocking
-event -<< A, B, C  // Parallel broadcast</div>
+        <h3>Clean Control Flow</h3>
+        <p>Familiar <code>if</code>/<code>else</code>, <code>while</code>, and <code>for</code> loops with clean syntax. Use <code>&</code> for AND, <code>|</code> for OR, and compound operators like <code>+=</code>.</p>
+        <div class="code-block">for i := 0, i < 10, i += 1
+    if i > 5 & IsEven(i)
+        i -> Print</div>
       </div>
       <div class="card">
-        <h3>Fuzzy Logic (~>)</h3>
-        <p>Soft influence—suggest rather than set values.</p>
-        <div class="code-block">temperature ~> ClimateController</div>
+        <h3>Built-in Graphics</h3>
+        <p>Create windows, draw shapes, render text, and handle mouse/keyboard input with native functions. Double buffering and anchor-based layouts included.</p>
+        <div class="code-block">win <- WindowCreate("App", 800, 600)
+WindowDrawRect(win, 10, 10, 100, 50, 0x3498db)
+WindowDrawText(win, "Hello!", 20, 25, 0xFFFFFF)</div>
       </div>
       <div class="card">
-        <h3>Solvers (=>)</h3>
-        <p>Constraint-based pathfinding or optimization.</p>
-        <div class="code-block">start_position => PathSolver</div>
-      </div>
-      <div class="card">
-        <h3>Continuous Funnels (>-)</h3>
-        <p>Stream data reactively—any change triggers the target.</p>
-        <div class="code-block">sensor_temp >- ThermalMonitor
-sensor_pressure >- ThermalMonitor</div>
-      </div>
-      <div class="card">
-        <h3>Ownership Transfer (-|->)</h3>
-        <p>Move ownership of data—source becomes invalid.</p>
-        <div class="code-block">cargo -|-> ReceiveShipment</div>
+        <h3>Async Operations</h3>
+        <p>Fire-and-forget with <code>->></code> or await results with <code><<-</code>. Run tasks in background threads without callback complexity.</p>
+        <div class="code-block">"background task" ->> Worker
+result <<- LongComputation(data)</div>
       </div>
     </div>
   </section>
@@ -199,5 +246,6 @@ sensor_pressure >- ThermalMonitor</div>
   <footer>
     <p>Ouroboros Language © 2026</p>
   </footer>
+  <script src="search.js"></script>
 </body>
 </html>

@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Domain System - Ouroboros</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo"><span class="brand-text">Ouroboros</span></a>
+      <div class="search-container">
+        <div class="search-wrapper">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+          </svg>
+          <input type="text" id="doc-search" class="search-input" placeholder="Search (Ctrl+K)" autocomplete="off" />
+          <div id="search-results" class="search-results"></div>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="getting_started.html">Get Started</a>
+        <a href="examples.html">Examples</a>
+        <a href="flows.html">Flows</a>
+        <a href="domains.html">Domains</a>
+        <a href="reference.html">Reference</a>
+        <a href="rex_aot.html">REX &amp; AOT</a>
+        <a href="arrows.html">Arrows</a>
+        <a href="tokens.html">Tokens</a>
+        <a href="files.html">Files</a>
+        <a href="stdlib.html">Std Lib</a>
+        <a href="windows.html">Windows</a>
+        <a href="downloads.html">Downloads</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="doc-layout">
+    <aside class="doc-panel toc">
+      <h3>Domain System</h3>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#syntax">Syntax</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#physics">@Domain.Physics</a></li>
+        <li><a href="#chemistry">@Domain.Chemistry</a></li>
+        <li><a href="#math">@Domain.Math</a></li>
+        <li><a href="#algebra">@Domain.Algebra</a></li>
+        <li><a href="#geometry">@Domain.Geometry</a></li>
+        <li><a href="#trigonometry">@Domain.Trigonometry</a></li>
+        <li><a href="#calculus">@Domain.Calculus</a></li>
+        <li><a href="#linearalgebra">@Domain.LinearAlgebra</a></li>
+        <li><a href="#statistics">@Domain.Statistics</a></li>
+        <li><a href="#settheory">@Domain.SetTheory</a></li>
+        <li><a href="#logic">@Domain.Logic</a></li>
+        <li><a href="#economics">@Domain.Economics</a></li>
+        <li><a href="#complexnumbers">@Domain.ComplexNumbers</a></li>
+        <li><a href="#differentialequations">@Domain.DifferentialEquations</a></li>
+        <li><a href="#numbertheory">@Domain.NumberTheory</a></li>
+      </ul>
+    </aside>
+
+    <main class="doc-panel doc-content">
+      <div class="doc-header">
+        <div class="badge">Scientific Computing</div>
+        <h1>Domain System</h1>
+        <p>Copy/paste equations directly from textbooks — they just work! Domains enable domain-specific symbol interpretation, constants, and unit systems.</p>
+      </div>
+
+      <!-- OVERVIEW -->
+      <div class="doc-section" id="overview">
+        <h2>Overview</h2>
+        <p>The Ouroboros Domain System is a revolutionary feature that allows you to write mathematical and scientific equations using their natural notation. Instead of translating formulas into code, you can copy equations directly from textbooks, academic papers, or reference materials.</p>
+        
+        <div class="card" style="border-left: 4px solid var(--success); margin: 1rem 0;">
+          <h4>✨ Key Benefits</h4>
+          <ul class="list">
+            <li><strong>Natural Notation</strong> — Write <code>E = mc²</code> instead of <code>E = m * c * c</code></li>
+            <li><strong>Domain-Specific Symbols</strong> — Each domain knows its standard variable meanings</li>
+            <li><strong>Built-in Constants</strong> — Physics constants like <code>c</code>, <code>g</code>, <code>G</code> are predefined</li>
+            <li><strong>Unit Awareness</strong> — Pass values with units for clarity</li>
+            <li><strong>Bidirectional Solving</strong> — Solve for any variable in an equation</li>
+          </ul>
+        </div>
+
+        <h3>Quick Example</h3>
+        <div class="code-block">// Define a physics flow using natural notation
+@Domain.Physics
+Flow KineticEnergy()
+    E = ½mv²
+
+// Use it with named parameters
+energy := KineticEnergy(m: 10 kg, v: 5 m/s)
+"Kinetic Energy: " + energy + " J" -> Print
+// Output: Kinetic Energy: 125 J
+
+// Solve for velocity instead!
+velocity := KineticEnergy(E: 200 J, m: 10 kg)
+"Velocity: " + velocity + " m/s" -> Print
+// Output: Velocity: 6.32456 m/s</div>
+      </div>
+
+      <!-- SYNTAX -->
+      <div class="doc-section" id="syntax">
+        <h2>Syntax</h2>
+        <p>Domains are applied using the <code>@Domain.Name</code> decorator before a Flow definition.</p>
+
+        <h3>Basic Structure</h3>
+        <div class="code-block">@Domain.DomainName
+Flow FlowName()
+    equation_using_domain_symbols</div>
+
+        <h3>Supported Unicode Operators</h3>
+        <p>Domains support rich mathematical notation including:</p>
+        <table class="doc-table">
+          <thead>
+            <tr><th>Symbol</th><th>Meaning</th><th>Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>²</code>, <code>³</code>, <code>⁴</code>...</td><td>Superscripts (exponents)</td><td><code>v²</code>, <code>r³</code></td></tr>
+            <tr><td><code>₀</code>, <code>₁</code>, <code>₂</code>...</td><td>Subscripts</td><td><code>v₀</code>, <code>x₁</code></td></tr>
+            <tr><td><code>½</code>, <code>⅓</code>, <code>¼</code>...</td><td>Fractions</td><td><code>½mv²</code></td></tr>
+            <tr><td><code>√</code></td><td>Square root</td><td><code>√(x² + y²)</code></td></tr>
+            <tr><td><code>∛</code></td><td>Cube root</td><td><code>∛(V)</code></td></tr>
+            <tr><td><code>π</code></td><td>Pi constant</td><td><code>2πr</code></td></tr>
+            <tr><td><code>θ</code>, <code>φ</code>, <code>α</code>, <code>β</code>...</td><td>Greek letters</td><td><code>sinθ</code></td></tr>
+            <tr><td><code>Δ</code></td><td>Delta (change)</td><td><code>Δx</code>, <code>ΔT</code></td></tr>
+            <tr><td><code>∑</code></td><td>Summation</td><td><code>∑xᵢ/N</code></td></tr>
+            <tr><td><code>∫</code></td><td>Integral</td><td><code>∫f(x)dx</code></td></tr>
+            <tr><td><code>∂</code></td><td>Partial derivative</td><td><code>∂u/∂x</code></td></tr>
+            <tr><td><code>·</code></td><td>Dot product/multiply</td><td><code>F·d</code></td></tr>
+            <tr><td><code>×</code></td><td>Cross product</td><td><code>r×F</code></td></tr>
+            <tr><td><code>≥</code>, <code>≤</code></td><td>Comparison</td><td><code>x ≥ 0</code></td></tr>
+            <tr><td><code>≡</code></td><td>Equivalence</td><td><code>p → q ≡ ¬p ∨ q</code></td></tr>
+          </tbody>
+        </table>
+
+        <h3>Calling Domain Flows</h3>
+        <p>Call domain flows using named parameters with optional units:</p>
+        <div class="code-block">// With units (recommended for clarity)
+result := FlowName(param1: value1 unit1, param2: value2 unit2)
+
+// Without units (still works)
+result := FlowName(param1: value1, param2: value2)
+
+// Solving for different variables
+// Just omit the variable you want to solve for!
+force := NewtonSecondLaw(m: 10 kg, a: 5 m/s²)    // Solve for F
+accel := NewtonSecondLaw(F: 100 N, m: 20 kg)     // Solve for a
+mass := NewtonSecondLaw(F: 100 N, a: 5 m/s²)     // Solve for m</div>
+      </div>
+
+      <!-- HOW IT WORKS -->
+      <div class="doc-section" id="how-it-works">
+        <h2>How It Works</h2>
+        <p>When you decorate a Flow with <code>@Domain.Name</code>, Ouroboros:</p>
+        
+        <ol class="list">
+          <li><strong>Parses the equation</strong> using domain-specific symbol interpretation</li>
+          <li><strong>Injects constants</strong> like <code>g = 9.81</code>, <code>c = 299792458</code>, <code>π = 3.14159...</code></li>
+          <li><strong>Recognizes units</strong> and handles unit conversions where applicable</li>
+          <li><strong>Creates a solvable system</strong> that can compute any unknown variable</li>
+        </ol>
+
+        <h3>Symbol Resolution Priority</h3>
+        <div class="code-block">1. Explicitly passed parameters (highest priority)
+2. Domain-specific constants (g, c, G, π, e, etc.)
+3. Previously defined variables in scope
+4. Error if symbol cannot be resolved</div>
+
+        <h3>Built-in Constants by Domain</h3>
+        <div class="code-block">@Domain.Physics:
+  c  = 299792458 m/s      // Speed of light
+  g  = 9.80665 m/s²       // Standard gravity
+  G  = 6.67430e-11        // Gravitational constant
+  h  = 6.62607e-34        // Planck constant
+  ħ  = 1.05457e-34        // Reduced Planck constant
+  k_e = 8.9875e9          // Coulomb constant
+  ε₀ = 8.8542e-12         // Vacuum permittivity
+  μ₀ = 1.2566e-6          // Vacuum permeability
+
+@Domain.Math / @Domain.Algebra / @Domain.Geometry:
+  π  = 3.14159265358979
+  e  = 2.71828182845905
+  φ  = 1.61803398874989   // Golden ratio
+
+@Domain.Chemistry:
+  R   = 8.31446           // Gas constant (J/mol·K)
+  N_A = 6.02214e23        // Avogadro's number
+  k_B = 1.38065e-23       // Boltzmann constant
+  F   = 96485.33          // Faraday constant</div>
+      </div>
+
+      <!-- PHYSICS DOMAIN -->
+      <div class="doc-section" id="physics">
+        <h2>@Domain.Physics</h2>
+        <p>The Physics domain provides comprehensive support for mechanics, kinematics, waves, thermodynamics, electricity, magnetism, optics, and modern physics.</p>
+
+        <div class="card" style="margin: 1rem 0;">
+          <h4>Available Symbols</h4>
+          <p><code>m</code>(mass), <code>F</code>(force), <code>a</code>(accel), <code>v</code>(velocity), <code>t</code>(time), <code>E</code>(energy), <code>p</code>(momentum), <code>W</code>(work), <code>P</code>(power), <code>g</code>(gravity), <code>G</code>(gravitational constant), <code>c</code>(speed of light), <code>θ</code>(angle), <code>ω</code>(angular velocity), <code>α</code>(angular acceleration), <code>τ</code>(torque), <code>I</code>(moment of inertia), <code>k</code>(spring constant), <code>x</code>(displacement), <code>h</code>(height), <code>r</code>(radius), <code>ρ</code>(density), <code>λ</code>(wavelength), <code>f</code>(frequency), <code>T</code>(period), <code>q</code>(charge), <code>V</code>(voltage), <code>R</code>(resistance), <code>B</code>(magnetic field)</p>
+        </div>
+
+        <h3>Mechanics</h3>
+        <div class="code-block">@Domain.Physics
+Flow NewtonSecondLaw()
+    F = ma
+
+@Domain.Physics
+Flow Weight()
+    W = mg
+
+@Domain.Physics
+Flow KineticEnergy()
+    E = ½mv²
+
+@Domain.Physics
+Flow PotentialEnergy()
+    E = mgh
+
+@Domain.Physics
+Flow Momentum()
+    p = mv
+
+@Domain.Physics
+Flow Work()
+    W = F·d·cosθ
+
+@Domain.Physics
+Flow Power()
+    P = W/t = Fv
+
+@Domain.Physics
+Flow HookesLaw()
+    F = -kx
+
+@Domain.Physics
+Flow SpringPotential()
+    E = ½kx²
+
+@Domain.Physics
+Flow CentripetalForce()
+    F = mv²/r = mω²r</div>
+
+        <h3>Kinematics</h3>
+        <div class="code-block">@Domain.Physics
+Flow KinematicVelocity()
+    v = v₀ + at
+
+@Domain.Physics
+Flow KinematicDisplacement()
+    x = x₀ + v₀t + ½at²
+
+@Domain.Physics
+Flow KinematicVSquared()
+    v² = v₀² + 2a(x - x₀)
+
+@Domain.Physics
+Flow ProjectileX()
+    x = v₀cosθ·t
+
+@Domain.Physics
+Flow ProjectileY()
+    y = v₀sinθ·t - ½gt²</div>
+
+        <h3>Rotational Mechanics</h3>
+        <div class="code-block">@Domain.Physics
+Flow Torque()
+    τ = r×F = rFsinθ
+
+@Domain.Physics
+Flow RotationalKinetic()
+    E = ½Iω²
+
+@Domain.Physics
+Flow AngularMomentum()
+    L = Iω = r×p
+
+@Domain.Physics
+Flow MomentOfInertia_Disk()
+    I = ½mr²
+
+@Domain.Physics
+Flow MomentOfInertia_Sphere()
+    I = ⅖mr²</div>
+
+        <h3>Gravitation</h3>
+        <div class="code-block">@Domain.Physics
+Flow UniversalGravitation()
+    F = Gm₁m₂/r²
+
+@Domain.Physics
+Flow OrbitalVelocity()
+    v = √(GM/r)
+
+@Domain.Physics
+Flow EscapeVelocity()
+    v = √(2GM/r)
+
+@Domain.Physics
+Flow KeplersThird()
+    T² = (4π²/GM)r³</div>
+
+        <h3>Waves &amp; Oscillations</h3>
+        <div class="code-block">@Domain.Physics
+Flow WaveEquation()
+    v = fλ
+
+@Domain.Physics
+Flow PendulumPeriod()
+    T = 2π√(L/g)
+
+@Domain.Physics
+Flow SpringPeriod()
+    T = 2π√(m/k)
+
+@Domain.Physics
+Flow DopplerEffect()
+    f' = f(v ± v_observer)/(v ∓ v_source)</div>
+
+        <h3>Thermodynamics</h3>
+        <div class="code-block">@Domain.Physics
+Flow IdealGasLaw()
+    PV = nRT
+
+@Domain.Physics
+Flow HeatTransfer()
+    Q = mcΔT
+
+@Domain.Physics
+Flow FirstLawThermo()
+    ΔU = Q - W
+
+@Domain.Physics
+Flow Entropy()
+    ΔS = Q/T
+
+@Domain.Physics
+Flow CarnotEfficiency()
+    η = 1 - T_cold/T_hot</div>
+
+        <h3>Electricity &amp; Magnetism</h3>
+        <div class="code-block">@Domain.Physics
+Flow OhmsLaw()
+    V = IR
+
+@Domain.Physics
+Flow ElectricalPower()
+    P = IV = I²R = V²/R
+
+@Domain.Physics
+Flow CoulombsLaw()
+    F = k_e·q₁q₂/r²
+
+@Domain.Physics
+Flow Capacitance()
+    C = Q/V = ε₀A/d
+
+@Domain.Physics
+Flow MagneticForce()
+    F = qv×B = qvBsinθ
+
+@Domain.Physics
+Flow FaradaysLaw()
+    ε = -dΦ_B/dt</div>
+
+        <h3>Optics</h3>
+        <div class="code-block">@Domain.Physics
+Flow RefractionSnell()
+    n₁sinθ₁ = n₂sinθ₂
+
+@Domain.Physics
+Flow LensEquation()
+    1/f = 1/d_o + 1/d_i
+
+@Domain.Physics
+Flow Magnification()
+    M = -d_i/d_o = h_i/h_o</div>
+
+        <h3>Modern Physics / Relativity</h3>
+        <div class="code-block">@Domain.Physics
+Flow MassEnergy()
+    E = mc²
+
+@Domain.Physics
+Flow PhotonEnergy()
+    E = hf = hc/λ
+
+@Domain.Physics
+Flow DeBroglieWavelength()
+    λ = h/p = h/mv
+
+@Domain.Physics
+Flow HeisenbergUncertainty()
+    ΔxΔp ≥ ħ/2
+
+@Domain.Physics
+Flow TimeDialation()
+    t' = t/√(1 - v²/c²) = γt
+
+@Domain.Physics
+Flow LengthContraction()
+    L' = L√(1 - v²/c²) = L/γ
+
+@Domain.Physics
+Flow LorentzFactor()
+    γ = 1/√(1 - v²/c²)
+
+@Domain.Physics
+Flow RelativisticEnergy()
+    E² = (pc)² + (mc²)²</div>
+
+        <h3>Physics Examples</h3>
+        <div class="code-block">// Calculate kinetic energy of a moving car
+car_mass := 1500  // kg
+car_speed := 25   // m/s (90 km/h)
+energy := KineticEnergy(m: car_mass kg, v: car_speed m/s)
+"Car's kinetic energy: " + energy + " J" -> Print
+// Output: Car's kinetic energy: 468750 J
+
+// Calculate escape velocity from Earth
+M_earth := 5.97e24  // kg
+R_earth := 6.371e6  // m
+v_escape := EscapeVelocity(M: M_earth, r: R_earth)
+"Escape velocity: " + v_escape + " m/s" -> Print
+// Output: Escape velocity: 11186 m/s (about 11.2 km/s)
+
+// Time dilation at 90% speed of light
+proper_time := 1  // year
+dilated := TimeDialation(t: proper_time year, v: 0.9c)
+"Time on Earth: " + dilated + " years" -> Print
+// Output: Time on Earth: 2.29 years</div>
+      </div>
+
+      <!-- CHEMISTRY DOMAIN -->
+      <div class="doc-section" id="chemistry">
+        <h2>@Domain.Chemistry</h2>
+        <p>The Chemistry domain covers gas laws, thermodynamics, kinetics, equilibrium, electrochemistry, and solution chemistry.</p>
+
+        <div class="card" style="margin: 1rem 0;">
+          <h4>Available Symbols</h4>
+          <p><code>n</code>(moles), <code>M</code>(molar mass), <code>m</code>(mass), <code>V</code>(volume), <code>P</code>(pressure), <code>T</code>(temperature), <code>c</code>(concentration), <code>pH</code>, <code>pOH</code>, <code>K</code>(equilibrium constant), <code>ΔH</code>(enthalpy), <code>ΔG</code>(Gibbs free energy), <code>ΔS</code>(entropy), <code>E</code>(cell potential), <code>Q</code>(reaction quotient)</p>
+          <h4>Constants</h4>
+          <p><code>R</code> = 8.31446 J/mol·K, <code>N_A</code> = 6.022×10²³, <code>k_B</code> = 1.381×10⁻²³ J/K, <code>F</code> = 96485 C/mol</p>
+        </div>
+
+        <h3>Gas Laws &amp; Basic Chemistry</h3>
+        <div class="code-block">@Domain.Chemistry
+Flow MolarMass()
+    n = m/M
+
+@Domain.Chemistry
+Flow IdealGas()
+    PV = nRT
+
+@Domain.Chemistry
+Flow Concentration()
+    c = n/V
+
+@Domain.Chemistry
+Flow Dilution()
+    c₁V₁ = c₂V₂</div>
+
+        <h3>Acid-Base Chemistry</h3>
+        <div class="code-block">@Domain.Chemistry
+Flow pH_Definition()
+    pH = -log[H⁺]
+
+@Domain.Chemistry
+Flow pOH_Definition()
+    pOH = -log[OH⁻]
+
+@Domain.Chemistry
+Flow pH_pOH_Relation()
+    pH + pOH = 14
+
+@Domain.Chemistry
+Flow Henderson_Hasselbalch()
+    pH = pK_a + log([A⁻]/[HA])</div>
+
+        <h3>Thermodynamics &amp; Equilibrium</h3>
+        <div class="code-block">@Domain.Chemistry
+Flow GibbsFreeEnergy()
+    ΔG = ΔH - TΔS
+
+@Domain.Chemistry
+Flow GibbsStandard()
+    ΔG° = -RTlnK
+
+@Domain.Chemistry
+Flow NernstEquation()
+    E = E° - (RT/nF)lnQ
+
+@Domain.Chemistry
+Flow ArrheniusEquation()
+    k = Ae^(-E_a/RT)</div>
+
+        <h3>Kinetics</h3>
+        <div class="code-block">@Domain.Chemistry
+Flow RateFirst()
+    [A] = [A]₀e^(-kt)
+
+@Domain.Chemistry
+Flow RateSecond()
+    1/[A] = kt + 1/[A]₀
+
+@Domain.Chemistry
+Flow HalfLifeFirst()
+    t_½ = ln2/k
+
+@Domain.Chemistry
+Flow HalfLifeSecond()
+    t_½ = 1/(k[A]₀)</div>
+
+        <h3>Colligative Properties</h3>
+        <div class="code-block">@Domain.Chemistry
+Flow OsmoticPressure()
+    π = iMRT
+
+@Domain.Chemistry
+Flow FreezingPointDepression()
+    ΔT_f = iK_f·m
+
+@Domain.Chemistry
+Flow BoilingPointElevation()
+    ΔT_b = iK_b·m
+
+@Domain.Chemistry
+Flow RaoultLaw()
+    P_A = X_A·P°_A</div>
+
+        <h3>Chemistry Examples</h3>
+        <div class="code-block">// Calculate pressure of 1 mol gas at STP
+pressure := IdealGas(n: 1 mol, T: 273.15 K, V: 22.4 L)
+"Pressure at STP: " + pressure + " atm" -> Print
+
+// Calculate pH of a solution
+ph := pH_Definition(H⁺: 1e-4 M)
+"pH = " + ph -> Print
+// Output: pH = 4
+
+// Dilution calculation
+final_conc := Dilution(c₁: 12 M, V₁: 25 mL, V₂: 500 mL)
+"Final concentration: " + final_conc + " M" -> Print
+// Output: Final concentration: 0.6 M</div>
+      </div>
+
+      <!-- MATH DOMAIN -->
+      <div class="doc-section" id="math">
+        <h2>@Domain.Math</h2>
+        <p>Core mathematical operations, constants, and fundamental formulas.</p>
+
+        <div class="card" style="margin: 1rem 0;">
+          <h4>Available Symbols</h4>
+          <p><code>x</code>, <code>y</code>, <code>z</code>, <code>a</code>, <code>b</code>, <code>c</code>, <code>n</code>, <code>i</code>, <code>j</code>, <code>k</code> (general variables)</p>
+          <h4>Constants</h4>
+          <p><code>π</code> = 3.14159..., <code>e</code> = 2.71828..., <code>φ</code> = 1.61803... (golden ratio), <code>i</code> = √-1 (imaginary unit)</p>
+          <h4>Operators</h4>
+          <p><code>+</code>, <code>-</code>, <code>×</code>, <code>÷</code>, <code>^</code>, <code>√</code>, <code>∛</code>, <code>!</code>, <code>|x|</code>(abs), <code>⌊x⌋</code>(floor), <code>⌈x⌉</code>(ceil)</p>
+        </div>
+
+        <div class="code-block">@Domain.Math
+Flow Absolute()
+    |x| = √(x²)
+
+@Domain.Math
+Flow Factorial()
+    n! = n × (n-1) × (n-2) × ... × 1
+
+@Domain.Math
+Flow Permutation()
+    P(n,r) = n!/(n-r)!
+
+@Domain.Math
+Flow Combination()
+    C(n,r) = n!/(r!(n-r)!)
+
+@Domain.Math
+Flow ExponentRules()
+    aᵐ × aⁿ = aᵐ⁺ⁿ
+    aᵐ/aⁿ = aᵐ⁻ⁿ
+    (aᵐ)ⁿ = aᵐⁿ
+
+@Domain.Math
+Flow LogRules()
+    log(ab) = log(a) + log(b)
+    log(a/b) = log(a) - log(b)
+    log(aⁿ) = n·log(a)
+
+@Domain.Math
+Flow ChangeOfBase()
+    logₐb = ln(b)/ln(a)
+
+@Domain.Math
+Flow EulersIdentity()
+    e^(iπ) + 1 = 0
+
+@Domain.Math
+Flow EulersFormula()
+    e^(iθ) = cosθ + i·sinθ</div>
+      </div>
+
+      <!-- ALGEBRA DOMAIN -->
+      <div class="doc-section" id="algebra">
+        <h2>@Domain.Algebra</h2>
+        <p>Algebraic equations, formulas, sequences, and coordinate geometry.</p>
+
+        <div class="card" style="margin: 1rem 0;">
+          <h4>Available Symbols</h4>
+          <p><code>x</code>, <code>y</code>, <code>z</code>, <code>a</code>, <code>b</code>, <code>c</code>, <code>m</code>(slope), <code>(x₁,y₁)</code>, <code>(x₂,y₂)</code>, <code>h</code>, <code>k</code>(vertex), <code>d</code>(common difference), <code>r</code>(common ratio), <code>n</code>(term number)</p>
+        </div>
+
+        <h3>Quadratic Equations</h3>
+        <div class="code-block">@Domain.Algebra
+Flow QuadraticFormula()
+    x = (-b ± √(b² - 4ac))/(2a)
+
+@Domain.Algebra
+Flow Discriminant()
+    D = b² - 4ac
+
+@Domain.Algebra
+Flow VertexForm()
+    y = a(x - h)² + k
+
+@Domain.Algebra
+Flow StandardQuadratic()
+    y = ax² + bx + c</div>
+
+        <h3>Linear Equations</h3>
+        <div class="code-block">@Domain.Algebra
+Flow Slope()
+    m = (y₂ - y₁)/(x₂ - x₁)
+
+@Domain.Algebra
+Flow PointSlopeForm()
+    y - y₁ = m(x - x₁)
+
+@Domain.Algebra
+Flow SlopeInterceptForm()
+    y = mx + b
+
+@Domain.Algebra
+Flow StandardLinear()
+    Ax + By = C</div>
+
+        <h3>Distance &amp; Midpoint</h3>
+        <div class="code-block">@Domain.Algebra
+Flow Distance2D()
+    d = √((x₂ - x₁)² + (y₂ - y₁)²)
+
+@Domain.Algebra
+Flow Distance3D()
+    d = √((x₂-x₁)² + (y₂-y₁)² + (z₂-z₁)²)
+
+@Domain.Algebra
+Flow Midpoint()
+    M = ((x₁+x₂)/2, (y₁+y₂)/2)</div>
+
+        <h3>Growth &amp; Interest</h3>
+        <div class="code-block">@Domain.Algebra
+Flow CompoundInterest()
+    A = P(1 + r/n)^(nt)
+
+@Domain.Algebra
+Flow ContinuousInterest()
+    A = Pe^(rt)
+
+@Domain.Algebra
+Flow ExponentialGrowth()
+    N = N₀e^(kt)
+
+@Domain.Algebra
+Flow ExponentialDecay()
+    N = N₀e^(-kt)</div>
+
+        <h3>Sequences &amp; Series</h3>
+        <div class="code-block">@Domain.Algebra
+Flow ArithmeticSequence()
+    aₙ = a₁ + (n-1)d
+
+@Domain.Algebra
+Flow ArithmeticSum()
+    Sₙ = n(a₁ + aₙ)/2
+
+@Domain.Algebra
+Flow GeometricSequence()
+    aₙ = a₁ × r^(n-1)
+
+@Domain.Algebra
+Flow GeometricSum()
+    Sₙ = a₁(1 - rⁿ)/(1 - r)
+
+@Domain.Algebra
+Flow InfiniteGeometric()
+    S = a₁/(1 - r)</div>
+
+        <h3>Algebra Examples</h3>
+        <div class="code-block">// Solve quadratic equation: x² - 5x + 6 = 0
+roots := QuadraticFormula(a: 1, b: -5, c: 6)
+"Roots: x = " + roots.x₁ + " or x = " + roots.x₂ -> Print
+// Output: Roots: x = 3 or x = 2
+
+// Calculate slope between two points
+slope := Slope(x₁: 2, y₁: 3, x₂: 8, y₂: 15)
+"Slope: " + slope -> Print
+// Output: Slope: 2
+
+// Compound interest: $10,000 at 5% for 10 years, monthly compounding
+final := CompoundInterest(P: 10000, r: 0.05, n: 12, t: 10)
+"Final amount: $" + final -> Print
+// Output: Final amount: $16470.09
+
+// 10th term of arithmetic sequence: 3, 8, 13, 18, ...
+term := ArithmeticSequence(a₁: 3, d: 5, n: 10)
+"10th term: " + term -> Print
+// Output: 10th term: 48</div>
+      </div>
+
+      <!-- GEOMETRY DOMAIN -->
+      <div class="doc-section" id="geometry">
+        <h2>@Domain.Geometry</h2>
+        <p>Geometric formulas for 2D shapes, 3D solids, perimeters, areas, and volumes.</p>
+
+        <div class="card" style="margin: 1rem 0;">
+          <h4>Available Symbols</h4>
+          <p><code>A</code>(area), <code>V</code>(volume), <code>P</code>(perimeter), <code>C</code>(circumference), <code>SA</code>(surface area), <code>r</code>(radius), <code>d</code>(diameter), <code>h</code>(height), <code>b</code>(base), <code>l</code>(length), <code>w</code>(width), <code>s</code>(side), <code>a</code>,<code>b</code>,<code>c</code>(triangle sides)</p>
+        </div>
+
+        <h3>Triangles</h3>
+        <div class="code-block">@Domain.Geometry
+Flow Pythagorean()
+    a² + b² = c²
+
+@Domain.Geometry
+Flow TriangleArea()
+    A = ½bh
+
+@Domain.Geometry
+Flow TriangleAreaHeron()
+    A = √(s(s-a)(s-b)(s-c))
+    s = (a+b+c)/2</div>
+
+        <h3>Quadrilaterals</h3>
+        <div class="code-block">@Domain.Geometry
+Flow RectangleArea()
+    A = lw
+
+@Domain.Geometry
+Flow RectanglePerimeter()
+    P = 2l + 2w
+
+@Domain.Geometry
+Flow TrapezoidArea()
+    A = ½(b₁ + b₂)h
+
+@Domain.Geometry
+Flow ParallelogramArea()
+    A = bh
+
+@Domain.Geometry
+Flow RhombusArea()
+    A = ½d₁d₂</div>
+
+        <h3>Circles</h3>
+        <div class="code-block">@Domain.Geometry
+Flow CircleArea()
+    A = πr²
+
+@Domain.Geometry
+Flow CircleCircumference()
+    C = 2πr = πd
+
+@Domain.Geometry
+Flow SectorArea()
+    A = ½r²θ
+
+@Domain.Geometry
+Flow ArcLength()
+    s = rθ</div>
+
+        <h3>3D Solids</h3>
+        <div class="code-block">@Domain.Geometry
+Flow CubeVolume()
+    V = s³
+
+@Domain.Geometry
+Flow CubeSurfaceArea()
+    SA = 6s²
+
+@Domain.Geometry
+Flow RectPrismVolume()
+    V = lwh
+
+@Domain.Geometry
+Flow CylinderVolume()
+    V = πr²h
+
+@Domain.Geometry
+Flow CylinderSurfaceArea()
+    SA = 2πrh + 2πr²
+
+@Domain.Geometry
+Flow ConeVolume()
+    V = ⅓πr²h
+
+@Domain.Geometry
+Flow SphereVolume()
+    V = ⁴⁄₃πr³
+
+@Domain.Geometry
+Flow SphereSurfaceArea()
+    SA = 4πr²
+
+@Domain.Geometry
+Flow PyramidVolume()
+    V = ⅓Bh
+
+@Domain.Geometry
+Flow EllipseArea()
+    A = πab</div>
+
+        <h3>Geometry Examples</h3>
+        <div class="code-block">// Pythagorean theorem: find hypotenuse
+hyp := Pythagorean(a: 3, b: 4)
+"Hypotenuse: " + hyp -> Print
+// Output: Hypotenuse: 5 (classic 3-4-5 triangle)
+
+// Area of a circle with radius 7
+area := CircleArea(r: 7)
+"Circle area: " + area + " square units" -> Print
+// Output: Circle area: 153.938 square units
+
+// Volume of a sphere
+vol := SphereVolume(r: 10)
+"Sphere volume: " + vol + " cubic units" -> Print
+// Output: Sphere volume: 4188.79 cubic units
+
+// Solve for radius given area
+radius := CircleArea(A: 100)
+"Radius for area 100: " + radius -> Print
+// Output: Radius for area 100: 5.64</div>
+      </div>
+
+      <!-- TRIGONOMETRY DOMAIN -->
+      <div class="doc-section" id="trigonometry">
+        <h2>@Domain.Trigonometry</h2>
+        <p>Trigonometric functions, identities, and triangle solving formulas.</p>
+
+        <div class="card" style="margin: 1rem 0;">
+          <h4>Available Symbols</h4>
+          <p><code>θ</code>, <code>φ</code>, <code>α</code>, <code>β</code> (angles), <code>a</code>, <code>b</code>, <code>c</code> (sides), <code>A</code>, <code>B</code>, <code>C</code> (angles in triangle)</p>
+          <h4>Functions</h4>
+          <p><code>sin</code>, <code>cos</code>, <code>tan</code>, <code>csc</code>, <code>sec</code>, <code>cot</code>, <code>arcsin</code>, <code>arccos</code>, <code>arctan</code></p>
+        </div>
+
+        <h3>Basic Definitions</h3>
+        <div class="code-block">@Domain.Trigonometry
+Flow SineDefinition()
+    sinθ = opposite/hypotenuse
+
+@Domain.Trigonometry
+Flow CosineDefinition()
+    cosθ = adjacent/hypotenuse
+
+@Domain.Trigonometry
+Flow TangentDefinition()
+    tanθ = opposite/adjacent = sinθ/cosθ
+
+@Domain.Trigonometry
+Flow CosecantDefinition()
+    cscθ = 1/sinθ
+
+@Domain.Trigonometry
+Flow SecantDefinition()
+    secθ = 1/cosθ
+
+@Domain.Trigonometry
+Flow CotangentDefinition()
+    cotθ = 1/tanθ = cosθ/sinθ</div>
+
+        <h3>Pythagorean Identities</h3>
+        <div class="code-block">@Domain.Trigonometry
+Flow PythagoreanIdentity()
+    sin²θ + cos²θ = 1
+
+@Domain.Trigonometry
+Flow PythagoreanIdentity2()
+    1 + tan²θ = sec²θ
+
+@Domain.Trigonometry
+Flow PythagoreanIdentity3()
+    1 + cot²θ = csc²θ</div>
+
+        <h3>Double &amp; Half Angle Formulas</h3>
+        <div class="code-block">@Domain.Trigonometry
+Flow DoubleAngleSin()
+    sin(2θ) = 2sinθcosθ
+
+@Domain.Trigonometry
+Flow DoubleAngleCos()
+    cos(2θ) = cos²θ - sin²θ = 2cos²θ - 1 = 1 - 2sin²θ
+
+@Domain.Trigonometry
+Flow DoubleAngleTan()
+    tan(2θ) = 2tanθ/(1 - tan²θ)
+
+@Domain.Trigonometry
+Flow HalfAngleSin()
+    sin(θ/2) = ±√((1 - cosθ)/2)
+
+@Domain.Trigonometry
+Flow HalfAngleCos()
+    cos(θ/2) = ±√((1 + cosθ)/2)</div>
+
+        <h3>Sum &amp; Difference Formulas</h3>
+        <div class="code-block">@Domain.Trigonometry
+Flow SumSin()
+    sin(α ± β) = sinαcosβ ± cosαsinβ
+
+@Domain.Trigonometry
+Flow SumCos()
+    cos(α ± β) = cosαcosβ ∓ sinαsinβ
+
+@Domain.Trigonometry
+Flow SumTan()
+    tan(α + β) = (tanα + tanβ)/(1 - tanαtanβ)</div>
+
+        <h3>Laws of Sines &amp; Cosines</h3>
+        <div class="code-block">@Domain.Trigonometry
+Flow LawOfSines()
+    a/sinA = b/sinB = c/sinC
+
+@Domain.Trigonometry
+Flow LawOfCosines()
+    c² = a² + b² - 2ab·cosC
+
+@Domain.Trigonometry
+Flow LawOfTangents()
+    (a-b)/(a+b) = tan((A-B)/2)/tan((A+B)/2)
+
+@Domain.Trigonometry
+Flow TriangleAreaTrig()
+    A = ½ab·sinC</div>
+
+        <h3>Trigonometry Examples</h3>
+        <div class="code-block">// Verify Pythagorean identity at 45°
+result := PythagoreanIdentity(θ: 45°)
+"sin²(45°) + cos²(45°) = " + result -> Print
+// Output: sin²(45°) + cos²(45°) = 1
+
+// Law of Sines: find side b
+side_b := LawOfSines(a: 10, A: 30°, B: 45°)
+"Side b = " + side_b -> Print
+// Output: Side b = 14.14
+
+// Law of Cosines: find side c
+side_c := LawOfCosines(a: 5, b: 7, C: 60°)
+"Side c = " + side_c -> Print
+// Output: Side c = 6.24</div>
+      </div>
+
+      <!-- CALCULUS DOMAIN -->
+      <div class="doc-section" id="calculus">
+        <h2>@Domain.Calculus</h2>
+        <p>Differential and integral calculus including derivatives, integrals, limits, and series.</p>
+
+        <div class="card" style="margin: 1rem 0;">
+          <h4>Available Symbols</h4>
+          <p><code>f</code>, <code>g</code>, <code>h</code> (functions), <code>x</code>, <code>t</code> (variables), <code>a</code>, <code>b</code> (bounds), <code>C</code> (constant of integration)</p>
+          <h4>Operators</h4>
+          <p><code>d/dx</code>, <code>∂/∂x</code>, <code>∫</code>, <code>∮</code>, <code>∑</code>, <code>∏</code>, <code>lim</code>, <code>∇</code>, <code>Δ</code></p>
+        </div>
+
+        <h3>Derivative Rules</h3>
+        <div class="code-block">@Domain.Calculus
+Flow DerivativeDefinition()
+    f'(x) = lim[h→0] (f(x+h) - f(x))/h
+
+@Domain.Calculus
+Flow PowerRule()
+    d/dx[xⁿ] = nxⁿ⁻¹
+
+@Domain.Calculus
+Flow ConstantRule()
+    d/dx[c] = 0
+
+@Domain.Calculus
+Flow SumRule()
+    d/dx[f + g] = f' + g'
+
+@Domain.Calculus
+Flow ProductRule()
+    d/dx[fg] = f'g + fg'
+
+@Domain.Calculus
+Flow QuotientRule()
+    d/dx[f/g] = (f'g - fg')/g²
+
+@Domain.Calculus
+Flow ChainRule()
+    d/dx[f(g(x))] = f'(g(x))·g'(x)</div>
+
+        <h3>Common Derivatives</h3>
+        <div class="code-block">@Domain.Calculus
+Flow DerivativeExp()
+    d/dx[eˣ] = eˣ
+
+@Domain.Calculus
+Flow DerivativeLn()
+    d/dx[ln(x)] = 1/x
+
+@Domain.Calculus
+Flow DerivativeSin()
+    d/dx[sin(x)] = cos(x)
+
+@Domain.Calculus
+Flow DerivativeCos()
+    d/dx[cos(x)] = -sin(x)
+
+@Domain.Calculus
+Flow DerivativeTan()
+    d/dx[tan(x)] = sec²(x)</div>
+
+        <h3>Integration</h3>
+        <div class="code-block">@Domain.Calculus
+Flow IntegralPower()
+    ∫xⁿdx = xⁿ⁺¹/(n+1) + C
+
+@Domain.Calculus
+Flow IntegralExp()
+    ∫eˣdx = eˣ + C
+
+@Domain.Calculus
+Flow IntegralOneOverX()
+    ∫(1/x)dx = ln|x| + C
+
+@Domain.Calculus
+Flow IntegralSin()
+    ∫sin(x)dx = -cos(x) + C
+
+@Domain.Calculus
+Flow IntegralCos()
+    ∫cos(x)dx = sin(x) + C
+
+@Domain.Calculus
+Flow FundamentalTheorem()
+    ∫ₐᵇf(x)dx = F(b) - F(a)
+
+@Domain.Calculus
+Flow IntegrationByParts()
+    ∫udv = uv - ∫vdu</div>
+
+        <h3>Series</h3>
+        <div class="code-block">@Domain.Calculus
+Flow TaylorSeries()
+    f(x) = Σ[n=0→∞] f⁽ⁿ⁾(a)/n! · (x-a)ⁿ
+
+@Domain.Calculus
+Flow MaclaurinSeries()
+    f(x) = Σ[n=0→∞] f⁽ⁿ⁾(0)/n! · xⁿ
+
+@Domain.Calculus
+Flow ExpSeries()
+    eˣ = Σ[n=0→∞] xⁿ/n!
+
+@Domain.Calculus
+Flow SinSeries()
+    sin(x) = Σ[n=0→∞] (-1)ⁿx^(2n+1)/(2n+1)!
+
+@Domain.Calculus
+Flow CosSeries()
+    cos(x) = Σ[n=0→∞] (-1)ⁿx^(2n)/(2n)!</div>
+
+        <h3>Applications</h3>
+        <div class="code-block">@Domain.Calculus
+Flow LHopitalsRule()
+    lim[x→a] f(x)/g(x) = lim[x→a] f'(x)/g'(x)
+
+@Domain.Calculus
+Flow ArcLength()
+    L = ∫ₐᵇ√(1 + (dy/dx)²)dx
+
+@Domain.Calculus
+Flow VolumeDisc()
+    V = π∫ₐᵇy²dx
+
+@Domain.Calculus
+Flow VolumeShell()
+    V = 2π∫ₐᵇxy·dx</div>
+
+        <h3>Calculus Examples</h3>
+        <div class="code-block">// Power rule: derivative of x⁵ at x = 2
+deriv := PowerRule(n: 5, x: 2)
+"d/dx[x⁵] at x=2: 5(2)⁴ = " + deriv -> Print
+// Output: d/dx[x⁵] at x=2: 5(2)⁴ = 80
+
+// Definite integral: ∫₀³ x² dx
+area := DefiniteIntegralX2(a: 0, b: 3)
+"∫₀³ x² dx = " + area -> Print
+// Output: ∫₀³ x² dx = 9</div>
+      </div>
+
+      <!-- LINEAR ALGEBRA DOMAIN -->
+      <div class="doc-section" id="linearalgebra">
+        <h2>@Domain.LinearAlgebra</h2>
+        <p>Matrices, vectors, linear transformations, eigenvalues, and vector operations.</p>
+
+        <div class="card" style="margin: 1rem 0;">
+          <h4>Available Symbols</h4>
+          <p><code>A</code>, <code>B</code>, <code>C</code> (matrices), <code>v</code>, <code>u</code>, <code>w</code> (vectors), <code>λ</code> (eigenvalue), <code>I</code> (identity matrix)</p>
+          <h4>Operators</h4>
+          <p><code>·</code> (dot product), <code>×</code> (cross product), <code>ᵀ</code> (transpose), <code>⁻¹</code> (inverse), <code>det</code>, <code>tr</code> (trace)</p>
+        </div>
+
+        <h3>Vector Operations</h3>
+        <div class="code-block">@Domain.LinearAlgebra
+Flow DotProduct()
+    u·v = Σuᵢvᵢ = |u||v|cosθ
+
+@Domain.LinearAlgebra
+Flow CrossProduct()
+    u×v = |u||v|sinθ·n̂
+
+@Domain.LinearAlgebra
+Flow CrossProduct3D()
+    u×v = (u₂v₃-u₃v₂, u₃v₁-u₁v₃, u₁v₂-u₂v₁)
+
+@Domain.LinearAlgebra
+Flow VectorMagnitude()
+    |v| = √(v₁² + v₂² + v₃²)
+
+@Domain.LinearAlgebra
+Flow UnitVector()
+    v̂ = v/|v|
+
+@Domain.LinearAlgebra
+Flow ProjectionVector()
+    proj_u(v) = (v·u/|u|²)u</div>
+
+        <h3>Matrix Operations</h3>
+        <div class="code-block">@Domain.LinearAlgebra
+Flow MatrixMultiplication()
+    (AB)ᵢⱼ = Σₖ AᵢₖBₖⱼ
+
+@Domain.LinearAlgebra
+Flow Determinant2x2()
+    det(A) = ad - bc
+
+@Domain.LinearAlgebra
+Flow Determinant3x3()
+    det(A) = a(ei-fh) - b(di-fg) + c(dh-eg)
+
+@Domain.LinearAlgebra
+Flow Eigenvalue()
+    Av = λv
+    det(A - λI) = 0
+
+@Domain.LinearAlgebra
+Flow Trace()
+    tr(A) = Σᵢ Aᵢᵢ
+
+@Domain.LinearAlgebra
+Flow InverseProperty()
+    AA⁻¹ = A⁻¹A = I
+
+@Domain.LinearAlgebra
+Flow TransposeProperty()
+    (AB)ᵀ = BᵀAᵀ</div>
+
+        <h3>Linear Algebra Examples</h3>
+        <div class="code-block">// Dot product of two vectors
+dot := DotProduct(u: [1, 2, 3], v: [4, 5, 6])
+"u · v = " + dot -> Print
+// Output: u · v = 32
+
+// Vector magnitude
+mag := VectorMagnitude(v: [3, 4, 0])
+"|v| = " + mag -> Print
+// Output: |v| = 5
+
+// 2x2 Determinant: [[3, 2], [1, 4]]
+det := Determinant2x2(a: 3, b: 2, c: 1, d: 4)
+"det(A) = " + det -> Print
+// Output: det(A) = 10</div>
+      </div>
+
+      <!-- STATISTICS DOMAIN -->
+      <div class="doc-section" id="statistics">
+        <h2>@Domain.Statistics</h2>
+        <p>Statistical formulas, probability distributions, hypothesis testing, and regression.</p>
+
+        <div class="card" style="margin: 1rem 0;">
+          <h4>Available Symbols</h4>
+          <p><code>μ</code> (population mean), <code>σ</code> (std dev), <code>σ²</code> (variance), <code>x̄</code> (sample mean), <code>s</code> (sample std), <code>n</code> (sample size), <code>N</code> (population size), <code>P</code> (probability), <code>E</code> (expected value), <code>z</code> (z-score), <code>t</code> (t-statistic), <code>χ²</code> (chi-square), <code>r</code> (correlation)</p>
+        </div>
+
+        <h3>Descriptive Statistics</h3>
+        <div class="code-block">@Domain.Statistics
+Flow Mean()
+    μ = Σxᵢ/N
+
+@Domain.Statistics
+Flow SampleMean()
+    x̄ = Σxᵢ/n
+
+@Domain.Statistics
+Flow Variance()
+    σ² = Σ(xᵢ - μ)²/N
+
+@Domain.Statistics
+Flow SampleVariance()
+    s² = Σ(xᵢ - x̄)²/(n-1)
+
+@Domain.Statistics
+Flow StandardDeviation()
+    σ = √(Σ(xᵢ - μ)²/N)
+
+@Domain.Statistics
+Flow ZScore()
+    z = (x - μ)/σ</div>
+
+        <h3>Inferential Statistics</h3>
+        <div class="code-block">@Domain.Statistics
+Flow StandardError()
+    SE = σ/√n
+
+@Domain.Statistics
+Flow ConfidenceInterval()
+    CI = x̄ ± z·(σ/√n)
+
+@Domain.Statistics
+Flow TStatistic()
+    t = (x̄ - μ)/(s/√n)
+
+@Domain.Statistics
+Flow ChiSquare()
+    χ² = Σ(O - E)²/E</div>
+
+        <h3>Correlation &amp; Regression</h3>
+        <div class="code-block">@Domain.Statistics
+Flow Correlation()
+    r = Σ(xᵢ-x̄)(yᵢ-ȳ) / √(Σ(xᵢ-x̄)²·Σ(yᵢ-ȳ)²)
+
+@Domain.Statistics
+Flow LinearRegression()
+    ŷ = a + bx
+    b = Σ(xᵢ-x̄)(yᵢ-ȳ) / Σ(xᵢ-x̄)²</div>
+
+        <h3>Probability</h3>
+        <div class="code-block">@Domain.Statistics
+Flow BayesTheorem()
+    P(A|B) = P(B|A)·P(A)/P(B)
+
+@Domain.Statistics
+Flow ExpectedValue()
+    E[X] = Σxᵢ·P(xᵢ)
+
+@Domain.Statistics
+Flow BinomialProbability()
+    P(X=k) = C(n,k)·pᵏ(1-p)ⁿ⁻ᵏ
+
+@Domain.Statistics
+Flow PoissonProbability()
+    P(X=k) = (λᵏe⁻λ)/k!
+
+@Domain.Statistics
+Flow NormalDistribution()
+    f(x) = (1/(σ√(2π)))·e^(-(x-μ)²/(2σ²))</div>
+
+        <h3>Statistics Examples</h3>
+        <div class="code-block">// Calculate mean of test scores
+mean := Mean(x: [85, 90, 78, 92, 88])
+"Mean: " + mean -> Print
+// Output: Mean: 86.6
+
+// Calculate standard deviation
+std := StandardDeviation(x: [85, 90, 78, 92, 88])
+"Standard Deviation: " + std -> Print
+// Output: Standard Deviation: 4.88
+
+// Z-score calculation
+z := ZScore(x: 95, μ: 86.6, σ: 4.85)
+"Z-score: " + z -> Print
+// Output: Z-score: 1.73
+
+// Combinations: choose 5 from 52 (poker hands)
+hands := Combination(n: 52, r: 5)
+"Possible poker hands: " + hands -> Print
+// Output: Possible poker hands: 2598960
+
+// Bayes' Theorem: disease testing
+prob := BayesTheorem(P_A: 0.01, P_B_given_A: 0.95, P_B: 0.05)
+"P(disease|positive test): " + prob -> Print
+// Output: P(disease|positive test): 0.19</div>
+      </div>
+
+      <!-- SET THEORY DOMAIN -->
+      <div class="doc-section" id="settheory">
+        <h2>@Domain.SetTheory</h2>
+        <p>Set operations, notation, and fundamental set theory concepts.</p>
+
+        <div class="card" style="margin: 1rem 0;">
+          <h4>Available Symbols</h4>
+          <p><code>A</code>, <code>B</code>, <code>C</code> (sets), <code>∅</code> (empty set), <code>U</code> (universal set)</p>
+          <h4>Operators</h4>
+          <p><code>∈</code> (element of), <code>∉</code> (not element), <code>⊂</code> (proper subset), <code>⊆</code> (subset), <code>⊃</code> (superset), <code>∪</code> (union), <code>∩</code> (intersection), <code>\</code> (set difference), <code>′</code> (complement)</p>
+        </div>
+
+        <div class="code-block">@Domain.SetTheory
+Flow ElementOf()
+    x ∈ A
+
+@Domain.SetTheory
+Flow NotElementOf()
+    x ∉ A
+
+@Domain.SetTheory
+Flow Subset()
+    A ⊆ B
+
+@Domain.SetTheory
+Flow ProperSubset()
+    A ⊂ B
+
+@Domain.SetTheory
+Flow Union()
+    A ∪ B = {x : x ∈ A or x ∈ B}
+
+@Domain.SetTheory
+Flow Intersection()
+    A ∩ B = {x : x ∈ A and x ∈ B}
+
+@Domain.SetTheory
+Flow SetDifference()
+    A \ B = {x : x ∈ A and x ∉ B}
+
+@Domain.SetTheory
+Flow Complement()
+    A′ = {x : x ∈ U and x ∉ A}
+
+@Domain.SetTheory
+Flow DeMorgans()
+    (A ∪ B)′ = A′ ∩ B′
+    (A ∩ B)′ = A′ ∪ B′
+
+@Domain.SetTheory
+Flow Cardinality()
+    |A ∪ B| = |A| + |B| - |A ∩ B|
+
+@Domain.SetTheory
+Flow PowerSet()
+    |P(A)| = 2^|A|
+
+@Domain.SetTheory
+Flow CartesianProduct()
+    A × B = {(a,b) : a ∈ A, b ∈ B}</div>
+      </div>
+
+      <!-- LOGIC DOMAIN -->
+      <div class="doc-section" id="logic">
+        <h2>@Domain.Logic</h2>
+        <p>Propositional and predicate logic, logical operators, and proof rules.</p>
+
+        <div class="card" style="margin: 1rem 0;">
+          <h4>Available Symbols</h4>
+          <p><code>p</code>, <code>q</code>, <code>r</code> (propositions), <code>P</code>, <code>Q</code> (predicates)</p>
+          <h4>Operators</h4>
+          <p><code>¬</code> (not), <code>∧</code> (and), <code>∨</code> (or), <code>→</code> (implies), <code>↔</code> (if and only if), <code>∀</code> (for all), <code>∃</code> (exists)</p>
+        </div>
+
+        <h3>Propositional Logic</h3>
+        <div class="code-block">@Domain.Logic
+Flow Negation()
+    ¬p
+
+@Domain.Logic
+Flow Conjunction()
+    p ∧ q
+
+@Domain.Logic
+Flow Disjunction()
+    p ∨ q
+
+@Domain.Logic
+Flow Implication()
+    p → q ≡ ¬p ∨ q
+
+@Domain.Logic
+Flow Biconditional()
+    p ↔ q ≡ (p → q) ∧ (q → p)
+
+@Domain.Logic
+Flow DeMorgansLogic()
+    ¬(p ∧ q) ≡ ¬p ∨ ¬q
+    ¬(p ∨ q) ≡ ¬p ∧ ¬q
+
+@Domain.Logic
+Flow Contrapositive()
+    (p → q) ≡ (¬q → ¬p)</div>
+
+        <h3>Predicate Logic</h3>
+        <div class="code-block">@Domain.Logic
+Flow Universal()
+    ∀x P(x)
+
+@Domain.Logic
+Flow Existential()
+    ∃x P(x)
+
+@Domain.Logic
+Flow NegateUniversal()
+    ¬(∀x P(x)) ≡ ∃x ¬P(x)
+
+@Domain.Logic
+Flow NegateExistential()
+    ¬(∃x P(x)) ≡ ∀x ¬P(x)</div>
+
+        <h3>Rules of Inference</h3>
+        <div class="code-block">@Domain.Logic
+Flow ModusPonens()
+    ((p → q) ∧ p) → q
+
+@Domain.Logic
+Flow ModusTollens()
+    ((p → q) ∧ ¬q) → ¬p
+
+@Domain.Logic
+Flow HypotheticalSyllogism()
+    ((p → q) ∧ (q → r)) → (p → r)</div>
+      </div>
+
+      <!-- ECONOMICS DOMAIN -->
+      <div class="doc-section" id="economics">
+        <h2>@Domain.Economics</h2>
+        <p>Economic and financial formulas including interest, valuation, and market analysis.</p>
+
+        <div class="card" style="margin: 1rem 0;">
+          <h4>Available Symbols</h4>
+          <p><code>P</code> (price/principal), <code>Q</code> (quantity), <code>r</code> (rate), <code>t</code> (time), <code>π</code> (profit), <code>C</code> (cost), <code>R</code> (revenue), <code>D</code> (demand), <code>S</code> (supply), <code>σ</code> (volatility), <code>β</code> (beta), <code>PV</code>, <code>FV</code> (present/future value)</p>
+        </div>
+
+        <h3>Interest &amp; Time Value</h3>
+        <div class="code-block">@Domain.Economics
+Flow SimpleInterest()
+    I = Prt
+
+@Domain.Economics
+Flow CompoundInterest()
+    A = P(1 + r/n)^(nt)
+
+@Domain.Economics
+Flow ContinuousCompound()
+    A = Pe^(rt)
+
+@Domain.Economics
+Flow PresentValue()
+    PV = FV/(1 + r)^n
+
+@Domain.Economics
+Flow FutureValue()
+    FV = PV(1 + r)^n
+
+@Domain.Economics
+Flow NetPresentValue()
+    NPV = Σ[t=0→n] CFₜ/(1+r)^t</div>
+
+        <h3>Revenue &amp; Profit</h3>
+        <div class="code-block">@Domain.Economics
+Flow Profit()
+    π = TR - TC
+
+@Domain.Economics
+Flow TotalRevenue()
+    TR = P × Q
+
+@Domain.Economics
+Flow MarginalCost()
+    MC = ΔTC/ΔQ
+
+@Domain.Economics
+Flow MarginalRevenue()
+    MR = ΔTR/ΔQ
+
+@Domain.Economics
+Flow PriceElasticity()
+    E_d = (%ΔQ)/(%ΔP)</div>
+
+        <h3>Financial Models</h3>
+        <div class="code-block">@Domain.Economics
+Flow CAPM()
+    E[Rᵢ] = R_f + βᵢ(E[R_m] - R_f)
+
+@Domain.Economics
+Flow BlackScholes()
+    C = S·N(d₁) - K·e^(-rT)·N(d₂)
+    d₁ = (ln(S/K) + (r + σ²/2)T)/(σ√T)
+    d₂ = d₁ - σ√T
+
+@Domain.Economics
+Flow GordonGrowth()
+    P = D/(r - g)</div>
+
+        <h3>Economics Examples</h3>
+        <div class="code-block">// Simple interest on $5000 at 4% for 3 years
+interest := SimpleInterest(P: 5000, r: 0.04, t: 3)
+"Interest earned: $" + interest -> Print
+// Output: Interest earned: $600
+
+// Present value of $10000 in 5 years at 5%
+pv := PresentValue(FV: 10000, r: 0.05, n: 5)
+"Present value: $" + pv -> Print
+// Output: Present value: $7835.26</div>
+      </div>
+
+      <!-- COMPLEX NUMBERS DOMAIN -->
+      <div class="doc-section" id="complexnumbers">
+        <h2>@Domain.ComplexNumbers</h2>
+        <p>Complex number operations including polar form, De Moivre's theorem, and roots.</p>
+
+        <div class="card" style="margin: 1rem 0;">
+          <h4>Available Symbols</h4>
+          <p><code>z</code>, <code>w</code> (complex numbers), <code>a</code>, <code>b</code> (real/imaginary parts), <code>i</code> (√-1), <code>r</code> (modulus), <code>θ</code> (argument)</p>
+        </div>
+
+        <div class="code-block">@Domain.ComplexNumbers
+Flow ComplexForm()
+    z = a + bi
+
+@Domain.ComplexNumbers
+Flow Conjugate()
+    z̄ = a - bi
+
+@Domain.ComplexNumbers
+Flow Modulus()
+    |z| = √(a² + b²)
+
+@Domain.ComplexNumbers
+Flow Argument()
+    arg(z) = arctan(b/a)
+
+@Domain.ComplexNumbers
+Flow PolarForm()
+    z = r(cosθ + i·sinθ) = re^(iθ)
+
+@Domain.ComplexNumbers
+Flow MultiplyPolar()
+    z₁z₂ = r₁r₂·e^(i(θ₁+θ₂))
+
+@Domain.ComplexNumbers
+Flow DividePolar()
+    z₁/z₂ = (r₁/r₂)·e^(i(θ₁-θ₂))
+
+@Domain.ComplexNumbers
+Flow DeMoivre()
+    zⁿ = rⁿ(cos(nθ) + i·sin(nθ))
+
+@Domain.ComplexNumbers
+Flow ComplexRoots()
+    z^(1/n) = r^(1/n)·e^(i(θ+2πk)/n)</div>
+
+        <h3>Complex Number Examples</h3>
+        <div class="code-block">// Modulus of 3 + 4i
+mod := Modulus(a: 3, b: 4)
+"|3 + 4i| = " + mod -> Print
+// Output: |3 + 4i| = 5
+
+// Euler's formula at θ = π
+euler := EulersFormula(θ: π)
+"e^(iπ) = " + euler.real + " + " + euler.imag + "i" -> Print
+// Output: e^(iπ) = -1 + 0i</div>
+      </div>
+
+      <!-- DIFFERENTIAL EQUATIONS DOMAIN -->
+      <div class="doc-section" id="differentialequations">
+        <h2>@Domain.DifferentialEquations</h2>
+        <p>Ordinary and partial differential equations, solution methods, and famous equations.</p>
+
+        <div class="card" style="margin: 1rem 0;">
+          <h4>Available Symbols</h4>
+          <p><code>y</code>, <code>u</code> (dependent variables), <code>x</code>, <code>t</code> (independent variables), <code>λ</code> (eigenvalue), <code>α</code>, <code>c</code> (constants)</p>
+        </div>
+
+        <h3>Ordinary Differential Equations</h3>
+        <div class="code-block">@Domain.DifferentialEquations
+Flow FirstOrderLinear()
+    dy/dx + P(x)y = Q(x)
+
+@Domain.DifferentialEquations
+Flow Separable()
+    dy/dx = f(x)g(y)
+
+@Domain.DifferentialEquations
+Flow SecondOrderHomogeneous()
+    y'' + py' + qy = 0
+
+@Domain.DifferentialEquations
+Flow CharacteristicEquation()
+    λ² + pλ + q = 0
+
+@Domain.DifferentialEquations
+Flow ExponentialSolution()
+    y = Ce^(λx)</div>
+
+        <h3>Partial Differential Equations</h3>
+        <div class="code-block">@Domain.DifferentialEquations
+Flow HeatEquation()
+    ∂u/∂t = α·∂²u/∂x²
+
+@Domain.DifferentialEquations
+Flow WaveEquation()
+    ∂²u/∂t² = c²·∂²u/∂x²
+
+@Domain.DifferentialEquations
+Flow LaplaceEquation()
+    ∂²u/∂x² + ∂²u/∂y² = 0
+
+@Domain.DifferentialEquations
+Flow SchrodingerEquation()
+    iħ·∂Ψ/∂t = ĤΨ</div>
+      </div>
+
+      <!-- NUMBER THEORY DOMAIN -->
+      <div class="doc-section" id="numbertheory">
+        <h2>@Domain.NumberTheory</h2>
+        <p>Number theory, divisibility, modular arithmetic, and prime numbers.</p>
+
+        <div class="card" style="margin: 1rem 0;">
+          <h4>Available Symbols</h4>
+          <p><code>n</code>, <code>m</code>, <code>a</code>, <code>b</code> (integers), <code>p</code> (prime), <code>gcd</code>, <code>lcm</code>, <code>≡</code> (congruence), <code>φ</code> (Euler's totient)</p>
+        </div>
+
+        <div class="code-block">@Domain.NumberTheory
+Flow Divisibility()
+    a | b ⟺ b = ka
+
+@Domain.NumberTheory
+Flow GCDProperty()
+    gcd(a,b) × lcm(a,b) = |a × b|
+
+@Domain.NumberTheory
+Flow EuclideanAlgorithm()
+    gcd(a,b) = gcd(b, a mod b)
+
+@Domain.NumberTheory
+Flow Bezout()
+    gcd(a,b) = ax + by
+
+@Domain.NumberTheory
+Flow ModularArithmetic()
+    a ≡ b (mod n) ⟺ n | (a-b)
+
+@Domain.NumberTheory
+Flow FermatsLittle()
+    a^(p-1) ≡ 1 (mod p)
+
+@Domain.NumberTheory
+Flow EulersTotient()
+    a^(φ(n)) ≡ 1 (mod n)
+
+@Domain.NumberTheory
+Flow ChineseRemainder()
+    x ≡ a₁ (mod n₁)
+    x ≡ a₂ (mod n₂)
+
+@Domain.NumberTheory
+Flow PrimeCountApprox()
+    π(n) ≈ n/ln(n)</div>
+      </div>
+
+      <!-- SUMMARY -->
+      <div class="doc-section" id="summary">
+        <h2>Summary</h2>
+        <p>The Ouroboros Domain System provides <strong>14 specialized domains</strong> with over <strong>200+ built-in equations</strong>:</p>
+
+        <table class="doc-table">
+          <thead>
+            <tr><th>Domain</th><th>Focus Area</th><th>Key Features</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>@Domain.Physics</code></td><td>Physical sciences</td><td>Mechanics, waves, E&amp;M, relativity, 50+ equations</td></tr>
+            <tr><td><code>@Domain.Chemistry</code></td><td>Chemical sciences</td><td>Gas laws, pH, kinetics, thermodynamics</td></tr>
+            <tr><td><code>@Domain.Math</code></td><td>Core mathematics</td><td>Factorials, permutations, logarithms</td></tr>
+            <tr><td><code>@Domain.Algebra</code></td><td>Algebraic equations</td><td>Quadratic, linear, sequences, interest</td></tr>
+            <tr><td><code>@Domain.Geometry</code></td><td>Shapes &amp; solids</td><td>2D areas, 3D volumes, Pythagorean</td></tr>
+            <tr><td><code>@Domain.Trigonometry</code></td><td>Triangle functions</td><td>Identities, law of sines/cosines</td></tr>
+            <tr><td><code>@Domain.Calculus</code></td><td>Calculus</td><td>Derivatives, integrals, series</td></tr>
+            <tr><td><code>@Domain.LinearAlgebra</code></td><td>Vectors &amp; matrices</td><td>Dot/cross products, determinants</td></tr>
+            <tr><td><code>@Domain.Statistics</code></td><td>Statistics</td><td>Mean, std dev, probability, regression</td></tr>
+            <tr><td><code>@Domain.SetTheory</code></td><td>Set operations</td><td>Union, intersection, De Morgan's</td></tr>
+            <tr><td><code>@Domain.Logic</code></td><td>Formal logic</td><td>Propositional &amp; predicate logic</td></tr>
+            <tr><td><code>@Domain.Economics</code></td><td>Finance</td><td>Interest, NPV, CAPM, Black-Scholes</td></tr>
+            <tr><td><code>@Domain.ComplexNumbers</code></td><td>Complex analysis</td><td>Polar form, De Moivre's theorem</td></tr>
+            <tr><td><code>@Domain.DifferentialEquations</code></td><td>ODEs &amp; PDEs</td><td>Heat, wave, Laplace, Schrodinger</td></tr>
+            <tr><td><code>@Domain.NumberTheory</code></td><td>Number theory</td><td>GCD, modular arithmetic, primes</td></tr>
+          </tbody>
+        </table>
+
+        <div class="card" style="border-left: 4px solid var(--accent); margin: 1rem 0;">
+          <h4>🚀 Getting Started</h4>
+          <p>To use domains, simply decorate your Flow with <code>@Domain.Name</code> and write your equation using natural mathematical notation. The interpreter handles symbol resolution, constant injection, and bidirectional solving automatically.</p>
+          <div class="code-block">@Domain.Physics
+Flow MyCustomEquation()
+    your_equation_here
+
+// Then call it
+result := MyCustomEquation(known_var: value)</div>
+        </div>
+      </div>
+      
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>&copy; 2024-2026 Ouroboros Language Project</p>
+    </div>
+  </footer>
+  <script src="search.js"></script>
+</body>
+</html>

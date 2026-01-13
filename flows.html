@@ -4,25 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flows Reference - Ouroboros</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <nav>
     <div class="nav-inner">
-      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo">Ouroboros</a>
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo"><span class="brand-text">Ouroboros</span></a>
+      <div class="search-container">
+        <div class="search-wrapper">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+          </svg>
+          <input type="text" id="doc-search" class="search-input" placeholder="Search (Ctrl+K)" autocomplete="off" />
+          <div id="search-results" class="search-results"></div>
+        </div>
+      </div>
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="getting_started.html">Get Started</a>
         <a href="examples.html">Examples</a>
         <a href="flows.html">Flows</a>
+        <a href="domains.html">Domains</a>
         <a href="reference.html">Reference</a>
+        <a href="rex_aot.html">REX &amp; AOT</a>
         <a href="arrows.html">Arrows</a>
         <a href="tokens.html">Tokens</a>
         <a href="files.html">Files</a>
         <a href="stdlib.html">Std Lib</a>
+        <a href="windows.html">Windows</a>
         <a href="downloads.html">Downloads</a>
       </div>
     </div>
@@ -1118,5 +1127,6 @@ Store(Sanitize(Transform(Validate(input))))</div>
       });
     });
   </script>
+  <script src="search.js"></script>
 </body>
 </html>
