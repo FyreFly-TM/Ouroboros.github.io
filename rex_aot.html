@@ -236,18 +236,42 @@
       </div>
       <div class="nav-links">
         <a href="index.html">Home</a>
-        <a href="getting_started.html">Get Started</a>
-        <a href="examples.html">Examples</a>
-        <a href="flows.html">Flows</a>
-        <a href="domains.html">Domains</a>
-        <a href="reference.html">Reference</a>
-        <a href="rex_aot.html">REX &amp; AOT</a>
-        <a href="arrows.html">Arrows</a>
-        <a href="tokens.html">Tokens</a>
-        <a href="files.html">Files</a>
-        <a href="stdlib.html">Std Lib</a>
-        <a href="windows.html">Windows</a>
-        <a href="downloads.html">Downloads</a>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Learn</span>
+          <div class="nav-dropdown-menu">
+            <a href="getting_started.html">Get Started</a>
+            <a href="cheatsheet.html">Cheat Sheet</a>
+            <a href="examples.html">Examples</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Language</span>
+          <div class="nav-dropdown-menu">
+            <a href="arrows.html">Arrows</a>
+            <a href="flows.html">Flows</a>
+            <a href="tokens.html">Tokens</a>
+            <div class="menu-divider"></div>
+            <a href="reference.html">Full Reference</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Libraries</span>
+          <div class="nav-dropdown-menu">
+            <a href="stdlib.html">Standard Library</a>
+            <a href="windows.html">Windowing</a>
+            <a href="keycodes.html">Key Codes</a>
+            <div class="menu-divider"></div>
+            <a href="domains.html">Domains</a>
+            <a href="files.html">File Types</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Tools</span>
+          <div class="nav-dropdown-menu">
+            <a href="rex_aot.html">REX &amp; AOT</a>
+            <a href="downloads.html">Downloads</a>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -259,6 +283,7 @@
         <li><a href="#performance">Performance</a></li>
         <li><a href="#architecture">Architecture</a></li>
         <li><a href="#technologies">Technologies</a></li>
+        <li><a href="#neural">Neural Optimization</a></li>
         <li><a href="#aot">AOT Compilation</a></li>
         <li><a href="#usage">Usage</a></li>
         <li><a href="#bytecode">Bytecode Reference</a></li>
@@ -448,6 +473,127 @@ _mm_prefetch(&data[i + 64], _MM_HINT_T0);
 __builtin_prefetch(&data[i + 64], 0, 3);</code></pre>
                 </div>
             </div>
+      </div>
+
+      <div class="doc-section" id="neural">
+        <h2>🧠 Neural Optimization System</h2>
+        <p>Ouroboros includes a <strong>built-in neural network</strong> that learns to make better optimization decisions over time. Unlike traditional heuristic-based compilers, the neural system adapts to your specific code patterns and runtime behavior.</p>
+
+        <h3>How It Works</h3>
+        <div class="arch-diagram">
+          <div class="arch-title">Neural Optimization Pipeline</div>
+          <div class="pipeline-row">
+            <div class="pipeline-node">
+              <div class="pipeline-node-title">Code Analysis</div>
+              <div class="pipeline-node-sub">32 features extracted</div>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-node">
+              <div class="pipeline-node-title">Neural Network</div>
+              <div class="pipeline-node-sub">4 specialized models</div>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-node">
+              <div class="pipeline-node-title">Optimization</div>
+              <div class="pipeline-node-sub">Guided decisions</div>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-node">
+              <div class="pipeline-node-title">Runtime</div>
+              <div class="pipeline-node-sub">Profile collection</div>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-node">
+              <div class="pipeline-node-title">Training</div>
+              <div class="pipeline-node-sub">Model updates</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Four Specialized Networks</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>🎯 Inlining Network</h3>
+            <p>Predicts whether a function should be inlined based on size, call frequency, and complexity.</p>
+            <pre><code>Architecture: 32 → 64 → 32 → 1 (sigmoid)
+Output: Inline probability (0.0 - 1.0)</code></pre>
+          </div>
+          <div class="feature-card">
+            <h3>🔄 Unroll Network</h3>
+            <p>Determines optimal loop unroll factor by analyzing iteration count and body complexity.</p>
+            <pre><code>Architecture: 32 → 64 → 32 → 5 (softmax)
+Output: Factor class (1, 2, 4, 8, or 16)</code></pre>
+          </div>
+          <div class="feature-card">
+            <h3>⚡ Vectorize Network</h3>
+            <p>Identifies loops that can benefit from SIMD vectorization based on memory access patterns.</p>
+            <pre><code>Architecture: 32 → 64 → 16 → 1 (sigmoid)
+Output: Vectorize probability</code></pre>
+          </div>
+          <div class="feature-card">
+            <h3>🔥 Hot Path Network</h3>
+            <p>Detects performance-critical code paths that should receive aggressive optimization.</p>
+            <pre><code>Architecture: 32 → 32 → 1 (sigmoid)
+Output: Hot path probability</code></pre>
+          </div>
+        </div>
+
+        <h3>Feature Vector (32 dimensions)</h3>
+        <p>Each code region is analyzed and converted to a 32-dimensional feature vector:</p>
+        <table class="benchmark-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Features</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Function</strong></td>
+              <td>8 features</td>
+              <td>Size, complexity, call count, loop count, branch count, recursion, leaf status, hotness</td>
+            </tr>
+            <tr>
+              <td><strong>Loop</strong></td>
+              <td>8 features</td>
+              <td>Iteration count, body size, stride, carried deps, branches in body, calls in body, reduction, invariants</td>
+            </tr>
+            <tr>
+              <td><strong>Memory</strong></td>
+              <td>4 features</td>
+              <td>Sequential access, strided access, random access, temporal locality</td>
+            </tr>
+            <tr>
+              <td><strong>Runtime</strong></td>
+              <td>4 features</td>
+              <td>Call frequency, branch taken ratio, cache miss estimate, average iterations</td>
+            </tr>
+            <tr>
+              <td><strong>Reserved</strong></td>
+              <td>8 features</td>
+              <td>Future extensions and alignment padding</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Model Persistence</h3>
+        <p>Trained models are saved to <code>.neural</code> files, allowing the compiler to learn from your codebase over time:</p>
+        <pre class="code-block"><code>models/
+├── inline.neural      # Inlining decisions
+├── unroll.neural      # Loop unrolling
+├── vectorize.neural   # SIMD vectorization
+└── hotpath.neural     # Hot path detection</code></pre>
+
+        <h3>Self-Improving Compilation</h3>
+        <p>The neural system creates a <strong>feedback loop</strong> between compilation and execution:</p>
+        <ol class="benefits">
+          <li><strong>First Run:</strong> Compiler uses default heuristics + initial neural predictions</li>
+          <li><strong>Profiling:</strong> Runtime collects cycle counts per function</li>
+          <li><strong>Training:</strong> Neural models update based on actual performance</li>
+          <li><strong>Next Run:</strong> Compiler uses improved predictions from trained models</li>
+          <li><strong>Repeat:</strong> Each execution makes the compiler smarter</li>
+        </ol>
       </div>
 
       <div class="doc-section" id="aot">

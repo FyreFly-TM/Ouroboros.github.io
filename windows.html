@@ -21,18 +21,42 @@
       </div>
       <div class="nav-links">
         <a href="index.html">Home</a>
-        <a href="getting_started.html">Get Started</a>
-        <a href="examples.html">Examples</a>
-        <a href="flows.html">Flows</a>
-        <a href="domains.html">Domains</a>
-        <a href="reference.html">Reference</a>
-        <a href="rex_aot.html">REX &amp; AOT</a>
-        <a href="arrows.html">Arrows</a>
-        <a href="tokens.html">Tokens</a>
-        <a href="files.html">Files</a>
-        <a href="stdlib.html">Std Lib</a>
-        <a href="windows.html">Windows</a>
-        <a href="downloads.html">Downloads</a>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Learn</span>
+          <div class="nav-dropdown-menu">
+            <a href="getting_started.html">Get Started</a>
+            <a href="cheatsheet.html">Cheat Sheet</a>
+            <a href="examples.html">Examples</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Language</span>
+          <div class="nav-dropdown-menu">
+            <a href="arrows.html">Arrows</a>
+            <a href="flows.html">Flows</a>
+            <a href="tokens.html">Tokens</a>
+            <div class="menu-divider"></div>
+            <a href="reference.html">Full Reference</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Libraries</span>
+          <div class="nav-dropdown-menu">
+            <a href="stdlib.html">Standard Library</a>
+            <a href="windows.html">Windowing</a>
+            <a href="keycodes.html">Key Codes</a>
+            <div class="menu-divider"></div>
+            <a href="domains.html">Domains</a>
+            <a href="files.html">File Types</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Tools</span>
+          <div class="nav-dropdown-menu">
+            <a href="rex_aot.html">REX &amp; AOT</a>
+            <a href="downloads.html">Downloads</a>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -464,6 +488,7 @@ if WindowMouseClicked(win, 0) == true
             <tr><td style="padding: 6px;">Arrow Left</td><td>37</td><td>Arrow Right</td><td>39</td></tr>
             <tr><td style="padding: 6px;">A-Z</td><td>65-90</td><td>0-9</td><td>48-57</td></tr>
           </table>
+          <p style="margin-top: 12px;"><a href="keycodes.html">View complete key codes reference →</a></p>
         </div>
       </div>
 

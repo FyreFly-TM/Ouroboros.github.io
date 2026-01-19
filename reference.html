@@ -21,18 +21,42 @@
       </div>
       <div class="nav-links">
         <a href="index.html">Home</a>
-        <a href="getting_started.html">Get Started</a>
-        <a href="examples.html">Examples</a>
-        <a href="flows.html">Flows</a>
-        <a href="domains.html">Domains</a>
-        <a href="reference.html">Reference</a>
-        <a href="rex_aot.html">REX &amp; AOT</a>
-        <a href="arrows.html">Arrows</a>
-        <a href="tokens.html">Tokens</a>
-        <a href="files.html">Files</a>
-        <a href="stdlib.html">Std Lib</a>
-        <a href="windows.html">Windows</a>
-        <a href="downloads.html">Downloads</a>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Learn</span>
+          <div class="nav-dropdown-menu">
+            <a href="getting_started.html">Get Started</a>
+            <a href="cheatsheet.html">Cheat Sheet</a>
+            <a href="examples.html">Examples</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Language</span>
+          <div class="nav-dropdown-menu">
+            <a href="arrows.html">Arrows</a>
+            <a href="flows.html">Flows</a>
+            <a href="tokens.html">Tokens</a>
+            <div class="menu-divider"></div>
+            <a href="reference.html">Full Reference</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Libraries</span>
+          <div class="nav-dropdown-menu">
+            <a href="stdlib.html">Standard Library</a>
+            <a href="windows.html">Windowing</a>
+            <a href="keycodes.html">Key Codes</a>
+            <div class="menu-divider"></div>
+            <a href="domains.html">Domains</a>
+            <a href="files.html">File Types</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Tools</span>
+          <div class="nav-dropdown-menu">
+            <a href="rex_aot.html">REX &amp; AOT</a>
+            <a href="downloads.html">Downloads</a>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -239,6 +263,10 @@ if (active & !paused)
 else
     "Status: Stopped" -> Print
 
+// ALTERNATIVE: Using gate arrows for the same logic
+// "Status: Running" -[active & !paused]-> Print
+// "Status: Stopped" -[!active | paused]-> Print
+
 // Toggle pause
 paused = true
 "" -> Print
@@ -247,6 +275,10 @@ if (active & !paused)
     "Status: Running" -> Print
 else
     "Status: Paused" -> Print
+
+// ALTERNATIVE: Gate-based approach
+// "Status: Running" -[active & !paused]-> Print
+// "Status: Paused" -[active & paused]-> Print
 
 // Expected Output:
 // === Booleans Demo ===
@@ -424,6 +456,10 @@ if (active & !paused & (level > 5 | has_key))
 else
     "Result: Access denied" -> Print
 
+// ALTERNATIVE: Gate-based conditional
+// "Result: Access granted!" -[active & !paused & (level > 5 | has_key)]-> Print
+// "Result: Access denied" -[!active | paused | (level ≤ 5 & !has_key)]-> Print
+
 // Change paused to true
 "" -> Print
 "Setting paused = true..." -> Print
@@ -432,6 +468,10 @@ if (active & !paused)
     "Result: Running" -> Print
 else
     "Result: Paused" -> Print
+
+// ALTERNATIVE: Gate-based state display
+// "Result: Running" -[active & !paused]-> Print
+// "Result: Paused" -[active & paused]-> Print
 
 // Expected Output:
 // === Logical Operators Demo ===
@@ -566,6 +606,13 @@ Flow CheckHealth(alive, health)
     else
         "Game Over" -> Print
 
+// ALTERNATIVE: Flattened gate-based approach
+// Flow CheckHealthGates(alive, health)
+//     "Critical health!" -[alive & health < 20]-> Print
+//     "Low health" -[alive & health ≥ 20 & health < 50]-> Print
+//     "Healthy" -[alive & health ≥ 50]-> Print
+//     "Game Over" -[!alive]-> Print
+
 "Player 1 (alive, health=15):" -> Print
 CheckHealth(true, 15)
 
@@ -594,6 +641,138 @@ CheckHealth(false, 0)
 //
 // Player 4 (dead, health=0):
 // Game Over</div>
+
+        <h3>Arrow-Based Conditionals (Gate Pattern)</h3>
+        <p>Ouroboros offers a powerful alternative to if/else using <strong>conditional gates</strong>. The <code>-[condition]-></code> syntax lets you express conditional logic in a flow-oriented way:</p>
+        
+        <div class="code-block">// PATTERN: Using gates instead of if/else
+// The gate only executes if the condition is true
+
+score := 85
+
+// Traditional if/else approach:
+if (score ≥ 90)
+    "A" -> Print
+elseif (score ≥ 80)
+    "B" -> Print
+elseif (score ≥ 70)
+    "C" -> Print
+else
+    "F" -> Print
+
+// Arrow-based approach (each line is independent):
+score -[score ≥ 90]-> Print("A")
+score -[score ≥ 80 & score < 90]-> Print("B")
+score -[score ≥ 70 & score < 80]-> Print("C")
+score -[score < 70]-> Print("F")</div>
+
+        <h4>If-Else with Gate Chains</h4>
+        <p>For mutually exclusive conditions, use complementary gates:</p>
+        <div class="code-block">// COMPLETE EXAMPLE: Gate-Based Branching
+// Save as: gate_branching.ouro
+
+"=== Gate-Based Conditionals ==="  -> Print
+
+value := 42
+
+// Simple if/else alternative
+value -[value > 50]-> Print("High value!")
+value -[value ≤ 50]-> Print("Low or equal to 50")
+
+// With transformation
+temp := 75
+temp -[temp > 100 ? "CRITICAL"]-> Print
+temp -[temp > 80 & temp ≤ 100 ? "WARNING"]-> Print
+temp -[temp ≤ 80 ? "NORMAL"]-> Print
+
+// Expected Output:
+// === Gate-Based Conditionals ===
+// Low or equal to 50
+// NORMAL</div>
+
+        <h4>Calling Flows with :: and || (If-Then-Else)</h4>
+        <p>The <code>::</code> operator provides if-then-else semantics within gates, and <code>||</code> handles failures:</p>
+        <div class="code-block">// Gate syntax with Flow calls:
+// -[condition ? action :: onSuccess || onFailure]-
+
+// :: = "then" (executes on success)
+// || = "else/catch" (executes on failure)
+
+// Example: Validate and process
+Flow Validate(data)
+    return data > 0
+
+Flow Process(data)
+    "Processing: " + data -> Print
+
+Flow LogError(msg)
+    "ERROR: " + msg -> Print
+
+// If Validate returns true, call Process; otherwise LogError
+value := 42
+value -[Validate(value) ? "Valid" :: Process(value) || LogError("Invalid data")]-> result
+
+// Simpler form: just success/failure handlers
+user := "admin"
+user -[user == "admin" :: GrantAccess(user) || DenyAccess(user)]-</div>
+
+        <h4>Partial Gate Syntax</h4>
+        <p>You can omit parts you don't need:</p>
+        <div class="code-block">// Only action on true (like traditional if without else)
+data -[IsValid(data) ? Transform(data)]-> output
+
+// Only success handler
+data -[IsReady(data) :: Process(data)]-
+
+// Only failure handler (like a guard clause)
+data -[HasPermission(user) || RejectRequest()]-
+
+// Condition + action + success
+data -[IsValid(data) ? Log("Checking") :: Save(data)]-
+
+// Full form with all components
+data -[IsValid(data) ? Log("Pre") :: Process(data) || HandleError()]-</div>
+
+        <h4>Benefits of Gate Pattern</h4>
+        <ul class="list">
+          <li><strong>Visual Flow</strong> — See exactly where data goes based on conditions</li>
+          <li><strong>Parallel-Friendly</strong> — Gates can be evaluated independently</li>
+          <li><strong>Composable</strong> — Combine with other arrows: <code>-[cond]~></code>, <code>-[cond]=></code></li>
+          <li><strong>Transform Inline</strong> — Change values while routing: <code>-[cond ? newValue]-></code></li>
+          <li><strong>Call Flows</strong> — Use <code>::</code> for success and <code>||</code> for failure handlers</li>
+        </ul>
+
+        <h4>When to Use Which</h4>
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th>Use Traditional If/Else</th>
+              <th>Use Gate Arrows</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Multiple statements per branch</td>
+              <td>Single action per condition</td>
+            </tr>
+            <tr>
+              <td>Complex nested logic</td>
+              <td>Flat, parallel conditions</td>
+            </tr>
+            <tr>
+              <td>Early returns needed</td>
+              <td>Data routing/transformation</td>
+            </tr>
+            <tr>
+              <td>State modifications</td>
+              <td>Flow pipelines</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div class="note">
+          <strong>📘 Learn More:</strong> For comprehensive gate syntax including fork gates, funnel gates, and advanced patterns, see the <a href="arrows.html#gates">Conditional Gates</a> section in the Arrows reference.
+        </div>
 
         <h3>While Loop</h3>
         <p>Loop while a condition is true:</p>
@@ -820,6 +999,10 @@ if (found)
 else
     "Target not found" -> Print
 
+// ALTERNATIVE: Gate-based result display
+// "Search successful!" -[found]-> Print
+// "Target not found" -[!found]-> Print
+
 // Expected Output:
 // === Search Loop Demo ===
 // Searching for 42.00 in array...
@@ -832,15 +1015,27 @@ else
 // Search successful!</div>
 
         <h3>Conditional Gates (Inline)</h3>
-        <p>Use arrow gates for inline conditional execution:</p>
+        <p>Use arrow gates for inline conditional execution. Gates are the idiomatic Ouroboros way to express conditional flow:</p>
         <div class="code-block">value := 75
 
 // Only executes if condition is true
 value -[value > 50]-> HighHandler
 value -[value ≤ 50]-> LowHandler
 
-// With transformation
-value -[value > 90 ? "CRITICAL"]-> AlertSystem</div>
+// With transformation (change value when routing)
+value -[value > 90 ? "CRITICAL"]-> AlertSystem
+value -[value > 70 & value ≤ 90 ? "WARNING"]-> AlertSystem
+value -[value ≤ 70 ? "NORMAL"]-> AlertSystem
+
+// Chaining gates for complex routing
+temperature := 85
+temperature -[temperature ≥ 100]-> EmergencyShutdown
+temperature -[temperature ≥ 80 & temperature < 100]-> CoolingSystem
+temperature -[temperature < 80]-> NormalOperation</div>
+
+        <div class="tip">
+          <strong>💡 Pro Tip:</strong> Gates enable parallel evaluation, making them faster than sequential if/else chains when conditions are independent. The compiler can optimize gate patterns for better performance.
+        </div>
       </div>
 
       <div class="doc-section" id="variable-types">
@@ -964,7 +1159,7 @@ Template Vendor
     InputHandler -< RenderSystem
     
     // Physics continuously updates Audio
-    PhysicsSystem -◁ AudioSystem</div>
+    PhysicsSystem -<| AudioSystem</div>
 
         <h3>Using Entities in Scripts</h3>
         <div class="code-block">// In game.ouro

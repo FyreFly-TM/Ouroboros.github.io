@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Key Codes Reference - Ouroboros</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .key-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 16px 0;
+    }
+    .key-table th, .key-table td {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .key-table th {
+      background: var(--panel-light);
+      font-weight: 600;
+    }
+    .key-table tr:hover td {
+      background: var(--panel-light);
+    }
+    .key-table code {
+      background: var(--panel-dark);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+    .key-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 8px;
+      margin: 16px 0;
+    }
+    .key-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    .key-item .key-name {
+      font-weight: 500;
+    }
+    .key-item .key-code {
+      font-family: var(--font-mono);
+      color: var(--accent);
+    }
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo"><span class="brand-text">Ouroboros</span></a>
+      <div class="search-container">
+        <div class="search-wrapper">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+          </svg>
+          <input type="text" id="doc-search" class="search-input" placeholder="Search (Ctrl+K)" autocomplete="off" />
+          <div id="search-results" class="search-results"></div>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Learn</span>
+          <div class="nav-dropdown-menu">
+            <a href="getting_started.html">Get Started</a>
+            <a href="cheatsheet.html">Cheat Sheet</a>
+            <a href="examples.html">Examples</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Language</span>
+          <div class="nav-dropdown-menu">
+            <a href="arrows.html">Arrows</a>
+            <a href="flows.html">Flows</a>
+            <a href="tokens.html">Tokens</a>
+            <div class="menu-divider"></div>
+            <a href="reference.html">Full Reference</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Libraries</span>
+          <div class="nav-dropdown-menu">
+            <a href="stdlib.html">Standard Library</a>
+            <a href="windows.html">Windowing</a>
+            <a href="keycodes.html">Key Codes</a>
+            <div class="menu-divider"></div>
+            <a href="domains.html">Domains</a>
+            <a href="files.html">File Types</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Tools</span>
+          <div class="nav-dropdown-menu">
+            <a href="rex_aot.html">REX &amp; AOT</a>
+            <a href="downloads.html">Downloads</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="doc-layout">
+    <aside class="doc-panel toc">
+      <h3>Key Codes</h3>
+      <ul>
+        <li><a href="#usage">Usage</a></li>
+        <li><a href="#mouse">Mouse Buttons</a></li>
+        <li><a href="#special">Special Keys</a></li>
+        <li><a href="#navigation">Navigation</a></li>
+        <li><a href="#modifiers">Modifier Keys</a></li>
+        <li><a href="#letters">Letters (A-Z)</a></li>
+        <li><a href="#numbers">Numbers (0-9)</a></li>
+        <li><a href="#numpad">Numpad</a></li>
+        <li><a href="#function">Function Keys</a></li>
+        <li><a href="#punctuation">Punctuation</a></li>
+      </ul>
+    </aside>
+
+    <main class="doc-panel doc-content">
+      <div class="doc-header">
+        <div class="badge">Reference</div>
+        <h1>Key Codes Reference</h1>
+        <p>Complete listing of keyboard and mouse input codes for use with <code>WindowGetKey()</code> and mouse functions.</p>
+      </div>
+
+      <!-- USAGE -->
+      <div class="doc-section" id="usage">
+        <h2>Usage</h2>
+        <p>Use these codes with the window input functions to detect keyboard and mouse input:</p>
+        
+        <div class="code-block">// Keyboard input
+if WindowKeyPressed(win)
+    key := WindowGetKey(win)
+    
+    if key == 27      // Escape
+        running = false
+    if key == 32      // Space
+        Jump()
+    if key == 65      // 'A' key
+        MoveLeft()
+    if key == 68      // 'D' key
+        MoveRight()
+
+// Mouse input
+if WindowMouseClicked(win, 1)    // Left click
+    HandleClick()
+if WindowMouseClicked(win, 2)    // Right click
+    ShowMenu()
+if WindowMouseClicked(win, 4)    // Middle click
+    Pan()</div>
+      </div>
+
+      <!-- MOUSE BUTTONS -->
+      <div class="doc-section" id="mouse">
+        <h2>Mouse Buttons</h2>
+        <p>Mouse button codes used with <code>WindowMouseClicked()</code>, <code>WindowMouseDown()</code>, and <code>WindowMouseReleased()</code>.</p>
+        
+        <table class="key-table">
+          <thead>
+            <tr>
+              <th>Button</th>
+              <th>Code</th>
+              <th>Function Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Left Button</td>
+              <td><code>1</code></td>
+              <td><code>WindowMouseClicked(win, 1)</code></td>
+            </tr>
+            <tr>
+              <td>Right Button</td>
+              <td><code>2</code></td>
+              <td><code>WindowMouseClicked(win, 2)</code></td>
+            </tr>
+            <tr>
+              <td>Middle Button</td>
+              <td><code>4</code></td>
+              <td><code>WindowMouseClicked(win, 4)</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Mouse Position</h3>
+        <div class="code-block">// Get current mouse position
+mx := WindowMouseX(win)
+my := WindowMouseY(win)
+
+"Mouse at: " + mx + ", " + my -> Print</div>
+      </div>
+
+      <!-- SPECIAL KEYS -->
+      <div class="doc-section" id="special">
+        <h2>Special Keys</h2>
+        
+        <div class="key-grid">
+          <div class="key-item"><span class="key-name">Backspace</span><span class="key-code">8</span></div>
+          <div class="key-item"><span class="key-name">Tab</span><span class="key-code">9</span></div>
+          <div class="key-item"><span class="key-name">Enter</span><span class="key-code">13</span></div>
+          <div class="key-item"><span class="key-name">Pause</span><span class="key-code">19</span></div>
+          <div class="key-item"><span class="key-name">Caps Lock</span><span class="key-code">20</span></div>
+          <div class="key-item"><span class="key-name">Escape</span><span class="key-code">27</span></div>
+          <div class="key-item"><span class="key-name">Space</span><span class="key-code">32</span></div>
+          <div class="key-item"><span class="key-name">Print Screen</span><span class="key-code">44</span></div>
+          <div class="key-item"><span class="key-name">Insert</span><span class="key-code">45</span></div>
+          <div class="key-item"><span class="key-name">Delete</span><span class="key-code">46</span></div>
+          <div class="key-item"><span class="key-name">Scroll Lock</span><span class="key-code">145</span></div>
+          <div class="key-item"><span class="key-name">Num Lock</span><span class="key-code">144</span></div>
+        </div>
+      </div>
+
+      <!-- NAVIGATION KEYS -->
+      <div class="doc-section" id="navigation">
+        <h2>Navigation Keys</h2>
+        
+        <div class="key-grid">
+          <div class="key-item"><span class="key-name">Page Up</span><span class="key-code">33</span></div>
+          <div class="key-item"><span class="key-name">Page Down</span><span class="key-code">34</span></div>
+          <div class="key-item"><span class="key-name">End</span><span class="key-code">35</span></div>
+          <div class="key-item"><span class="key-name">Home</span><span class="key-code">36</span></div>
+          <div class="key-item"><span class="key-name">Arrow Left</span><span class="key-code">37</span></div>
+          <div class="key-item"><span class="key-name">Arrow Up</span><span class="key-code">38</span></div>
+          <div class="key-item"><span class="key-name">Arrow Right</span><span class="key-code">39</span></div>
+          <div class="key-item"><span class="key-name">Arrow Down</span><span class="key-code">40</span></div>
+        </div>
+
+        <h3>Arrow Key Example</h3>
+        <div class="code-block">// Simple movement with arrow keys
+if WindowKeyPressed(win)
+    key := WindowGetKey(win)
+    
+    if key == 37      // Left
+        playerX = playerX - speed
+    if key == 38      // Up
+        playerY = playerY - speed
+    if key == 39      // Right
+        playerX = playerX + speed
+    if key == 40      // Down
+        playerY = playerY + speed</div>
+      </div>
+
+      <!-- MODIFIER KEYS -->
+      <div class="doc-section" id="modifiers">
+        <h2>Modifier Keys</h2>
+        
+        <div class="key-grid">
+          <div class="key-item"><span class="key-name">Shift (Left)</span><span class="key-code">16</span></div>
+          <div class="key-item"><span class="key-name">Ctrl (Left)</span><span class="key-code">17</span></div>
+          <div class="key-item"><span class="key-name">Alt (Left)</span><span class="key-code">18</span></div>
+          <div class="key-item"><span class="key-name">Left Windows</span><span class="key-code">91</span></div>
+          <div class="key-item"><span class="key-name">Right Windows</span><span class="key-code">92</span></div>
+          <div class="key-item"><span class="key-name">Menu (Context)</span><span class="key-code">93</span></div>
+        </div>
+      </div>
+
+      <!-- LETTERS -->
+      <div class="doc-section" id="letters">
+        <h2>Letters (A-Z)</h2>
+        <p>Letter keys use their ASCII uppercase values (65-90).</p>
+        
+        <div class="section-grid">
+          <div>
+            <div class="key-grid">
+              <div class="key-item"><span class="key-name">A</span><span class="key-code">65</span></div>
+              <div class="key-item"><span class="key-name">B</span><span class="key-code">66</span></div>
+              <div class="key-item"><span class="key-name">C</span><span class="key-code">67</span></div>
+              <div class="key-item"><span class="key-name">D</span><span class="key-code">68</span></div>
+              <div class="key-item"><span class="key-name">E</span><span class="key-code">69</span></div>
+              <div class="key-item"><span class="key-name">F</span><span class="key-code">70</span></div>
+              <div class="key-item"><span class="key-name">G</span><span class="key-code">71</span></div>
+              <div class="key-item"><span class="key-name">H</span><span class="key-code">72</span></div>
+              <div class="key-item"><span class="key-name">I</span><span class="key-code">73</span></div>
+              <div class="key-item"><span class="key-name">J</span><span class="key-code">74</span></div>
+              <div class="key-item"><span class="key-name">K</span><span class="key-code">75</span></div>
+              <div class="key-item"><span class="key-name">L</span><span class="key-code">76</span></div>
+              <div class="key-item"><span class="key-name">M</span><span class="key-code">77</span></div>
+            </div>
+          </div>
+          <div>
+            <div class="key-grid">
+              <div class="key-item"><span class="key-name">N</span><span class="key-code">78</span></div>
+              <div class="key-item"><span class="key-name">O</span><span class="key-code">79</span></div>
+              <div class="key-item"><span class="key-name">P</span><span class="key-code">80</span></div>
+              <div class="key-item"><span class="key-name">Q</span><span class="key-code">81</span></div>
+              <div class="key-item"><span class="key-name">R</span><span class="key-code">82</span></div>
+              <div class="key-item"><span class="key-name">S</span><span class="key-code">83</span></div>
+              <div class="key-item"><span class="key-name">T</span><span class="key-code">84</span></div>
+              <div class="key-item"><span class="key-name">U</span><span class="key-code">85</span></div>
+              <div class="key-item"><span class="key-name">V</span><span class="key-code">86</span></div>
+              <div class="key-item"><span class="key-name">W</span><span class="key-code">87</span></div>
+              <div class="key-item"><span class="key-name">X</span><span class="key-code">88</span></div>
+              <div class="key-item"><span class="key-name">Y</span><span class="key-code">89</span></div>
+              <div class="key-item"><span class="key-name">Z</span><span class="key-code">90</span></div>
+            </div>
+          </div>
+        </div>
+
+        <h3>WASD Movement Example</h3>
+        <div class="code-block">// Classic WASD controls
+if WindowKeyPressed(win)
+    key := WindowGetKey(win)
+    
+    if key == 87      // W
+        MoveForward()
+    if key == 65      // A
+        MoveLeft()
+    if key == 83      // S
+        MoveBackward()
+    if key == 68      // D
+        MoveRight()</div>
+      </div>
+
+      <!-- NUMBERS -->
+      <div class="doc-section" id="numbers">
+        <h2>Numbers (0-9)</h2>
+        <p>Number keys on the main keyboard (above letters) use ASCII values 48-57.</p>
+        
+        <div class="key-grid">
+          <div class="key-item"><span class="key-name">0</span><span class="key-code">48</span></div>
+          <div class="key-item"><span class="key-name">1</span><span class="key-code">49</span></div>
+          <div class="key-item"><span class="key-name">2</span><span class="key-code">50</span></div>
+          <div class="key-item"><span class="key-name">3</span><span class="key-code">51</span></div>
+          <div class="key-item"><span class="key-name">4</span><span class="key-code">52</span></div>
+          <div class="key-item"><span class="key-name">5</span><span class="key-code">53</span></div>
+          <div class="key-item"><span class="key-name">6</span><span class="key-code">54</span></div>
+          <div class="key-item"><span class="key-name">7</span><span class="key-code">55</span></div>
+          <div class="key-item"><span class="key-name">8</span><span class="key-code">56</span></div>
+          <div class="key-item"><span class="key-name">9</span><span class="key-code">57</span></div>
+        </div>
+
+        <h3>Weapon/Item Switching Example</h3>
+        <div class="code-block">// Number keys for inventory slots
+if WindowKeyPressed(win)
+    key := WindowGetKey(win)
+    
+    if key ≥ 49 & key ≤ 57    // Keys 1-9
+        slot := key - 48       // Convert to slot number
+        SelectSlot(slot)</div>
+      </div>
+
+      <!-- NUMPAD -->
+      <div class="doc-section" id="numpad">
+        <h2>Numpad Keys</h2>
+        <p>Numpad keys have separate codes from the main number row.</p>
+        
+        <div class="section-grid">
+          <div>
+            <h4>Numbers</h4>
+            <div class="key-grid">
+              <div class="key-item"><span class="key-name">Numpad 0</span><span class="key-code">96</span></div>
+              <div class="key-item"><span class="key-name">Numpad 1</span><span class="key-code">97</span></div>
+              <div class="key-item"><span class="key-name">Numpad 2</span><span class="key-code">98</span></div>
+              <div class="key-item"><span class="key-name">Numpad 3</span><span class="key-code">99</span></div>
+              <div class="key-item"><span class="key-name">Numpad 4</span><span class="key-code">100</span></div>
+              <div class="key-item"><span class="key-name">Numpad 5</span><span class="key-code">101</span></div>
+              <div class="key-item"><span class="key-name">Numpad 6</span><span class="key-code">102</span></div>
+              <div class="key-item"><span class="key-name">Numpad 7</span><span class="key-code">103</span></div>
+              <div class="key-item"><span class="key-name">Numpad 8</span><span class="key-code">104</span></div>
+              <div class="key-item"><span class="key-name">Numpad 9</span><span class="key-code">105</span></div>
+            </div>
+          </div>
+          <div>
+            <h4>Operators</h4>
+            <div class="key-grid">
+              <div class="key-item"><span class="key-name">Numpad *</span><span class="key-code">106</span></div>
+              <div class="key-item"><span class="key-name">Numpad +</span><span class="key-code">107</span></div>
+              <div class="key-item"><span class="key-name">Numpad -</span><span class="key-code">109</span></div>
+              <div class="key-item"><span class="key-name">Numpad .</span><span class="key-code">110</span></div>
+              <div class="key-item"><span class="key-name">Numpad /</span><span class="key-code">111</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FUNCTION KEYS -->
+      <div class="doc-section" id="function">
+        <h2>Function Keys (F1-F12)</h2>
+        
+        <div class="key-grid">
+          <div class="key-item"><span class="key-name">F1</span><span class="key-code">112</span></div>
+          <div class="key-item"><span class="key-name">F2</span><span class="key-code">113</span></div>
+          <div class="key-item"><span class="key-name">F3</span><span class="key-code">114</span></div>
+          <div class="key-item"><span class="key-name">F4</span><span class="key-code">115</span></div>
+          <div class="key-item"><span class="key-name">F5</span><span class="key-code">116</span></div>
+          <div class="key-item"><span class="key-name">F6</span><span class="key-code">117</span></div>
+          <div class="key-item"><span class="key-name">F7</span><span class="key-code">118</span></div>
+          <div class="key-item"><span class="key-name">F8</span><span class="key-code">119</span></div>
+          <div class="key-item"><span class="key-name">F9</span><span class="key-code">120</span></div>
+          <div class="key-item"><span class="key-name">F10</span><span class="key-code">121</span></div>
+          <div class="key-item"><span class="key-name">F11</span><span class="key-code">122</span></div>
+          <div class="key-item"><span class="key-name">F12</span><span class="key-code">123</span></div>
+        </div>
+
+        <h3>Debug/Menu Example</h3>
+        <div class="code-block">// Common function key uses
+if WindowKeyPressed(win)
+    key := WindowGetKey(win)
+    
+    if key == 112     // F1 - Help
+        ShowHelp()
+    if key == 116     // F5 - Reload/Refresh
+        ReloadLevel()
+    if key == 122     // F11 - Fullscreen toggle
+        ToggleFullscreen()
+    if key == 123     // F12 - Debug overlay
+        showDebug = !showDebug</div>
+      </div>
+
+      <!-- PUNCTUATION -->
+      <div class="doc-section" id="punctuation">
+        <h2>Punctuation &amp; Symbols</h2>
+        <p>OEM key codes for punctuation. These may vary by keyboard layout.</p>
+        
+        <table class="key-table">
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Code</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>; :</td><td><code>186</code></td><td>Semicolon / Colon</td></tr>
+            <tr><td>= +</td><td><code>187</code></td><td>Equals / Plus</td></tr>
+            <tr><td>, &lt;</td><td><code>188</code></td><td>Comma / Less Than</td></tr>
+            <tr><td>- _</td><td><code>189</code></td><td>Minus / Underscore</td></tr>
+            <tr><td>. &gt;</td><td><code>190</code></td><td>Period / Greater Than</td></tr>
+            <tr><td>/ ?</td><td><code>191</code></td><td>Slash / Question</td></tr>
+            <tr><td>` ~</td><td><code>192</code></td><td>Backtick / Tilde (Console key)</td></tr>
+            <tr><td>[ {</td><td><code>219</code></td><td>Left Bracket</td></tr>
+            <tr><td>\ |</td><td><code>220</code></td><td>Backslash / Pipe</td></tr>
+            <tr><td>] }</td><td><code>221</code></td><td>Right Bracket</td></tr>
+            <tr><td>' "</td><td><code>222</code></td><td>Quote / Double Quote</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Console Toggle Example</h3>
+        <div class="code-block">// Backtick (`) to toggle console - common in games
+if WindowKeyPressed(win)
+    key := WindowGetKey(win)
+    
+    if key == 192     // ` key
+        showConsole = !showConsole</div>
+      </div>
+
+      <!-- COMPLETE REFERENCE TABLE -->
+      <div class="doc-section" id="all-codes">
+        <h2>Complete Quick Reference</h2>
+        
+        <table class="key-table">
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Code</th>
+              <th>Key</th>
+              <th>Code</th>
+              <th>Key</th>
+              <th>Code</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Backspace</td><td>8</td><td>Tab</td><td>9</td><td>Enter</td><td>13</td></tr>
+            <tr><td>Shift</td><td>16</td><td>Ctrl</td><td>17</td><td>Alt</td><td>18</td></tr>
+            <tr><td>Pause</td><td>19</td><td>Caps Lock</td><td>20</td><td>Escape</td><td>27</td></tr>
+            <tr><td>Space</td><td>32</td><td>Page Up</td><td>33</td><td>Page Down</td><td>34</td></tr>
+            <tr><td>End</td><td>35</td><td>Home</td><td>36</td><td>Left</td><td>37</td></tr>
+            <tr><td>Up</td><td>38</td><td>Right</td><td>39</td><td>Down</td><td>40</td></tr>
+            <tr><td>Insert</td><td>45</td><td>Delete</td><td>46</td><td>0-9</td><td>48-57</td></tr>
+            <tr><td>A-Z</td><td>65-90</td><td>Win (L)</td><td>91</td><td>Win (R)</td><td>92</td></tr>
+            <tr><td>Num 0-9</td><td>96-105</td><td>Num *</td><td>106</td><td>Num +</td><td>107</td></tr>
+            <tr><td>Num -</td><td>109</td><td>Num .</td><td>110</td><td>Num /</td><td>111</td></tr>
+            <tr><td>F1-F12</td><td>112-123</td><td>Num Lock</td><td>144</td><td>Scroll Lock</td><td>145</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <footer>
+    <p>Ouroboros Language © 2026</p>
+  </footer>
+  <script src="search.js"></script>
+</body>
+</html>

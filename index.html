@@ -21,27 +21,57 @@
       </div>
       <div class="nav-links">
         <a href="index.html">Home</a>
-        <a href="getting_started.html">Get Started</a>
-        <a href="examples.html">Examples</a>
-        <a href="flows.html">Flows</a>
-        <a href="domains.html">Domains</a>
-        <a href="reference.html">Reference</a>
-        <a href="rex_aot.html">REX &amp; AOT</a>
-        <a href="arrows.html">Arrows</a>
-        <a href="tokens.html">Tokens</a>
-        <a href="files.html">Files</a>
-        <a href="stdlib.html">Std Lib</a>
-        <a href="windows.html">Windows</a>
-        <a href="downloads.html">Downloads</a>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Learn</span>
+          <div class="nav-dropdown-menu">
+            <a href="getting_started.html">Get Started</a>
+            <a href="cheatsheet.html">Cheat Sheet</a>
+            <a href="examples.html">Examples</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Language</span>
+          <div class="nav-dropdown-menu">
+            <a href="arrows.html">Arrows</a>
+            <a href="flows.html">Flows</a>
+            <a href="tokens.html">Tokens</a>
+            <div class="menu-divider"></div>
+            <a href="reference.html">Full Reference</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Libraries</span>
+          <div class="nav-dropdown-menu">
+            <a href="stdlib.html">Standard Library</a>
+            <a href="windows.html">Windowing</a>
+            <a href="keycodes.html">Key Codes</a>
+            <div class="menu-divider"></div>
+            <a href="domains.html">Domains</a>
+            <a href="files.html">File Types</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Tools</span>
+          <div class="nav-dropdown-menu">
+            <a href="rex_aot.html">REX &amp; AOT</a>
+            <a href="downloads.html">Downloads</a>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
 
   <section class="hero">
     <div class="hero-card hero-main">
-      <div class="badge">Flow-Oriented Programming</div>
-      <h1>Data flows. Code follows.</h1>
-      <p class="lead">Ouroboros is a modern programming language where arrows define data flow. Forward, pull, sync, fork—every operation is a directed stream of values between expressions and flows.</p>
+      <div class="badge">The Flow-Oriented Language</div>
+      <h1>Write code the way data moves.</h1>
+      <p class="lead">In most languages, data flow is invisible—hidden behind assignments and return values. <strong>Ouroboros makes it explicit.</strong> Arrows trace every value's journey, making your code self-documenting and instantly understandable.</p>
+      <div class="hero-code" style="background: var(--panel); border-radius: 8px; padding: 16px; margin: 20px 0; font-family: 'Fira Code', monospace; font-size: 14px; border: 1px solid var(--border);">
+        <code style="color: var(--muted);">// Traditional: Where does 'result' come from?</code><br>
+        <code style="color: var(--text-secondary);">result = process(transform(fetch(data)))</code><br><br>
+        <code style="color: var(--muted);">// Ouroboros: Follow the arrows</code><br>
+        <code><span style="color: var(--accent);">data</span> <span style="color: var(--success);">-></span> <span style="color: var(--accent);">Fetch</span> <span style="color: var(--success);">-></span> <span style="color: var(--accent);">Transform</span> <span style="color: var(--success);">-></span> <span style="color: var(--accent);">Process</span> <span style="color: var(--success);">-></span> <span style="color: var(--accent);">result</span></code>
+      </div>
       <div class="button-row">
         <a class="btn primary" href="getting_started.html">Get Started</a>
         <a class="btn secondary" href="examples.html">See Examples</a>
@@ -50,14 +80,55 @@
     </div>
     <div class="hero-card">
       <h2>Why Ouroboros?</h2>
-      <ul class="list feature-list">
-        <li><strong>Directional Data Flow</strong> — Arrows show exactly where data goes</li>
-        <li><strong>Multi-Return Flows</strong> — Return multiple values without tuples</li>
-        <li><strong>Reactive Bindings</strong> — Variables update automatically when dependencies change</li>
-        <li><strong>Bidirectional Sync</strong> — Keep two variables perfectly in sync</li>
-        <li><strong>Conditional Gates</strong> — Route data based on conditions inline</li>
-        <li><strong>Fork Broadcasting</strong> — Send data to multiple destinations at once</li>
-      </ul>
+      <div class="why-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+        <div class="why-item" style="display: flex; align-items: flex-start; gap: 12px;">
+          <span style="font-size: 24px;">🎯</span>
+          <div>
+            <strong style="color: var(--accent);">See Where Data Goes</strong>
+            <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-secondary);">Arrows visually trace data flow — no more hunting through assignments</p>
+          </div>
+        </div>
+        <div class="why-item" style="display: flex; align-items: flex-start; gap: 12px;">
+          <span style="font-size: 24px;">⚡</span>
+          <div>
+            <strong style="color: var(--success);">Reactive by Default</strong>
+            <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-secondary);">Variables auto-update when dependencies change — no manual subscriptions</p>
+          </div>
+        </div>
+        <div class="why-item" style="display: flex; align-items: flex-start; gap: 12px;">
+          <span style="font-size: 24px;">🔄</span>
+          <div>
+            <strong style="color: var(--warning);">Bidirectional Sync</strong>
+            <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-secondary);">Keep values synchronized automatically with <code><-></code> arrows</p>
+          </div>
+        </div>
+        <div class="why-item" style="display: flex; align-items: flex-start; gap: 12px;">
+          <span style="font-size: 24px;">🚀</span>
+          <div>
+            <strong style="color: #9b59b6;">Native Performance</strong>
+            <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-secondary);">REX Engine with SIMD — outperforms hand-tuned C on parallel workloads</p>
+          </div>
+        </div>
+        <div class="why-item" style="display: flex; align-items: flex-start; gap: 12px;">
+          <span style="font-size: 24px;">📐</span>
+          <div>
+            <strong style="color: var(--accent);">Natural Math</strong>
+            <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-secondary);">Write <code>E = ½mv²</code> exactly as in textbooks — domains parse it natively</p>
+          </div>
+        </div>
+        <div class="why-item" style="display: flex; align-items: flex-start; gap: 12px;">
+          <span style="font-size: 24px;">🖼️</span>
+          <div>
+            <strong style="color: var(--success);">Built-in Windowing</strong>
+            <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-secondary);">Create GUIs, draw graphics, handle input — zero dependencies</p>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);">
+        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">
+          <strong style="color: var(--text);">30+ arrow types</strong> for every data pattern — sync, async, conditional, fuzzy, transfer, fork, and more.
+        </p>
+      </div>
     </div>
   </section>
 
@@ -65,6 +136,18 @@
     <h2>🆕 What's New</h2>
     <p style="color: var(--text-secondary); margin-bottom: 24px;">Major features added to Ouroboros since the initial release:</p>
     <div class="grid">
+      <div class="card" style="border-left: 3px solid #e74c3c;">
+        <h3>🧠 Neural Optimization System</h3>
+        <p>The compiler now includes a <strong>built-in neural network</strong> that learns to optimize your code based on runtime behavior:</p>
+        <ul class="list" style="margin-top: 12px; font-size: 13px;">
+          <li><strong>Self-Learning</strong> — Improves optimization decisions over time</li>
+          <li><strong>4 Specialized Networks</strong> — Inlining, unrolling, vectorization, hot paths</li>
+          <li><strong>32-Feature Analysis</strong> — Analyzes code patterns and memory access</li>
+          <li><strong>Runtime Profiling</strong> — Collects execution data to guide training</li>
+          <li><strong>Model Persistence</strong> — Saves learned optimizations across sessions</li>
+        </ul>
+        <a href="rex_aot.html#neural" class="card-link" style="margin-top: 12px; display: inline-block;">Learn about Neural Optimization →</a>
+      </div>
       <div class="card" style="border-left: 3px solid var(--success);">
         <h3>🚀 REX Engine & AOT Compilation</h3>
         <p>The new <strong>Rhombille Execution Engine</strong> delivers native performance through ahead-of-time compilation to optimized bytecode. Features include:</p>

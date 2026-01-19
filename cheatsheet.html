@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cheat Sheet - Ouroboros</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .cheat-section {
+      margin-bottom: 32px;
+    }
+    .cheat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .cheat-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .cheat-card h4 {
+      margin: 0 0 8px 0;
+      color: var(--accent);
+      font-size: 14px;
+    }
+    .cheat-card code {
+      font-size: 13px;
+    }
+    .cheat-card p {
+      margin: 0 0 8px 0;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .cheat-card .code-block {
+      margin: 8px 0 0 0;
+      font-size: 12px;
+      padding: 8px 12px;
+    }
+    .use-when {
+      background: rgba(46, 204, 113, 0.1);
+      border-left: 3px solid var(--success);
+      padding: 8px 12px;
+      margin: 8px 0;
+      border-radius: 0 4px 4px 0;
+      font-size: 12px;
+    }
+    .use-when strong {
+      color: var(--success);
+    }
+    .quick-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 12px;
+    }
+    .quick-table th, .quick-table td {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .quick-table th {
+      background: var(--panel-light);
+      font-weight: 600;
+    }
+    .quick-table tr:hover td {
+      background: var(--panel-light);
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo"><span class="brand-text">Ouroboros</span></a>
+      <div class="search-container">
+        <div class="search-wrapper">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+          </svg>
+          <input type="text" id="doc-search" class="search-input" placeholder="Search (Ctrl+K)" autocomplete="off" />
+          <div id="search-results" class="search-results"></div>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Learn</span>
+          <div class="nav-dropdown-menu">
+            <a href="getting_started.html">Get Started</a>
+            <a href="cheatsheet.html">Cheat Sheet</a>
+            <a href="examples.html">Examples</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Language</span>
+          <div class="nav-dropdown-menu">
+            <a href="arrows.html">Arrows</a>
+            <a href="flows.html">Flows</a>
+            <a href="tokens.html">Tokens</a>
+            <div class="menu-divider"></div>
+            <a href="reference.html">Full Reference</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Libraries</span>
+          <div class="nav-dropdown-menu">
+            <a href="stdlib.html">Standard Library</a>
+            <a href="windows.html">Windowing</a>
+            <a href="keycodes.html">Key Codes</a>
+            <div class="menu-divider"></div>
+            <a href="domains.html">Domains</a>
+            <a href="files.html">File Types</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Tools</span>
+          <div class="nav-dropdown-menu">
+            <a href="rex_aot.html">REX &amp; AOT</a>
+            <a href="downloads.html">Downloads</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="doc-layout">
+    <aside class="doc-panel toc">
+      <h3>Quick Reference</h3>
+      <ul>
+        <li><a href="#arrows">Arrows</a></li>
+        <li><a href="#variables">Variables</a></li>
+        <li><a href="#flows">Flows</a></li>
+        <li><a href="#control">Control Flow</a></li>
+        <li><a href="#operators">Operators</a></li>
+        <li><a href="#common">Common Patterns</a></li>
+        <li><a href="#decision">Decision Guide</a></li>
+      </ul>
+    </aside>
+
+    <main class="doc-panel doc-content">
+      <div class="doc-header">
+        <div class="badge">Quick Reference</div>
+        <h1>Ouroboros Cheat Sheet</h1>
+        <p>Everything you need on one page. Print it, bookmark it, keep it handy.</p>
+      </div>
+
+      <!-- ARROWS SECTION -->
+      <div class="doc-section cheat-section" id="arrows">
+        <h2>🎯 Arrows — When to Use Which</h2>
+        
+        <table class="quick-table">
+          <thead>
+            <tr>
+              <th>Arrow</th>
+              <th>Name</th>
+              <th>Use When...</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>-></code></td>
+              <td>Forward</td>
+              <td>Pushing data to output, calling flows, chaining operations</td>
+              <td><code>"Hello" -> Print</code></td>
+            </tr>
+            <tr>
+              <td><code><-</code></td>
+              <td>Pull</td>
+              <td>Capturing return values, creating reactive bindings</td>
+              <td><code>result <- Calculate(x)</code></td>
+            </tr>
+            <tr>
+              <td><code><-></code></td>
+              <td>Sync</td>
+              <td>Two-way binding (Model-View, UI state)</td>
+              <td><code>model <-> view</code></td>
+            </tr>
+            <tr>
+              <td><code>-<</code></td>
+              <td>Fork</td>
+              <td>Broadcasting to multiple handlers (events, logging)</td>
+              <td><code>event -< Log, UI, Save</code></td>
+            </tr>
+            <tr>
+              <td><code>>-</code></td>
+              <td>Funnel</td>
+              <td>Collecting from multiple sources into one handler</td>
+              <td><code>sensorA, sensorB >- Monitor</code></td>
+            </tr>
+            <tr>
+              <td><code>-|></code></td>
+              <td>Continuous</td>
+              <td>Data streams that flow continuously (real-time feeds)</td>
+              <td><code>sensor -|> Dashboard</code></td>
+            </tr>
+            <tr>
+              <td><code>~></code></td>
+              <td>Fuzzy</td>
+              <td>Probabilistic/weighted routing (AI, load balancing)</td>
+              <td><code>task ~> Worker1, Worker2</code></td>
+            </tr>
+            <tr>
+              <td><code>=></code></td>
+              <td>Solver</td>
+              <td>Auto-solve equations for any variable</td>
+              <td><code>E => m (for E=mc²)</code></td>
+            </tr>
+            <tr>
+              <td><code>-|-></code></td>
+              <td>Transfer</td>
+              <td>Move value (source becomes null)</td>
+              <td><code>source -|-> dest</code></td>
+            </tr>
+            <tr>
+              <td><code>-||-></code></td>
+              <td>Sever</td>
+              <td>Break a reactive binding</td>
+              <td><code>a -||-> b</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 24px;">Async Arrows</h3>
+        <table class="quick-table">
+          <thead>
+            <tr>
+              <th>Arrow</th>
+              <th>Name</th>
+              <th>Use When...</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>->></code></td>
+              <td>Async Forward</td>
+              <td>Fire-and-forget background task</td>
+              <td><code>task ->> Worker</code></td>
+            </tr>
+            <tr>
+              <td><code><<-</code></td>
+              <td>Async Pull (Await)</td>
+              <td>Wait for async result</td>
+              <td><code>result <<- LongTask()</code></td>
+            </tr>
+            <tr>
+              <td><code>->|</code></td>
+              <td>Await Barrier</td>
+              <td>Block until task completes</td>
+              <td><code>data ->| Validate</code></td>
+            </tr>
+            <tr>
+              <td><code>|<-</code></td>
+              <td>Pull Barrier</td>
+              <td>Wait for value before continuing</td>
+              <td><code>value |<- AsyncSource</code></td>
+            </tr>
+            <tr>
+              <td><code><<->></code></td>
+              <td>Async Sync</td>
+              <td>Bidirectional async binding</td>
+              <td><code>local <<->> remote</code></td>
+            </tr>
+            <tr>
+              <td><code>-<<</code></td>
+              <td>Async Fork</td>
+              <td>Broadcast to handlers asynchronously</td>
+              <td><code>event -<< A, B, C</code></td>
+            </tr>
+            <tr>
+              <td><code>>>-</code></td>
+              <td>Async Funnel</td>
+              <td>Collect async sources into handler</td>
+              <td><code>a, b, c >>- Collector</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 24px;">Fuzzy Arrows</h3>
+        <table class="quick-table">
+          <thead>
+            <tr>
+              <th>Arrow</th>
+              <th>Name</th>
+              <th>Use When...</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>~></code></td>
+              <td>Fuzzy Forward</td>
+              <td>Probabilistic routing, weighted distribution</td>
+              <td><code>task ~> Worker1, Worker2</code></td>
+            </tr>
+            <tr>
+              <td><code><~</code></td>
+              <td>Fuzzy Pull</td>
+              <td>Pull with uncertainty, soft binding</td>
+              <td><code>estimate <~ Sensor</code></td>
+            </tr>
+            <tr>
+              <td><code><~></code></td>
+              <td>Fuzzy Sync</td>
+              <td>Bidirectional soft sync (tolerant updates)</td>
+              <td><code>predicted <~> actual</code></td>
+            </tr>
+            <tr>
+              <td><code>≈></code></td>
+              <td>Fuzzy Solver</td>
+              <td>Approximate equation solving</td>
+              <td><code>equation ≈> x</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 24px;">Continuous Arrows</h3>
+        <table class="quick-table">
+          <thead>
+            <tr>
+              <th>Arrow</th>
+              <th>Name</th>
+              <th>Use When...</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>-|></code></td>
+              <td>Continuous Forward</td>
+              <td>Live data stream (real-time feeds)</td>
+              <td><code>sensor -|> Dashboard</code></td>
+            </tr>
+            <tr>
+              <td><code><|-</code></td>
+              <td>Continuous Pull</td>
+              <td>Continuously monitor a source</td>
+              <td><code>status <|- Server</code></td>
+            </tr>
+            <tr>
+              <td><code><|-|></code></td>
+              <td>Continuous Sync</td>
+              <td>Live bidirectional stream</td>
+              <td><code>local <|-|> remote</code></td>
+            </tr>
+            <tr>
+              <td><code>|>-</code></td>
+              <td>Continuous Funnel</td>
+              <td>Continuously aggregate multiple streams</td>
+              <td><code>s1, s2 |>- Monitor</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 24px;">Conditional Arrows (Gates)</h3>
+        <table class="quick-table">
+          <thead>
+            <tr>
+              <th>Arrow</th>
+              <th>Name</th>
+              <th>Use When...</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>-[cond]-></code></td>
+              <td>Gate</td>
+              <td>Only forward if condition is true (replaces if)</td>
+              <td><code>val -[val > 50]-> Handler</code></td>
+            </tr>
+            <tr>
+              <td><code><-[cond]-</code></td>
+              <td>Conditional Pull</td>
+              <td>Only pull if condition is true</td>
+              <td><code>x <-[ready]- source</code></td>
+            </tr>
+            <tr>
+              <td><code><-[cond]-></code></td>
+              <td>Conditional Sync</td>
+              <td>Only sync if condition is true</td>
+              <td><code>a <-[secure]-> b</code></td>
+            </tr>
+            <tr>
+              <td><code>-[cond ? transform]-></code></td>
+              <td>Transform Gate</td>
+              <td>Transform value before sending</td>
+              <td><code>x -[x > 5 ? x*2]-> Out</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 24px;">Transfer &amp; Ownership Arrows</h3>
+        <table class="quick-table">
+          <thead>
+            <tr>
+              <th>Arrow</th>
+              <th>Name</th>
+              <th>Use When...</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>-|-></code></td>
+              <td>Transfer Forward</td>
+              <td>Move ownership (source becomes null)</td>
+              <td><code>data -|-> newOwner</code></td>
+            </tr>
+            <tr>
+              <td><code><-|-</code></td>
+              <td>Transfer Pull</td>
+              <td>Take ownership from source</td>
+              <td><code>local <-|- remote</code></td>
+            </tr>
+            <tr>
+              <td><code><-|-></code></td>
+              <td>Transfer Sync</td>
+              <td>Bidirectional ownership transfer</td>
+              <td><code>a <-|-> b</code></td>
+            </tr>
+            <tr>
+              <td><code>-||-></code></td>
+              <td>Sever Forward</td>
+              <td>Break reactive binding forward</td>
+              <td><code>a -||-> b</code></td>
+            </tr>
+            <tr>
+              <td><code><-||-</code></td>
+              <td>Sever Pull</td>
+              <td>Break reactive binding backward</td>
+              <td><code>a <-||- b</code></td>
+            </tr>
+            <tr>
+              <td><code><-||-></code></td>
+              <td>Sever Sync</td>
+              <td>Break bidirectional binding</td>
+              <td><code>a <-||-> b</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- VARIABLES SECTION -->
+      <div class="doc-section cheat-section" id="variables">
+        <h2>📦 Variables</h2>
+        
+        <div class="cheat-grid">
+          <div class="cheat-card">
+            <h4>Mutable Variable <code>:=</code></h4>
+            <p>Can be changed later with <code>=</code></p>
+            <div class="code-block">count := 0
+name := "Player"
+health := 100.0
+active := true</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Constant <code>=:</code></h4>
+            <p>Cannot be changed after declaration</p>
+            <div class="code-block">PI =: 3.14159
+MAX_HEALTH =: 100
+TITLE =: "My Game"</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Assignment <code>=</code></h4>
+            <p>Change existing mutable variable</p>
+            <div class="code-block">health := 100  // declare
+health = 75    // update
+health = 50    // update again</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Reactive Binding <code><-</code></h4>
+            <p>Auto-updates when dependencies change</p>
+            <div class="code-block">width := 10
+height := 5
+area <- width * height
+// area auto-updates!</div>
+          </div>
+        </div>
+        
+        <h3 style="margin-top: 24px;">Data Types</h3>
+        <table class="quick-table">
+          <thead>
+            <tr><th>Type</th><th>Example</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Number</td><td><code>42</code>, <code>3.14</code>, <code>-100</code></td><td>All numbers are doubles internally</td></tr>
+            <tr><td>String</td><td><code>"Hello"</code>, <code>'World'</code></td><td>Double or single quotes</td></tr>
+            <tr><td>Boolean</td><td><code>true</code>, <code>false</code></td><td>Truthy: non-zero, non-empty</td></tr>
+            <tr><td>Array</td><td><code>[1, 2, 3]</code>, <code>["a", "b"]</code></td><td>Zero-indexed: <code>arr[0]</code></td></tr>
+            <tr><td>Null</td><td><code>null</code></td><td>Absence of value</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- FLOWS SECTION -->
+      <div class="doc-section cheat-section" id="flows">
+        <h2>🌊 Flows (Functions)</h2>
+        
+        <div class="cheat-grid">
+          <div class="cheat-card">
+            <h4>Basic Flow</h4>
+            <div class="code-block">Flow Greet(name)
+    "Hello, " + name -> Print
+    return true
+
+Greet("World")</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Flow with Return</h4>
+            <div class="code-block">Flow Double(n)
+    result := n * 2
+    return result
+
+answer := Double(21)
+// answer = 42</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Multi-Return</h4>
+            <div class="code-block">Flow Divide(a, b)
+    quotient := a / b
+    remainder := a % b
+    return quotient, remainder
+
+q, r <- Divide(17, 5)
+// q = 3.4, r = 2</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Implicit Binding</h4>
+            <p>Return names become available in caller scope</p>
+            <div class="code-block">Flow Stats(x, y)
+    sum := x + y
+    product := x * y
+    return sum, product
+
+Stats(5, 3)
+// sum and product now exist!</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Arrow Chaining</h4>
+            <div class="code-block">Flow AddOne(n)
+    return n + 1
+
+Flow Double(n)
+    return n * 2
+
+// Chain flows with ->
+5 -> AddOne -> Double -> Print
+// Output: 12</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Recursion</h4>
+            <div class="code-block">Flow Factorial(n)
+    if n ≤ 1
+        return 1
+    return n * Factorial(n - 1)
+
+Factorial(5) -> Print
+// Output: 120</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTROL FLOW SECTION -->
+      <div class="doc-section cheat-section" id="control">
+        <h2>🔀 Control Flow</h2>
+        
+        <div class="cheat-grid">
+          <div class="cheat-card">
+            <h4>If / Elseif / Else</h4>
+            <div class="code-block">if score ≥ 90
+    "A" -> Print
+elseif score ≥ 80
+    "B" -> Print
+elseif score ≥ 70
+    "C" -> Print
+else
+    "F" -> Print</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>While Loop</h4>
+            <div class="code-block">i := 0
+while i < 5
+    i -> Print
+    i = i + 1</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>For Loop</h4>
+            <div class="code-block">// init, condition, increment
+for i = 0, i < 5, i++
+    i -> Print
+
+// With increment
+for i = 0, i < 10, i += 2
+    i -> Print  // 0, 2, 4, 6, 8</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Nested For (Colon)</h4>
+            <div class="code-block">// Colon chains loops
+for row = 0, row < 3, row++ : col = 0, col < 3, col++
+    "[" + row + "," + col + "]" -> Print</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Kill (Break)</h4>
+            <div class="code-block">for i = 0, i < 100, i++
+    if i == 7
+        "Found!" -> Print
+        kill  // Exit loop early
+    i -> Print</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Case in Loops</h4>
+            <div class="code-block">for i = 0, i < 5, i++
+    case i == 0
+        "Start" -> Print
+    case i == 4
+        "End" -> Print
+    i -> Print</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPERATORS SECTION -->
+      <div class="doc-section cheat-section" id="operators">
+        <h2>⚡ Operators</h2>
+        
+        <div class="cheat-grid">
+          <div class="cheat-card">
+            <h4>Arithmetic</h4>
+            <table class="quick-table" style="margin: 0;">
+              <tr><td><code>+</code></td><td>Add / Concatenate</td></tr>
+              <tr><td><code>-</code></td><td>Subtract</td></tr>
+              <tr><td><code>*</code></td><td>Multiply</td></tr>
+              <tr><td><code>/</code></td><td>Divide</td></tr>
+              <tr><td><code>%</code></td><td>Modulo</td></tr>
+              <tr><td><code>^</code></td><td>Power</td></tr>
+            </table>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Comparison</h4>
+            <table class="quick-table" style="margin: 0;">
+              <tr><td><code>==</code></td><td>Equal</td></tr>
+              <tr><td><code>!=</code></td><td>Not equal</td></tr>
+              <tr><td><code>></code></td><td>Greater than</td></tr>
+              <tr><td><code><</code></td><td>Less than</td></tr>
+              <tr><td><code>≥</code></td><td>Greater or equal</td></tr>
+              <tr><td><code>≤</code></td><td>Less or equal</td></tr>
+            </table>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Logical</h4>
+            <table class="quick-table" style="margin: 0;">
+              <tr><td><code>&</code></td><td>AND</td></tr>
+              <tr><td><code>|</code></td><td>OR</td></tr>
+              <tr><td><code>!</code></td><td>NOT</td></tr>
+            </table>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Compound Assignment</h4>
+            <table class="quick-table" style="margin: 0;">
+              <tr><td><code>+=</code></td><td><code>x = x + n</code></td></tr>
+              <tr><td><code>-=</code></td><td><code>x = x - n</code></td></tr>
+              <tr><td><code>*=</code></td><td><code>x = x * n</code></td></tr>
+              <tr><td><code>/=</code></td><td><code>x = x / n</code></td></tr>
+              <tr><td><code>++</code></td><td><code>x = x + 1</code></td></tr>
+              <tr><td><code>--</code></td><td><code>x = x - 1</code></td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMMON PATTERNS SECTION -->
+      <div class="doc-section cheat-section" id="common">
+        <h2>📐 Common Patterns</h2>
+        
+        <div class="cheat-grid">
+          <div class="cheat-card">
+            <h4>Event Broadcasting</h4>
+            <div class="use-when"><strong>Use:</strong> Send one event to multiple handlers</div>
+            <div class="code-block">"user_login" -< Logger, Analytics, UI, DB</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Data Pipeline</h4>
+            <div class="use-when"><strong>Use:</strong> Transform data through stages</div>
+            <div class="code-block">rawData -> Parse -> Validate -> Save</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Model-View Sync</h4>
+            <div class="use-when"><strong>Use:</strong> Keep UI in sync with data</div>
+            <div class="code-block">playerHealth <-> healthBar
+// Either change updates both</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Reactive Dashboard</h4>
+            <div class="use-when"><strong>Use:</strong> Auto-updating computed values</div>
+            <div class="code-block">price := 100
+quantity := 5
+total <- price * quantity
+// total updates when either changes</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Sensor Aggregation</h4>
+            <div class="use-when"><strong>Use:</strong> Combine multiple inputs</div>
+            <div class="code-block">temp, humidity, pressure >- AlertSystem</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Sequential Processing</h4>
+            <div class="use-when"><strong>Use:</strong> Steps must complete in order</div>
+            <div class="code-block">Init(),
+LoadConfig(),
+StartServer(),
+Log("Ready")</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Parallel Processing</h4>
+            <div class="use-when"><strong>Use:</strong> Independent tasks run together</div>
+            <div class="code-block">FetchUsers() :
+FetchProducts() :
+FetchOrders()</div>
+          </div>
+          
+          <div class="cheat-card">
+            <h4>Early Exit</h4>
+            <div class="use-when"><strong>Use:</strong> Stop searching when found</div>
+            <div class="code-block">for i = 0, i < 1000, i++
+    if items[i] == target
+        "Found at " + i -> Print
+        kill</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DECISION GUIDE SECTION -->
+      <div class="doc-section cheat-section" id="decision">
+        <h2>🧭 Decision Guide</h2>
+        <p>Not sure what to use? Follow this flowchart:</p>
+        
+        <div class="card" style="margin-top: 16px;">
+          <h4>What are you trying to do?</h4>
+          
+          <table class="quick-table">
+            <thead>
+              <tr><th>Goal</th><th>Use This</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Send output to console</td>
+                <td><code>-></code> with <code>Print</code></td>
+                <td><code>"Hello" -> Print</code></td>
+              </tr>
+              <tr>
+                <td>Store a flow's result</td>
+                <td><code><-</code> with variable</td>
+                <td><code>result <- Calculate(x)</code></td>
+              </tr>
+              <tr>
+                <td>Chain multiple flows</td>
+                <td><code>-></code> between flows</td>
+                <td><code>data -> Parse -> Save</code></td>
+              </tr>
+              <tr>
+                <td>Notify multiple systems</td>
+                <td><code>-<</code> fork arrow</td>
+                <td><code>event -< A, B, C</code></td>
+              </tr>
+              <tr>
+                <td>Auto-update computed value</td>
+                <td><code><-</code> reactive binding</td>
+                <td><code>total <- price * qty</code></td>
+              </tr>
+              <tr>
+                <td>Two-way binding (UI)</td>
+                <td><code><-></code> sync arrow</td>
+                <td><code>data <-> display</code></td>
+              </tr>
+              <tr>
+                <td>Define reusable code</td>
+                <td><code>Flow</code> keyword</td>
+                <td><code>Flow Name(params)</code></td>
+              </tr>
+              <tr>
+                <td>Return multiple values</td>
+                <td>Multi-return</td>
+                <td><code>return a, b, c</code></td>
+              </tr>
+              <tr>
+                <td>Loop with counter</td>
+                <td><code>for</code> loop</td>
+                <td><code>for i = 0, i < n, i++</code></td>
+              </tr>
+              <tr>
+                <td>Loop while condition</td>
+                <td><code>while</code> loop</td>
+                <td><code>while x > 0</code></td>
+              </tr>
+              <tr>
+                <td>Exit loop early</td>
+                <td><code>kill</code> statement</td>
+                <td><code>if found then kill</code></td>
+              </tr>
+              <tr>
+                <td>Run tasks in parallel</td>
+                <td>Colon <code>:</code> separator</td>
+                <td><code>TaskA() : TaskB()</code></td>
+              </tr>
+              <tr>
+                <td>Run tasks in sequence</td>
+                <td>Comma <code>,</code> separator</td>
+                <td><code>Step1(), Step2()</code></td>
+              </tr>
+              <tr>
+                <td>Value that never changes</td>
+                <td><code>=:</code> constant</td>
+                <td><code>MAX =: 100</code></td>
+              </tr>
+              <tr>
+                <td>Value that may change</td>
+                <td><code>:=</code> mutable</td>
+                <td><code>count := 0</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <footer>
+    <p>Ouroboros Language © 2026</p>
+  </footer>
+  <script src="search.js"></script>
+</body>
+</html>

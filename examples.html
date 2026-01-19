@@ -21,18 +21,42 @@
       </div>
       <div class="nav-links">
         <a href="index.html">Home</a>
-        <a href="getting_started.html">Get Started</a>
-        <a href="examples.html">Examples</a>
-        <a href="flows.html">Flows</a>
-        <a href="domains.html">Domains</a>
-        <a href="reference.html">Reference</a>
-        <a href="rex_aot.html">REX &amp; AOT</a>
-        <a href="arrows.html">Arrows</a>
-        <a href="tokens.html">Tokens</a>
-        <a href="files.html">Files</a>
-        <a href="stdlib.html">Std Lib</a>
-        <a href="windows.html">Windows</a>
-        <a href="downloads.html">Downloads</a>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Learn</span>
+          <div class="nav-dropdown-menu">
+            <a href="getting_started.html">Get Started</a>
+            <a href="cheatsheet.html">Cheat Sheet</a>
+            <a href="examples.html">Examples</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Language</span>
+          <div class="nav-dropdown-menu">
+            <a href="arrows.html">Arrows</a>
+            <a href="flows.html">Flows</a>
+            <a href="tokens.html">Tokens</a>
+            <div class="menu-divider"></div>
+            <a href="reference.html">Full Reference</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Libraries</span>
+          <div class="nav-dropdown-menu">
+            <a href="stdlib.html">Standard Library</a>
+            <a href="windows.html">Windowing</a>
+            <a href="keycodes.html">Key Codes</a>
+            <div class="menu-divider"></div>
+            <a href="domains.html">Domains</a>
+            <a href="files.html">File Types</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Tools</span>
+          <div class="nav-dropdown-menu">
+            <a href="rex_aot.html">REX &amp; AOT</a>
+            <a href="downloads.html">Downloads</a>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -43,6 +67,7 @@
       <ul>
         <li><a href="#beginner">Beginner</a></li>
         <li><a href="#intermediate">Intermediate</a></li>
+        <li><a href="#arrow-examples">Arrow Patterns</a></li>
         <li><a href="#file-io-examples">File I/O</a></li>
         <li><a href="#bit-buffer-examples">Bits &amp; Buffers</a></li>
         <li><a href="#advanced">Advanced</a></li>
@@ -230,45 +255,77 @@ for j = 5, j > 0, j--
         </div>
 
         <div class="example-card">
-          <h3>Conditional Logic</h3>
-          <p>Using if/elseif/else to grade a score.</p>
-          <div class="code-block">// COMPLETE EXAMPLE: Grade Calculator
-// Save as: grades.ouro
+          <h3>Conditional Gates</h3>
+          <p>Use <code>-[condition]-></code> gates instead of if statements for inline filtering.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: Conditional Gates
+// Save as: gates.ouro
 
-"=== Grade Calculator ==="  -> Print
+"=== Conditional Gates ==="  -> Print
 
-Flow GetGrade(score)
-    "Score: " + score -> Print
-    if (score ≥ 90)
-        "Grade: A" -> Print
-    elseif (score ≥ 80)
-        "Grade: B" -> Print
-    elseif (score ≥ 70)
-        "Grade: C" -> Print
-    elseif (score ≥ 60)
-        "Grade: D" -> Print
-    else
-        "Grade: F" -> Print
-    "" -> Print
+Flow ProcessHigh(val)
+    "HIGH: " + val -> Print
 
-GetGrade(95)
-GetGrade(82)
-GetGrade(78)
-GetGrade(55)
+Flow ProcessLow(val)
+    "LOW: " + val -> Print
+
+// Gates route data based on conditions - no if statements needed!
+value := 75
+
+// Only calls ProcessHigh if value > 50
+value -[value > 50]-> ProcessHigh
+
+// Only calls ProcessLow if value ≤ 50  
+value -[value ≤ 50]-> ProcessLow
+
+"" -> Print
+value = 30
+value -[value > 50]-> ProcessHigh
+value -[value ≤ 50]-> ProcessLow
 
 // Expected Output:
-// === Grade Calculator ===
-// Score: 95.00
-// Grade: A
+// === Conditional Gates ===
+// HIGH: 75.00
 //
-// Score: 82.00
-// Grade: B
-//
-// Score: 78.00
-// Grade: C
-//
-// Score: 55.00
-// Grade: F</div>
+// LOW: 30.00</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Conditional Pull Arrows</h3>
+          <p>Use <code>&lt;-[condition]-</code> to pull values only when conditions are met.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: Conditional Pull
+// Save as: conditional_pull.ouro
+
+"=== Conditional Pull ==="  -> Print
+
+// Power source selection without if statements
+solar := 500.0
+battery := 300.0
+grid := 1000.0
+demand := 450.0
+
+power := 0.0
+source := "None"
+
+// Priority-based selection using conditional pulls
+use_solar := solar >= demand
+power <-[use_solar]- solar
+source <-[use_solar]- "Solar"
+
+use_battery := !use_solar & battery >= demand
+power <-[use_battery]- battery
+source <-[use_battery]- "Battery"
+
+use_grid := !use_solar & !use_battery
+power <-[use_grid]- grid
+source <-[use_grid]- "Grid"
+
+"Source: " + source -> Print
+"Power: " + power -> Print
+
+// Expected Output:
+// === Conditional Pull ===
+// Source: Solar
+// Power: 500.00</div>
         </div>
       </div>
 
@@ -813,6 +870,170 @@ Flow SaveToDatabase(event)
 // --- Broadcasting 'system_shutdown' ---
 //   LOG: Event received - system_shutdown
 //   DB: Saving event - system_shutdown</div>
+        </div>
+      </div>
+
+      <!-- ARROW PATTERN EXAMPLES -->
+      <div class="doc-section" id="arrow-examples">
+        <h2>Arrow Pattern Examples</h2>
+        <p>These examples showcase Ouroboros' unique arrow operators—the heart of the language.</p>
+
+        <div class="example-card">
+          <h3>Funnel Arrow (Many-to-One)</h3>
+          <p>Collect data from multiple sources into a single handler using <code>&gt;-</code>.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: Funnel Arrow
+// Save as: funnel.ouro
+
+"=== Funnel Arrow Demo ==="  -> Print
+
+Flow AlertSystem(reading)
+    "⚠️ ALERT: Sensor reading = " + reading -> Print
+    return true
+
+// Multiple sensors feeding into one monitor
+temp_sensor := 85.5
+humidity_sensor := 72.0
+pressure_sensor := 1013.25
+
+"--- Sensors Reporting to Alert System ---" -> Print
+
+// Funnel: multiple sources -> single destination
+temp_sensor, humidity_sensor, pressure_sensor >- AlertSystem
+
+// Expected Output:
+// === Funnel Arrow Demo ===
+// --- Sensors Reporting to Alert System ---
+// ⚠️ ALERT: Sensor reading = 85.50
+// ⚠️ ALERT: Sensor reading = 72.00
+// ⚠️ ALERT: Sensor reading = 1013.25</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Conditional Sync Arrow</h3>
+          <p>Use <code>&lt;-[condition]-&gt;</code> to sync only when a condition is true.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: Conditional Sync
+// Save as: conditional_sync.ouro
+
+"=== Conditional Sync ==="  -> Print
+
+local_data := "Secret Report"
+remote_server := "Empty"
+is_secure := true
+
+"--- Initial State ---" -> Print
+"Local: " + local_data -> Print
+"Remote: " + remote_server -> Print
+
+"" -> Print
+"--- Syncing (secure=true) ---" -> Print
+// Only sync if connection is secure
+remote_server <-[is_secure]-> local_data
+"Local: " + local_data -> Print
+"Remote: " + remote_server -> Print
+
+"" -> Print
+"--- Blocking Sync (secure=false) ---" -> Print
+is_secure = false
+local_data = "Updated Secret"
+// Sync is blocked - remote won't update
+"Local: " + local_data -> Print
+"Remote (blocked): " + remote_server -> Print
+
+// Expected Output:
+// === Conditional Sync ===
+// --- Initial State ---
+// Local: Secret Report
+// Remote: Empty
+//
+// --- Syncing (secure=true) ---
+// Local: Secret Report
+// Remote: Secret Report
+//
+// --- Blocking Sync (secure=false) ---
+// Local: Updated Secret
+// Remote (blocked): Secret Report</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Transform Gates</h3>
+          <p>Use <code>-[condition ? transform]-></code> to transform data inline.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: Transform Gates
+// Save as: transform_gates.ouro
+
+"=== Transform Gates ==="  -> Print
+
+Flow HandleValue(val)
+    "Received: " + val -> Print
+    return true
+
+input := 10
+
+"--- Transform Before Sending ---" -> Print
+// If condition true, transform then send
+input -[input > 5 ? input * 2]-> HandleValue     // Sends 20
+input -[input > 5 ? "HIGH"]-> HandleValue        // Sends "HIGH"
+
+"" -> Print
+input = 3
+"--- Blocked by Condition ---" -> Print
+input -[input > 5 ? input * 2]-> HandleValue     // Blocked, input ≤ 5
+"(Nothing sent - condition false)" -> Print
+
+// Expected Output:
+// === Transform Gates ===
+// --- Transform Before Sending ---
+// Received: 20.00
+// Received: HIGH
+//
+// --- Blocked by Condition ---
+// (Nothing sent - condition false)</div>
+        </div>
+
+        <div class="example-card">
+          <h3>Event System with Fork + Gate</h3>
+          <p>Combine <code>-&lt;</code> fork and <code>-[]-></code> gates for smart event routing.</p>
+          <div class="code-block">// COMPLETE EXAMPLE: Smart Event Routing
+// Save as: smart_events.ouro
+
+"=== Smart Event Routing ==="  -> Print
+
+Flow LogEvent(e)
+    "[LOG] " + e -> Print
+
+Flow AlertAdmin(e)
+    "[ADMIN ALERT] " + e -> Print
+
+Flow UpdateDashboard(e)
+    "[DASHBOARD] " + e -> Print
+
+// Event with severity
+event := "Server CPU at 95%"
+severity := 95
+
+"--- Normal Event (severity 50) ---" -> Print
+severity = 50
+event = "User logged in"
+// Always log, only alert admin if critical
+event -> LogEvent
+event -[severity > 80]-> AlertAdmin
+
+"" -> Print
+"--- Critical Event (severity 95) ---" -> Print
+severity = 95
+event = "Server CPU at 95%"
+// Fork to log + dashboard, gate for admin
+event -< LogEvent, UpdateDashboard
+event -[severity > 80]-> AlertAdmin
+
+// Expected Output:
+// === Smart Event Routing ===
+// --- Normal Event (severity 50) ---
+// [LOG] User logged in
+//
+// --- Critical Event (severity 95) ---
+// [LOG] Server CPU at 95%
+// [DASHBOARD] Server CPU at 95%
+// [ADMIN ALERT] Server CPU at 95%</div>
         </div>
       </div>
 
@@ -1599,8 +1820,8 @@ sensor_temp := 22.0
 
 "--- Setting up continuous funnels ---" -> Print
 // Continuous funnel: triggers on any value change
-sensor_temp ▷- ClimateMonitor
-sensor_temp ▷- AlertCheck
+sensor_temp |>- ClimateMonitor
+sensor_temp |>- AlertCheck
 
 "" -> Print
 "--- Changing temperature to 28.5 ---" -> Print
@@ -1752,7 +1973,7 @@ market_supply = 700.0
         </div>
 
         <div class="example-card">
-          <h3>Continuous Fork (-◁)</h3>
+          <h3>Continuous Fork (-<|)</h3>
           <p>React to changes and broadcast to multiple handlers.</p>
           <div class="code-block">// COMPLETE EXAMPLE: Continuous Fork
 // Save as: continuous_fork.ouro
@@ -1781,9 +2002,9 @@ health := 100
 
 "--- Setting up continuous forks ---" -> Print
 // Continuous fork: all handlers called on EVERY change
-health -◁ UpdateHealthBar
-health -◁ CheckCritical
-health -◁ PlaySound
+health -<| UpdateHealthBar
+health -<| CheckCritical
+health -<| PlaySound
 
 "" -> Print
 "--- Taking damage (health = 75) ---" -> Print
@@ -2569,11 +2790,11 @@ humidity := 65.0
 
 "--- Setting up continuous sensor funnels ---" -> Print
 // Multiple sensors continuously feed the processor
-temperature ▷- SensorProcessor
-temperature ▷- AlertSystem
-pressure ▷- SensorProcessor
-humidity ▷- SensorProcessor
-humidity ▷- AlertSystem
+temperature |>- SensorProcessor
+temperature |>- AlertSystem
+pressure |>- SensorProcessor
+humidity |>- SensorProcessor
+humidity |>- AlertSystem
 
 "" -> Print
 "--- Temperature change: 22.5 -> 28.0 ---" -> Print

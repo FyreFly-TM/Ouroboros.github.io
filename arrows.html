@@ -21,18 +21,42 @@
       </div>
       <div class="nav-links">
         <a href="index.html">Home</a>
-        <a href="getting_started.html">Get Started</a>
-        <a href="examples.html">Examples</a>
-        <a href="flows.html">Flows</a>
-        <a href="domains.html">Domains</a>
-        <a href="reference.html">Reference</a>
-        <a href="rex_aot.html">REX &amp; AOT</a>
-        <a href="arrows.html">Arrows</a>
-        <a href="tokens.html">Tokens</a>
-        <a href="files.html">Files</a>
-        <a href="stdlib.html">Std Lib</a>
-        <a href="windows.html">Windows</a>
-        <a href="downloads.html">Downloads</a>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Learn</span>
+          <div class="nav-dropdown-menu">
+            <a href="getting_started.html">Get Started</a>
+            <a href="cheatsheet.html">Cheat Sheet</a>
+            <a href="examples.html">Examples</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Language</span>
+          <div class="nav-dropdown-menu">
+            <a href="arrows.html">Arrows</a>
+            <a href="flows.html">Flows</a>
+            <a href="tokens.html">Tokens</a>
+            <div class="menu-divider"></div>
+            <a href="reference.html">Full Reference</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Libraries</span>
+          <div class="nav-dropdown-menu">
+            <a href="stdlib.html">Standard Library</a>
+            <a href="windows.html">Windowing</a>
+            <a href="keycodes.html">Key Codes</a>
+            <div class="menu-divider"></div>
+            <a href="domains.html">Domains</a>
+            <a href="files.html">File Types</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Tools</span>
+          <div class="nav-dropdown-menu">
+            <a href="rex_aot.html">REX &amp; AOT</a>
+            <a href="downloads.html">Downloads</a>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -41,20 +65,36 @@
     <aside class="doc-panel toc">
       <h3>Arrow Types</h3>
       <ul>
+        <li><a href="#quick-ref">⚡ Quick Reference</a></li>
+        <li><a href="#when-to-use">🎯 When to Use Which</a></li>
         <li><a href="#overview">Overview</a></li>
-        <li><a href="#forward">Forward (->)</a></li>
-        <li><a href="#pull">Pull (<-)</a></li>
-        <li><a href="#sync">Sync (<->)</a></li>
-        <li><a href="#fork">Fork (-<, -◁)</a></li>
-        <li><a href="#funnel">Funnel (>-, ▷-)</a></li>
-        <li><a href="#continuous">Continuous (-▷, ◁-, ◁-▷)</a></li>
+      </ul>
+      <h4 style="margin-top: 16px; color: var(--accent);">Core Arrows</h4>
+      <ul>
+        <li><a href="#forward">Forward (→)</a></li>
+        <li><a href="#pull">Pull (←)</a></li>
+        <li><a href="#sync">Sync (↔)</a></li>
+        <li><a href="#fork">Fork (-<)</a></li>
+      </ul>
+      <h4 style="margin-top: 16px; color: var(--success);">Reactive Arrows</h4>
+      <ul>
+        <li><a href="#funnel">Funnel (>-, |>-)</a></li>
+        <li><a href="#continuous">Continuous (-|>, <|-, <|-|>, -<|)</a></li>
+      </ul>
+      <h4 style="margin-top: 16px; color: var(--warning);">Special Arrows</h4>
+      <ul>
         <li><a href="#fuzzy">Fuzzy (~>, <~, <~>)</a></li>
         <li><a href="#solver">Solver (=>, ≈>)</a></li>
-        <li><a href="#transfer">Transfer (-|->, <-|-)</a></li>
-        <li><a href="#sever">Sever (-||->, <-||-)</a></li>
-        <li><a href="#async">Async Arrows</a></li>
+        <li><a href="#transfer">Transfer (-|->, <-|-, <-|->)</a></li>
+        <li><a href="#sever">Sever (-||->, <-||-, <-||->)</a></li>
+      </ul>
+      <h4 style="margin-top: 16px; color: #9b59b6;">Advanced</h4>
+      <ul>
+        <li><a href="#async">Async (->>, <<-, <<->>)</a></li>
+        <li><a href="#async">Await (->|, |<-, |<->|)</a></li>
         <li><a href="#conditional-arrows">Conditional Arrows</a></li>
         <li><a href="#gates">Conditional Gates</a></li>
+        <li><a href="#gates" style="color: var(--success);">↳ If-Else Pattern</a></li>
         <li><a href="#chaining">Arrow Chaining</a></li>
       </ul>
     </aside>
@@ -63,7 +103,108 @@
       <div class="doc-header">
         <div class="badge">Language Reference</div>
         <h1>Arrow Semantics</h1>
-        <p>Arrows are the heart of Ouroboros. Every arrow expresses a specific data flow intent.</p>
+        <p>Arrows are the heart of Ouroboros. Every arrow expresses a specific data flow intent—master these and you've mastered the language.</p>
+      </div>
+
+      <!-- QUICK REFERENCE -->
+      <div class="doc-section" id="quick-ref">
+        <h2>⚡ Quick Reference</h2>
+        <p>The essential arrows you'll use 90% of the time:</p>
+        
+        <div class="grid" style="gap: 16px; margin: 20px 0;">
+          <div class="card" style="border-left: 4px solid var(--accent);">
+            <h3 style="margin-top: 0;"><code style="font-size: 18px;">-></code> Forward</h3>
+            <p><strong>Use when:</strong> Sending data to a function or Print</p>
+            <div class="code-block">"Hello!" -> Print
+value -> ProcessData -> SaveResult</div>
+          </div>
+          <div class="card" style="border-left: 4px solid var(--success);">
+            <h3 style="margin-top: 0;"><code style="font-size: 18px;"><-</code> Pull</h3>
+            <p><strong>Use when:</strong> Capturing a return value</p>
+            <div class="code-block">result <- Calculate(10, 5)
+x, y <- GetCoordinates()</div>
+          </div>
+          <div class="card" style="border-left: 4px solid var(--warning);">
+            <h3 style="margin-top: 0;"><code style="font-size: 18px;"><-></code> Sync</h3>
+            <p><strong>Use when:</strong> Two variables must stay equal</p>
+            <div class="code-block">model <-> view
+// Now changing either updates both</div>
+          </div>
+          <div class="card" style="border-left: 4px solid #9b59b6;">
+            <h3 style="margin-top: 0;"><code style="font-size: 18px;">-<</code> Fork</h3>
+            <p><strong>Use when:</strong> Broadcasting to multiple handlers</p>
+            <div class="code-block">event -< Logger, UI, Analytics</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WHEN TO USE WHICH -->
+      <div class="doc-section" id="when-to-use">
+        <h2>🎯 When to Use Which Arrow</h2>
+        <p>Choose the right arrow for your situation:</p>
+        
+        <table class="table" style="margin: 20px 0;">
+          <thead>
+            <tr><th style="width: 25%;">I want to...</th><th style="width: 15%;">Arrow</th><th>Example</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Print output</td>
+              <td><code>-></code></td>
+              <td><code>"Hello" -> Print</code></td>
+            </tr>
+            <tr>
+              <td>Call a function</td>
+              <td><code>-></code></td>
+              <td><code>data -> ProcessItem</code></td>
+            </tr>
+            <tr>
+              <td>Capture a return value</td>
+              <td><code><-</code> or <code>:=</code></td>
+              <td><code>result <- Calculate(x)</code></td>
+            </tr>
+            <tr>
+              <td>Keep two variables synchronized</td>
+              <td><code><-></code></td>
+              <td><code>playerHP <-> displayHP</code></td>
+            </tr>
+            <tr>
+              <td>Send to multiple handlers at once</td>
+              <td><code>-<</code></td>
+              <td><code>event -< Log, Save, Notify</code></td>
+            </tr>
+            <tr>
+              <td>React to variable changes</td>
+              <td><code>>-</code></td>
+              <td><code>health >- OnHealthChanged</code></td>
+            </tr>
+            <tr>
+              <td>Fire-and-forget (async)</td>
+              <td><code>->></code></td>
+              <td><code>data ->> SlowProcess</code></td>
+            </tr>
+            <tr>
+              <td>Only forward if condition is true</td>
+              <td><code>-[cond]-></code></td>
+              <td><code>x -[x > 0]-> ProcessPositive</code></td>
+            </tr>
+            <tr>
+              <td>Transfer ownership (move)</td>
+              <td><code>-|-></code></td>
+              <td><code>cargo -|-> Receiver</code></td>
+            </tr>
+            <tr>
+              <td>Soft influence (fuzzy logic)</td>
+              <td><code>~></code></td>
+              <td><code>temp ~> Thermostat</code></td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div class="card" style="border-left: 4px solid var(--success); margin: 20px 0;">
+          <h4>💡 Pro Tip: Start Simple</h4>
+          <p>Most programs only need <code>-></code> (forward) and <code><-</code> (pull). Add other arrows only when you have a specific need. Over-using advanced arrows makes code harder to read.</p>
+        </div>
       </div>
 
       <div class="doc-section" id="overview">
@@ -90,11 +231,11 @@
           </thead>
           <tbody>
             <tr><td><code>>-</code></td><td>Funnel</td><td>Stream changes reactively to handler</td></tr>
-            <tr><td><code>▷-</code></td><td>Funnel (Unicode)</td><td>Same as >- with Unicode symbol</td></tr>
-            <tr><td><code>-▷</code></td><td>Continuous Forward</td><td>Push continuously</td></tr>
-            <tr><td><code>◁-</code></td><td>Continuous Pull</td><td>Continuously monitor and pull changes</td></tr>
-            <tr><td><code>◁-▷</code></td><td>Continuous Sync</td><td>Bidirectional continuous sync</td></tr>
-            <tr><td><code>-◁</code></td><td>Continuous Fork</td><td>Fork to multiple targets on every change</td></tr>
+            <tr><td><code>|>-</code></td><td>Continuous Funnel</td><td>Continuous aggregation stream</td></tr>
+            <tr><td><code>-|></code></td><td>Continuous Forward</td><td>Push continuously</td></tr>
+            <tr><td><code><|-</code></td><td>Continuous Pull</td><td>Continuously monitor and pull changes</td></tr>
+            <tr><td><code><|-|></code></td><td>Continuous Sync</td><td>Bidirectional continuous sync</td></tr>
+            <tr><td><code>-<|</code></td><td>Continuous Fork</td><td>Fork to multiple targets on every change</td></tr>
           </tbody>
         </table>
 
@@ -120,8 +261,10 @@
           <tbody>
             <tr><td><code>-|-></code></td><td>Transfer Forward</td><td>Move data, invalidate source</td></tr>
             <tr><td><code><-|-</code></td><td>Transfer Pull</td><td>Pull and take ownership, source invalidated</td></tr>
+            <tr><td><code><-|-></code></td><td>Transfer Sync</td><td>Transfer ownership bidirectionally</td></tr>
             <tr><td><code>-||-></code></td><td>Sever Forward</td><td>Break connection, forward final value</td></tr>
             <tr><td><code><-||-</code></td><td>Sever Pull</td><td>Pull and disconnect from source</td></tr>
+            <tr><td><code><-||-></code></td><td>Sever Sync</td><td>Sever bidirectional connection</td></tr>
           </tbody>
         </table>
 
@@ -149,309 +292,433 @@
             <tr><td><code>-<<</code></td><td>Async Fork</td><td>Parallel broadcast</td></tr>
             <tr><td><code>>>-</code></td><td>Async Funnel</td><td>Async continuous stream</td></tr>
             <tr><td><code>->|</code></td><td>Await Forward</td><td>Wait then forward</td></tr>
-            <tr><td><code>|<-</code></td><td>Pull Await</td><td>Wait for value to be ready</td></tr>
-            <tr><td><code>|<->|</code></td><td>Sync Await</td><td>Wait for both sides to be ready</td></tr>
-            <tr><td><code><-|-></code></td><td>Sync Transfer</td><td>Transfer ownership bidirectionally</td></tr>
-            <tr><td><code><-||-></code></td><td>Sync Sever</td><td>Sever bidirectional connection</td></tr>
+            <tr><td><code>|<-</code></td><td>Await Pull</td><td>Wait for value to be ready</td></tr>
+            <tr><td><code>|<->|</code></td><td>Await Sync</td><td>Wait for both sides to be ready</td></tr>
           </tbody>
         </table>
       </div>
 
       <div class="doc-section" id="forward">
         <h2>Forward Arrow (->)</h2>
-        <p><strong>Purpose:</strong> Push data from left to right.</p>
-        <p>The most common arrow. It sends values to flows, chains operations, or passes arguments.</p>
         
-        <h3>Basic Usage</h3>
-        <div class="code-block">// COMPLETE EXAMPLE: Forward Arrow
+        <div class="card" style="border-left: 4px solid var(--accent); margin-bottom: 20px;">
+          <h4 style="margin-top: 0;">✅ Use Forward Arrow When:</h4>
+          <ul class="list">
+            <li>Printing output to the console</li>
+            <li>Calling a Flow with arguments</li>
+            <li>Chaining operations in a pipeline</li>
+            <li>Passing data through transformations</li>
+          </ul>
+        </div>
+        
+        <p>The forward arrow is the workhorse of Ouroboros—you'll use it constantly. Data flows left-to-right, making code read naturally like English.</p>
+        
+        <h3>Printing Output</h3>
+        <div class="code-block">// The most common use: send values to Print
+"Hello, World!" -> Print
+42 -> Print
+myVariable -> Print
+
+// String concatenation before printing
+"Score: " + score -> Print
+"Player " + name + " has " + health + " HP" -> Print</div>
+
+        <h3>Calling Flows</h3>
+        <div class="code-block">// Pass a value to a flow
+playerInput -> ProcessCommand
+
+// Pass multiple values (comma-separated)
+x, y -> MoveToPosition
+damage, target -> ApplyDamage</div>
+
+        <h3>Chaining Operations</h3>
+        <p><strong>Best Practice:</strong> Chain arrows to create clear data pipelines:</p>
+        <div class="code-block">// Data flows through each step left-to-right
+input -> Validate -> Transform -> Store
+
+// Each flow receives the return value of the previous
+rawData -> Parse -> Clean -> Analyze -> Report</div>
+
+        <h3>Complete Example</h3>
+        <div class="code-block">// COMPLETE EXAMPLE: Forward Arrow Best Practices
 // Save as: forward_arrow.ouro
 
-Flow ProcessNumber(n)
-    "Processing: " + n -> Print
-    result := n * 2
-    return result
+Flow Double(n)
+    return n * 2
 
-"=== Forward Arrow Demo ==="  -> Print
+Flow AddTen(n)
+    return n + 10
 
-// Send a value to Print
+Flow FormatResult(n)
+    return "Result: " + n
+
+"=== Forward Arrow Demo ===" -> Print
+
+// Style 1: Direct call to Print
 "Hello, World!" -> Print
-"" -> Print
 
-// Pass to a flow
-"Sending 42 to ProcessNumber:" -> Print
-42 -> ProcessNumber
-"Result: " + result -> Print
+// Style 2: Chain through multiple flows
+5 -> Double -> AddTen -> FormatResult -> Print
+// Flow: 5 → 10 → 20 → "Result: 20" → printed
+
+// Style 3: Multiple arguments
+Flow Add(a, b)
+    return a + b
+
+10, 5 -> Add -> Print    // Prints: 15.00
 
 // Expected Output:
 // === Forward Arrow Demo ===
 // Hello, World!
-//
-// Sending 42 to ProcessNumber:
-// Processing: 42.00
-// Result: 84.00</div>
+// Result: 20.00
+// 15.00</div>
 
-        <h3>Multiple Arguments</h3>
-        <div class="code-block">// Pass multiple values separated by commas
-10, 5 -> Add -> Print</div>
+        <div class="card" style="border-left: 4px solid var(--warning); margin-top: 20px;">
+          <h4 style="margin-top: 0;">⚠️ Common Mistake</h4>
+          <p>Don't use forward arrow when you need to capture a return value—use <code><-</code> or <code>:=</code> instead:</p>
+          <div class="code-block">// ❌ Wrong: Forward doesn't capture the return
+Calculate(10, 5) -> result    // result is undefined!
 
-        <h3>Chaining</h3>
-        <div class="code-block">// COMPLETE EXAMPLE: Forward Arrow Chaining
-// Save as: arrow_chain.ouro
-
-Flow Validate(data)
-    "[Validate] " + data -> Print
-    return data
-
-Flow Transform(data)
-    "[Transform] " + data -> Print
-    result := data + "_modified"
-    return result
-
-Flow Store(data)
-    "[Store] " + data -> Print
-    return true
-
-"=== Arrow Chaining Demo ==="  -> Print
-
-// Step by step chain
-input := "raw_data"
-Validate(input)
-Transform(result)
-Store(result)
-
-// Expected Output:
-// === Arrow Chaining Demo ===
-// [Validate] raw_data
-// [Transform] raw_data
-// [Store] raw_data_modified</div>
+// ✅ Correct: Use pull or assignment
+result <- Calculate(10, 5)
+result := Calculate(10, 5)</div>
+        </div>
       </div>
 
       <div class="doc-section" id="pull">
         <h2>Pull Arrow (<-)</h2>
-        <p><strong>Purpose:</strong> Capture return values or create reactive bindings.</p>
+        
+        <div class="card" style="border-left: 4px solid var(--success); margin-bottom: 20px;">
+          <h4 style="margin-top: 0;">✅ Use Pull Arrow When:</h4>
+          <ul class="list">
+            <li>Capturing a return value from a Flow</li>
+            <li>Capturing multiple return values at once</li>
+            <li>Creating a reactive binding to an expression</li>
+          </ul>
+        </div>
+        
+        <p>The pull arrow is the counterpart to forward—it captures values coming <em>back</em> from a Flow. You can also use <code>:=</code> for simple captures.</p>
+        
+        <h3>Capturing Return Values</h3>
+        <div class="code-block">// Both styles work for single returns:
+result <- Calculate(10, 5)    // Pull arrow style
+result := Calculate(10, 5)    // Assignment style
 
-        <h3>Capture Return Value</h3>
-        <div class="code-block">// COMPLETE EXAMPLE: Pull Arrow Capture
-// Save as: pull_capture.ouro
+// Pull arrow is required for multiple returns:
+x, y <- GetPosition()
+quotient, remainder <- Divide(17, 5)</div>
 
-Flow Add(a, b)
-    sum := a + b
-    return sum
+        <h3>Multiple Return Values</h3>
+        <p><strong>Best Practice:</strong> Use pull arrow when capturing multiple values:</p>
+        <div class="code-block">// COMPLETE EXAMPLE: Multiple Return Values
+// Save as: multi_return.ouro
 
 Flow Divide(a, b)
-    quotient := a / b
+    quotient := Floor(a / b)
     remainder := a % b
     return quotient, remainder
 
-"=== Pull Arrow Demo ==="  -> Print
+Flow GetMinMax(arr)
+    minVal := arr[0]
+    maxVal := arr[0]
+    for i = 1, i < Len(arr), i++
+        if arr[i] < minVal
+            minVal = arr[i]
+        if arr[i] > maxVal
+            maxVal = arr[i]
+    return minVal, maxVal
 
-// Capture single return using :=
-result := Add(10, 5)
-"Add(10, 5) = " + result -> Print
+"=== Multiple Returns Demo ===" -> Print
 
-// Or use pull arrow with function call
-result <- Add(20, 30)
-"Add(20, 30) = " + result -> Print
-
-// Capture multiple returns
-"" -> Print
-"Divide(17, 5):" -> Print
+// Capture both values
 q, r <- Divide(17, 5)
-"Quotient: " + q -> Print
-"Remainder: " + r -> Print
+"17 ÷ 5 = " + q + " remainder " + r -> Print
+
+// Works with any number of returns
+numbers := [3, 1, 4, 1, 5, 9, 2, 6]
+minNum, maxNum <- GetMinMax(numbers)
+"Min: " + minNum + ", Max: " + maxNum -> Print
 
 // Expected Output:
-// === Pull Arrow Demo ===
-// Add(10, 5) = 15.00
-// Add(20, 30) = 50.00
-//
-// Divide(17, 5):
-// Quotient: 3.40
-// Remainder: 2.00</div>
+// === Multiple Returns Demo ===
+// 17 ÷ 5 = 3.00 remainder 2.00
+// Min: 1.00, Max: 9.00</div>
 
         <h3>Reactive Binding</h3>
-        <p>When used with an expression, the left side updates whenever the right side changes:</p>
-        <div class="code-block">// COMPLETE EXAMPLE: Reactive Binding
-// Save as: reactive.ouro
-
-width := 10
+        <p>Create a variable that auto-updates when dependencies change:</p>
+        <div class="code-block">width := 10
 height := 5
 
-// area automatically recalculates when width or height change
-area := width * height
+// area is bound to the formula
+area <- width * height
 
-"=== Reactive Binding Demo ==="  -> Print
-"Initial width: " + width -> Print
-"Initial height: " + height -> Print
-"Calculated area: " + area -> Print
-
-"" -> Print
-"Changing width to 20..." -> Print
+// When width or height changes, recalculate area
 width = 20
-area = width * height
-"New area: " + area -> Print
+area = width * height    // Recalculate
+"New area: " + area -> Print</div>
 
-"" -> Print
-"Changing height to 10..." -> Print
-height = 10
-area = width * height
-"New area: " + area -> Print
+        <div class="card" style="border-left: 4px solid var(--accent); margin-top: 20px;">
+          <h4 style="margin-top: 0;">💡 Pro Tip: Pull vs Assignment</h4>
+          <p>Use <code>:=</code> for simple one-time captures. Use <code><-</code> when you want to emphasize the data flow or capture multiple returns.</p>
+          <div class="code-block">// ✅ Both are valid for single returns
+count := GetCount()     // Simpler
+count <- GetCount()     // More explicit about data flow
 
-// Expected Output:
-// === Reactive Binding Demo ===
-// Initial width: 10.00
-// Initial height: 5.00
-// Calculated area: 50.00
-//
-// Changing width to 20...
-// New area: 200.00
-//
-// Changing height to 10...
-// New area: 200.00</div>
-
-        <h3>Formula Binding</h3>
-        <div class="code-block">co2 := 400.0
-temp := -50.0
-water := 10.0
-
-// Complex formula binding
-health <- (temp + 50.0) * water / co2</div>
+// ✅ Pull is required for multiple returns
+x, y <- GetCoords()     // Only way to capture both</div>
+        </div>
       </div>
 
       <div class="doc-section" id="sync">
         <h2>Sync Arrow (<->)</h2>
-        <p><strong>Purpose:</strong> Bidirectional binding—both sides stay equal when either changes.</p>
-        <p>Creates a reactive binding where changes to either side are reflected in the other. <strong>Important:</strong> The sync arrow does not immediately copy values when established—it only takes effect when either variable is later changed.</p>
+        
+        <div class="card" style="border-left: 4px solid var(--warning); margin-bottom: 20px;">
+          <h4 style="margin-top: 0;">✅ Use Sync Arrow When:</h4>
+          <ul class="list">
+            <li>Two variables must always stay equal</li>
+            <li>Model-View binding (UI updates)</li>
+            <li>Mirroring state between components</li>
+            <li>Creating backup/replica relationships</li>
+          </ul>
+        </div>
+        
+        <p>The sync arrow creates a bidirectional bond—when either side changes, the other updates automatically. <strong>Important:</strong> The sync is established for future changes; it doesn't immediately equalize the values.</p>
 
-        <div class="code-block">// COMPLETE EXAMPLE: Sync Arrow (Bidirectional Binding)
-// Save as: sync_arrow.ouro
-
-"=== Sync Arrow Demo ==="  -> Print
-
-model := 100
+        <h3>Basic Sync</h3>
+        <div class="code-block">model := 100
 view := 50
 
-"Initial values:" -> Print
-"model = " + model -> Print
-"view = " + view -> Print
-
-// Establish sync binding (values remain unchanged initially)
+// Establish sync (values stay as-is initially)
 model <-> view
-"" -> Print
-"After sync binding (no immediate change):" -> Print
-"model = " + model -> Print
-"view = " + view -> Print
 
-// Now when either changes, the other follows
-"" -> Print
-"Setting view = 250..." -> Print
+// Now changes to either update both:
 view = 250
-"model = " + model -> Print
-"view = " + view -> Print
+// model is now also 250
+
+model = 999
+// view is now also 999</div>
+
+        <h3>Best Practice: Model-View Pattern</h3>
+        <div class="code-block">// COMPLETE EXAMPLE: UI Sync Pattern
+// Save as: model_view_sync.ouro
+
+"=== Model-View Sync Demo ===" -> Print
+
+// Game state (the model)
+playerHealth := 100
+playerScore := 0
+
+// UI display values (the view)
+healthDisplay := 100
+scoreDisplay := 0
+
+// Establish sync between model and view
+playerHealth <-> healthDisplay
+playerScore <-> scoreDisplay
+
+"Initial state:" -> Print
+"Health: " + playerHealth -> Print
+"Score: " + playerScore -> Print
+
+// Game logic updates the model
+"" -> Print
+"Player takes 30 damage..." -> Print
+playerHealth = playerHealth - 30
+"Health display auto-updated: " + healthDisplay -> Print
 
 "" -> Print
-"Setting model = 999..." -> Print
-model = 999
-"model = " + model -> Print
-"view = " + view -> Print
+"Player scores 500 points..." -> Print
+playerScore = playerScore + 500
+"Score display auto-updated: " + scoreDisplay -> Print
 
 // Expected Output:
-// === Sync Arrow Demo ===
-// Initial values:
-// model = 100.00
-// view = 50.00
+// === Model-View Sync Demo ===
+// Initial state:
+// Health: 100.00
+// Score: 0.00
 //
-// After sync binding (no immediate change):
-// model = 100.00
-// view = 50.00
+// Player takes 30 damage...
+// Health display auto-updated: 70.00
 //
-// Setting view = 250...
-// model = 250.00
-// view = 250.00
-//
-// Setting model = 999...
-// model = 999.00
-// view = 999.00</div>
+// Player scores 500 points...
+// Score display auto-updated: 500.00</div>
+
+        <div class="card" style="border-left: 4px solid #e74c3c; margin-top: 20px;">
+          <h4 style="margin-top: 0;">⚠️ Common Pitfall</h4>
+          <p>Sync doesn't immediately equalize values—it only affects future changes:</p>
+          <div class="code-block">a := 100
+b := 50
+a <-> b    // a is still 100, b is still 50!
+
+// Only AFTER a change do they sync:
+a = 75     // Now BOTH a and b are 75</div>
+        </div>
 
         <h3>Use Cases</h3>
         <ul class="list">
-          <li>Model-View synchronization in UI</li>
-          <li>Game state between client and server</li>
-          <li>Keeping backup values in sync</li>
+          <li><strong>UI Binding</strong> — Keep display in sync with game state</li>
+          <li><strong>Multiplayer</strong> — Mirror state between client and server</li>
+          <li><strong>Backup</strong> — Keep a backup value always current</li>
+          <li><strong>Settings</strong> — Sync config between modules</li>
         </ul>
       </div>
 
       <div class="doc-section" id="fork">
         <h2>Fork Arrow (-<)</h2>
-        <p><strong>Purpose:</strong> Send a single input to multiple destinations.</p>
-        <p>Broadcasting—one source feeds many targets simultaneously.</p>
+        
+        <div class="card" style="border-left: 4px solid #9b59b6; margin-bottom: 20px;">
+          <h4 style="margin-top: 0;">✅ Use Fork Arrow When:</h4>
+          <ul class="list">
+            <li>Broadcasting events to multiple handlers</li>
+            <li>Sending data to logging, analytics, AND storage at once</li>
+            <li>Notifying multiple systems of a change</li>
+            <li>Fan-out patterns (one producer, many consumers)</li>
+          </ul>
+        </div>
+        
+        <p>The fork arrow broadcasts a single value to multiple destinations simultaneously. All handlers receive the same value and execute in order.</p>
 
-        <div class="code-block">// COMPLETE EXAMPLE: Fork Arrow
-// Save as: fork_arrow.ouro
+        <h3>Basic Fork</h3>
+        <div class="code-block">// Send event to multiple handlers at once
+event -< Logger, UI, Analytics
+
+// Equivalent to (but cleaner than):
+event -> Logger
+event -> UI
+event -> Analytics</div>
+
+        <h3>Best Practice: Event Broadcasting</h3>
+        <div class="code-block">// COMPLETE EXAMPLE: Event Broadcasting
+// Save as: event_broadcast.ouro
 
 Flow LogEvent(event)
     "[LOG] " + event -> Print
     return true
 
 Flow UpdateUI(event)
-    "[UI] Updating display: " + event -> Print
+    "[UI] " + event -> Print
     return true
 
-Flow NotifyUser(event)
-    "[NOTIFY] Alert: " + event -> Print
+Flow SendAnalytics(event)
+    "[ANALYTICS] " + event -> Print
     return true
 
-"=== Fork Arrow Demo ==="  -> Print
-"Sending 'player_joined' to multiple handlers..." -> Print
-"" -> Print
+"=== Event Broadcasting Demo ===" -> Print
 
-// Fork to multiple handlers
-event := "player_joined"
-event -< LogEvent, UpdateUI, NotifyUser
+// When a player joins, notify all systems
+playerEvent := "player_joined"
+playerEvent -< LogEvent, UpdateUI, SendAnalytics
 
 "" -> Print
-"Sending 'game_started' to multiple handlers..." -> Print
-"" -> Print
 
-event2 := "game_started"
-event2 -< LogEvent, UpdateUI, NotifyUser
+// When a player scores, notify all systems
+scoreEvent := "player_scored"
+scoreEvent -< LogEvent, UpdateUI, SendAnalytics
 
 // Expected Output:
-// === Fork Arrow Demo ===
-// Sending 'player_joined' to multiple handlers...
-//
+// === Event Broadcasting Demo ===
 // [LOG] player_joined
-// [UI] Updating display: player_joined
-// [NOTIFY] Alert: player_joined
+// [UI] player_joined
+// [ANALYTICS] player_joined
 //
-// Sending 'game_started' to multiple handlers...
-//
-// [LOG] game_started
-// [UI] Updating display: game_started
-// [NOTIFY] Alert: game_started</div>
+// [LOG] player_scored
+// [UI] player_scored
+// [ANALYTICS] player_scored</div>
 
-        <h3>Chained Forks</h3>
-        <p>Forks can appear at the end of arrow chains:</p>
-        <div class="code-block">// Process then fork the result
-data -> Transform -> Validate -< Store, Backup, Notify</div>
+        <h3>Fork with Chaining</h3>
+        <p>Fork can appear at the end of a processing chain:</p>
+        <div class="code-block">// Process, validate, then broadcast to multiple handlers
+rawData -> Parse -> Validate -< Store, Backup, Notify</div>
 
-        <h3>Continuous Fork (-◁)</h3>
-        <p>Combine continuous monitoring with forking—every change broadcasts to all targets:</p>
-        <div class="code-block">health := 100
+        <div class="card" style="border-left: 4px solid var(--accent); margin-top: 20px;">
+          <h4 style="margin-top: 0;">💡 Fork vs Multiple Forward Arrows</h4>
+          <p>Fork is not just shorthand—it expresses intent clearly: "this value goes to ALL these places."</p>
+          <div class="code-block">// ✅ Clear intent: broadcast to all
+event -< Handler1, Handler2, Handler3
 
-// Every time health changes, all handlers are called
-health -◁ UpdateHealthBar
-health -◁ CheckCriticalHealth
-health -◁ UpdateDamageOverlay
-
-health = 50  // Triggers all three handlers</div>
+// ❌ Less clear: are these related or separate?
+event -> Handler1
+event -> Handler2
+event -> Handler3</div>
+        </div>
       </div>
 
       <div class="doc-section" id="funnel">
-        <h2>Funnel Arrows (>-, ▷-)</h2>
-        <p><strong>Purpose:</strong> Stream data continuously—any change triggers the target.</p>
-        <p>Unlike a one-time forward arrow, a funnel establishes an ongoing connection. Use <code>>-</code> for ASCII or <code>▷-</code> for Unicode.</p>
+        <h2>Funnel Arrow (>-)</h2>
+        
+        <div class="card" style="border-left: 4px solid var(--success); margin-bottom: 20px;">
+          <h4 style="margin-top: 0;">✅ Use Funnel Arrow When:</h4>
+          <ul class="list">
+            <li>You want to react to every change of a variable</li>
+            <li>Building reactive/observer patterns</li>
+            <li>Monitoring sensor values or state changes</li>
+            <li>Implementing event listeners</li>
+          </ul>
+        </div>
+        
+        <p>The funnel arrow establishes an <strong>ongoing connection</strong>—whenever the source variable changes, the handler is automatically called. This is the foundation of reactive programming in Ouroboros.</p>
 
+        <h3>Reactive Monitoring</h3>
+        <div class="code-block">// Establish a reactive connection
+health >- OnHealthChanged
+
+// Now every time health changes, OnHealthChanged is called automatically
+health = 80    // Triggers OnHealthChanged(80)
+health = 50    // Triggers OnHealthChanged(50)
+health = 25    // Triggers OnHealthChanged(25)</div>
+
+        <h3>Best Practice: Game State Monitoring</h3>
+        <div class="code-block">// COMPLETE EXAMPLE: Reactive Health Monitor
+// Save as: health_monitor.ouro
+
+Flow OnHealthChanged(newHealth)
+    "Health changed to: " + newHealth -> Print
+    if newHealth ≤ 25
+        "⚠️ CRITICAL HEALTH!" -> Print
+    elseif newHealth ≤ 50
+        "⚡ Health is low" -> Print
+    return true
+
+"=== Reactive Health Monitor ===" -> Print
+
+health := 100
+health >- OnHealthChanged    // Establish reactive connection
+
+// Simulate taking damage
+health = 75
+health = 40
+health = 20
+
+// Expected Output:
+// === Reactive Health Monitor ===
+// Health changed to: 75.00
+// Health changed to: 40.00
+// ⚡ Health is low
+// Health changed to: 20.00
+// ⚠️ CRITICAL HEALTH!</div>
+
+        <h3>Funnel vs Forward</h3>
+        <div class="code-block">// Forward: one-time push
+health -> LogHealth          // Called once, right now
+
+// Funnel: ongoing connection
+health >- OnHealthChanged    // Called on EVERY future change</div>
+
+        <div class="card" style="border-left: 4px solid var(--accent); margin-top: 20px;">
+          <h4 style="margin-top: 0;">💡 When to Use Funnel vs Sync</h4>
+          <p><strong>Funnel (>-)</strong>: You want to <em>react</em> to changes with custom logic<br>
+          <strong>Sync (<->)</strong>: You want two variables to <em>stay equal</em></p>
+          <div class="code-block">// Funnel: custom reaction
+health >- UpdateHealthBar    // Call a function when health changes
+
+// Sync: keep values equal
+health <-> displayHealth     // displayHealth mirrors health</div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="continuous">
+        <h2>Continuous Arrows (-|>, <|-)</h2>
+        
         <div class="code-block">// COMPLETE EXAMPLE: Funnel Arrow (Continuous Monitoring)
 // Save as: funnel_arrow.ouro
 
@@ -498,63 +765,90 @@ sensor_temp = 30.5
       </div>
 
       <div class="doc-section" id="continuous">
-        <h2>Continuous Arrows (-▷, ◁-)</h2>
-        <p><strong>Purpose:</strong> Establish ongoing push or pull connections.</p>
-        <p>These arrows maintain a persistent connection—any change automatically propagates.</p>
+        <h2>Continuous Arrows (-|>, <|-, -<|)</h2>
+        
+        <div class="card" style="border-left: 4px solid var(--success); margin-bottom: 20px;">
+          <h4 style="margin-top: 0;">✅ Use Continuous Arrows When:</h4>
+          <ul class="list">
+            <li>Changes should automatically propagate without explicit code</li>
+            <li>Building real-time data pipelines</li>
+            <li>Creating derived values that auto-update</li>
+          </ul>
+        </div>
 
-        <h3>Continuous Forward (-▷)</h3>
-        <p>Continuously push updates to the target:</p>
-        <div class="code-block">msg := "Status Update"
+        <h3>Continuous Forward (-|>)</h3>
+        <p>Every change to the source automatically pushes to the target:</p>
+        <div class="code-block">status := "Ready"
+status -|> Print    // Establish continuous forward
 
-// Continuously forward to Print
-msg -▷ Print
+// Now every change auto-prints
+status = "Loading..."    // Auto-printed
+status = "Complete!"     // Auto-printed</div>
 
-// Every change to msg is automatically printed
-msg = "New Status"  // Printed automatically</div>
+        <h3>Continuous Pull (<|-)</h3>
+        <p>A variable that auto-updates when its source changes:</p>
+        <div class="code-block">basePrice := 100
+discount := 0.20
 
-        <h3>Continuous Pull (◁-)</h3>
-        <p>Continuously monitor a source and pull changes:</p>
-        <div class="code-block">source_value := 100
+// discountedPrice auto-updates when basePrice or discount changes
+discountedPrice <|- basePrice * (1 - discount)
 
-// Establish continuous pull
-monitored ◁- source_value
+// When basePrice changes, discountedPrice updates automatically
+basePrice = 150    // discountedPrice is now 120</div>
 
-// monitored updates whenever source_value changes
-source_value = 200  // monitored is now 200</div>
+        <h3>Continuous Fork (-<|)</h3>
+        <p>Broadcast every change to multiple handlers:</p>
+        <div class="code-block">health := 100
+
+// Every time health changes, ALL handlers are called
+health -<| UpdateHealthBar
+health -<| CheckCriticalHealth
+health -<| PlayDamageSound
+
+health = 50    // Triggers all three handlers
+health = 25    // Triggers all three handlers again</div>
       </div>
 
       <div class="doc-section" id="fuzzy">
         <h2>Fuzzy Arrows (~>, <~, <~>)</h2>
-        <p><strong>Purpose:</strong> Soft influence—suggest rather than force.</p>
-        <p>Used for fuzzy logic systems where values are "influenced" rather than directly set. The relationship is probabilistic or soft, not rigid.</p>
+        
+        <div class="card" style="border-left: 4px solid var(--warning); margin-bottom: 20px;">
+          <h4 style="margin-top: 0;">✅ Use Fuzzy Arrows When:</h4>
+          <ul class="list">
+            <li>Building AI with probabilistic behavior</li>
+            <li>Implementing soft constraints or suggestions</li>
+            <li>Modeling elastic relationships (not rigid)</li>
+            <li>Creating gradual/dampened responses</li>
+          </ul>
+        </div>
+        
+        <p>Fuzzy arrows create <strong>soft influences</strong> rather than rigid assignments. The target is "suggested" rather than forced—perfect for AI, simulations, and fuzzy logic systems.</p>
 
         <h3>Fuzzy Forward (~>)</h3>
-        <p>Softly push influence to a target:</p>
+        <p>Suggest a value rather than force it:</p>
         <div class="code-block">temperature := 28.0
 
-// Fuzzy influence on controller
+// Soft influence on controller (not a command, a suggestion)
 temperature ~> ThermalController
 
 Flow ThermalController(t)
-    // Fuzzy logic: soft response
     if t > 25.0
         "Suggesting: increase cooling" -> Print
     elseif t < 18.0
         "Suggesting: increase heating" -> Print
     else
-        "Nominal range" -> Print
+        "Nominal" -> Print
     return true</div>
 
         <h3>Fuzzy Pull (<~)</h3>
-        <p>Softly pull influence from a source. The value received may be noisy or dampened:</p>
+        <p>Pull with noise, dampening, or probability:</p>
         <div class="code-block">// AI perception with probability
-player_visibility := 0.8  // 0.0 to 1.0
-enemy_alert_level := 0.0
+player_visibility := 0.8
 
-// Soft pull - enemy "might" see based on visibility
-enemy_alert_level <~ player_visibility
+// Soft pull - enemy "might" notice based on visibility
+enemy_awareness <~ player_visibility
 
-// Alert level is influenced by, not strictly set to, visibility</div>
+// awareness is influenced by, not equal to, visibility</div>
 
         <h3>Fuzzy Sync (<~>)</h3>
         <p>Bidirectional soft influence. Both sides affect each other with "elasticity":</p>
@@ -835,6 +1129,109 @@ temp -[lockdown == false]~> Regulator
 
 // Gate + Solver
 position -[obstacles < 5]=> PathFinder</div>
+
+        <h3>If-Else Pattern with Gates</h3>
+        <p>Gates provide a powerful alternative to traditional if/else statements. Use complementary conditions for mutually exclusive branches:</p>
+        
+        <div class="code-block">// Traditional if/else:
+if (score ≥ 60)
+    "Pass" -> Print
+else
+    "Fail" -> Print
+
+// Gate equivalent (flow-oriented):
+score -[score ≥ 60]-> Print("Pass")
+score -[score < 60]-> Print("Fail")</div>
+
+        <h4>Multi-Branch (If/Elseif/Else)</h4>
+        <div class="code-block">// Traditional elseif chain:
+if (level > 90)
+    status := "Expert"
+elseif (level > 50)
+    status := "Intermediate"
+else
+    status := "Beginner"
+
+// Gate equivalent with ranges:
+level -[level > 90 ? "Expert"]-> status
+level -[level > 50 & level ≤ 90 ? "Intermediate"]-> status
+level -[level ≤ 50 ? "Beginner"]-> status</div>
+
+        <h4>Nested Conditions</h4>
+        <div class="code-block">// Nested if/else:
+if (online)
+    if (admin)
+        "Full Access" -> Print
+    else
+        "User Access" -> Print
+else
+    "Offline" -> Print
+
+// Flattened with compound gates:
+status -[online & admin]-> Print("Full Access")
+status -[online & !admin]-> Print("User Access")
+status -[!online]-> Print("Offline")</div>
+
+        <h4>Routing to Different Flows</h4>
+        <div class="code-block">// Route based on type
+message -[type == "error"]-> HandleError
+message -[type == "warning"]-> HandleWarning
+message -[type == "info"]-> HandleInfo
+message -[type == "debug" & debug_mode]-> HandleDebug</div>
+
+        <h4>Calling Flows with :: and ||</h4>
+        <p>The <code>::</code> operator acts as "then" (success handler), and <code>||</code> acts as "else" (failure handler):</p>
+        <div class="code-block">// Full gate syntax:
+// -[condition ? action :: onSuccess || onFailure]-
+// 
+// ?  = action to run if condition true (before main flow)
+// :: = success handler (like "then")
+// || = failure handler (like "else" or "catch")
+
+// Example: Validate before processing
+Flow IsValid(x)
+    return x > 0
+
+Flow Process(x)
+    "Processing: " + x -> Print
+
+Flow Reject(x)
+    "Rejected: " + x -> Print
+
+// If IsValid returns true, call Process; otherwise Reject
+value := 42
+value -[IsValid(value) :: Process(value) || Reject(value)]-
+
+// With pre-action
+data -[CheckAuth(user) ? Log("Checking") :: Allow(user) || Deny(user)]-</div>
+
+        <h4>Practical If-Else-Error Pattern</h4>
+        <div class="code-block">// Traditional approach:
+if (HasPermission(user))
+    if (ValidateData(input))
+        ProcessRequest(input)
+        Log("Success")
+    else
+        Log("Invalid data")
+else
+    Log("Access denied")
+
+// Gate approach with ::  and ||
+input -[HasPermission(user) & ValidateData(input) :: ProcessRequest(input) || HandleFailure(input)]-
+
+// Or split into multiple gates:
+request -[!HasPermission(user) || Log("Access denied")]-
+request -[!ValidateData(input) || Log("Invalid data")]-  
+request -[HasPermission(user) & ValidateData(input) :: ProcessRequest(input)]-</div>
+
+        <h4>When Gates Excel</h4>
+        <ul class="list">
+          <li><strong>Parallel evaluation</strong> — All gates checked independently</li>
+          <li><strong>Data transformation</strong> — Use <code>?</code> to change values inline</li>
+          <li><strong>Flow orchestration</strong> — Use <code>::</code> for success, <code>||</code> for failure handlers</li>
+          <li><strong>Pipeline integration</strong> — Chain with other arrows seamlessly</li>
+          <li><strong>Visual clarity</strong> — See all conditions at the same indentation level</li>
+        </ul>
       </div>
 
       <div class="doc-section" id="chaining">

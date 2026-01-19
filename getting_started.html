@@ -21,18 +21,42 @@
       </div>
       <div class="nav-links">
         <a href="index.html">Home</a>
-        <a href="getting_started.html">Get Started</a>
-        <a href="examples.html">Examples</a>
-        <a href="flows.html">Flows</a>
-        <a href="domains.html">Domains</a>
-        <a href="reference.html">Reference</a>
-        <a href="rex_aot.html">REX &amp; AOT</a>
-        <a href="arrows.html">Arrows</a>
-        <a href="tokens.html">Tokens</a>
-        <a href="files.html">Files</a>
-        <a href="stdlib.html">Std Lib</a>
-        <a href="windows.html">Windows</a>
-        <a href="downloads.html">Downloads</a>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Learn</span>
+          <div class="nav-dropdown-menu">
+            <a href="getting_started.html">Get Started</a>
+            <a href="cheatsheet.html">Cheat Sheet</a>
+            <a href="examples.html">Examples</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Language</span>
+          <div class="nav-dropdown-menu">
+            <a href="arrows.html">Arrows</a>
+            <a href="flows.html">Flows</a>
+            <a href="tokens.html">Tokens</a>
+            <div class="menu-divider"></div>
+            <a href="reference.html">Full Reference</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Libraries</span>
+          <div class="nav-dropdown-menu">
+            <a href="stdlib.html">Standard Library</a>
+            <a href="windows.html">Windowing</a>
+            <a href="keycodes.html">Key Codes</a>
+            <div class="menu-divider"></div>
+            <a href="domains.html">Domains</a>
+            <a href="files.html">File Types</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <span class="nav-dropdown-trigger">Tools</span>
+          <div class="nav-dropdown-menu">
+            <a href="rex_aot.html">REX &amp; AOT</a>
+            <a href="downloads.html">Downloads</a>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -56,6 +80,15 @@
         <div class="badge">Tutorial</div>
         <h1>Getting Started with Ouroboros</h1>
         <p>From zero to running code in 10 minutes.</p>
+      </div>
+
+      <div class="card" style="border-left: 4px solid var(--accent); margin-bottom: 24px;">
+        <h4 style="margin-top: 0;">🎯 Key Concept: Arrows Define Data Flow</h4>
+        <p>In Ouroboros, <strong>arrows</strong> show where data goes. The most common is <code>-></code> (forward arrow), which sends data left-to-right:</p>
+        <div class="code-block">"Hello!" -> Print           // Send to Print
+5 -> Double -> Print        // Chain through flows
+event -< Log, UI, Save      // Fork to multiple handlers</div>
+        <p style="margin-bottom: 0;">Master the four core arrows (<code>-></code>, <code><-</code>, <code><-></code>, <code>-<</code>) and you've mastered the language. See <a href="arrows.html">Arrows Reference</a> for details.</p>
       </div>
 
       <div class="doc-section" id="install">
@@ -84,14 +117,10 @@
         <div class="code-block">// hello.ouro
 "Hello, Ouroboros!" -> Print</div>
         <p>Open a terminal in your project folder and run:</p>
-        <div class="code-block">// Run a specific script
-.\chimera.exe hello.ouro
-
-// Or run the entire project
-.\chimera.exe</div>
+        <div class="code-block">.\chimera.exe hello.ouro</div>
         <p>Output:</p>
         <div class="code-block">Hello, Ouroboros!</div>
-        <p>The <code>-></code> (forward arrow) sends the string to the <code>Print</code> function.</p>
+        <p>The <code>-></code> (forward arrow) sends the string to the <code>Print</code> function. This is the most common pattern in Ouroboros—data flows from left to right.</p>
       </div>
 
       <div class="doc-section" id="variables">
@@ -100,87 +129,165 @@
         
         <h3>Mutable Variables (:=)</h3>
         <div class="code-block">count := 0       // Declare and initialize
-count = 5        // Reassign
-count += 1       // Compound assignment (now 6)</div>
+count = 5        // Reassign later
+count += 1       // Compound assignment (now 6)
+count++          // Increment shorthand</div>
 
         <h3>Immutable Variables (=:)</h3>
-        <div class="code-block">pi =: 3.14159    // Cannot be reassigned later</div>
+        <div class="code-block">PI =: 3.14159      // Cannot be reassigned
+MAX_HEALTH =: 100  // Use for constants</div>
 
         <h3>Data Types</h3>
-        <div class="code-block">// COMPLETE EXAMPLE: Data Types
-// Save as: data_types.ouro
-
-"=== Data Types Demo ==="  -> Print
-
-// Numbers
+        <div class="code-block">// Numbers
 age := 25
 price := 19.99
-negative := -42
-
-"Numbers:" -> Print
-"age = " + age -> Print
-"price = " + price -> Print
-"negative = " + negative -> Print
 
 // Strings
 name := "Ouroboros"
-"" -> Print
-"String: name = " + name -> Print
+"Hello, " + name + "!" -> Print
 
 // Booleans
 active := true
 paused := false
-"" -> Print
-"Booleans:" -> Print
-"active = " + active -> Print
-"paused = " + paused -> Print
 
 // Arrays
-numbers := [1, 2, 3, 4, 5]
-"" -> Print
-"Array: numbers = [1, 2, 3, 4, 5]" -> Print
+items := [1, 2, 3, 4, 5]
+first := items[0]          // Access by index
+items[1] = 99              // Modify by index</div>
 
-// Access array elements
-first := numbers[0]
-"first element = " + first -> Print
-
-// Modify array elements
-numbers[1] = 99
-"After numbers[1] = 99: " + numbers[1] -> Print
-
-// Expected Output:
-// === Data Types Demo ===
-// Numbers:
-// age = 25.00
-// price = 19.99
-// negative = -42.00
-//
-// String: name = Ouroboros
-//
-// Booleans:
-// active = true
-// paused = false
-//
-// Array: numbers = [1, 2, 3, 4, 5]
-// first element = 1.00
-// After numbers[1] = 99: 99.00</div>
+        <div class="card" style="border-left: 4px solid var(--warning); margin-top: 16px;">
+          <h4 style="margin-top: 0;">⚠️ Truthiness Note</h4>
+          <p>In Ouroboros, <code>0</code> and <code>""</code> (empty string) are <strong>truthy</strong>. Only <code>null</code> and <code>false</code> are falsy.</p>
+        </div>
       </div>
 
       <div class="doc-section" id="flows">
         <h2>4. Flows (Functions)</h2>
-        <p>Flows are the building blocks of Ouroboros—similar to functions in other languages.</p>
+        <p>Flows are Ouroboros functions. Define them with the <code>Flow</code> keyword:</p>
 
         <h3>Basic Flow</h3>
-        <div class="code-block">// COMPLETE EXAMPLE: Basic Flow
-// Save as: greet_flow.ouro
-
-"=== Basic Flow Demo ==="  -> Print
-
-Flow Greet(name)
+        <div class="code-block">Flow Greet(name)
     "Hello, " + name + "!" -> Print
     return true
 
-// Call the flow
+// Call it
+Greet("World")
+Greet("Alice")</div>
+
+        <h3>Flow with Return Value</h3>
+        <div class="code-block">Flow Add(a, b)
+    sum := a + b
+    return sum
+
+// Capture the return value
+result := Add(10, 5)
+"Sum: " + result -> Print    // Sum: 15.00</div>
+
+        <h3>Multiple Return Values</h3>
+        <div class="code-block">Flow Divide(a, b)
+    quotient := Floor(a / b)
+    remainder := a % b
+    return quotient, remainder
+
+// Capture both with pull arrow
+q, r <- Divide(17, 5)
+"17 ÷ 5 = " + q + " remainder " + r -> Print</div>
+
+        <div class="card" style="border-left: 4px solid var(--success); margin-top: 16px;">
+          <h4 style="margin-top: 0;">💡 Flow Tip</h4>
+          <p>Flow bodies are indented with <strong>4 spaces</strong> (not tabs). This is significant in Ouroboros!</p>
+        </div>
+      </div>
+
+      <div class="doc-section" id="arrows">
+        <h2>5. Basic Arrows</h2>
+        <p>Arrows are the heart of Ouroboros. Here are the four you'll use most:</p>
+
+        <h3>Forward Arrow (->)</h3>
+        <p>Push data to a destination:</p>
+        <div class="code-block">"Hello!" -> Print                // Output to console
+42 -> ProcessNumber              // Pass to a flow
+data -> Step1 -> Step2 -> Print  // Chain operations</div>
+
+        <h3>Pull Arrow (<-)</h3>
+        <p>Capture return values:</p>
+        <div class="code-block">result <- Calculate(10, 5)       // Capture return
+x, y <- GetPosition()            // Multiple returns</div>
+
+        <h3>Sync Arrow (<->)</h3>
+        <p>Keep two variables in sync:</p>
+        <div class="code-block">model <-> view                   // Changes to either update both
+model = 100                      // view is now also 100
+view = 50                        // model is now also 50</div>
+
+        <h3>Fork Arrow (-<)</h3>
+        <p>Send to multiple destinations at once:</p>
+        <div class="code-block">event -< Logger, UI, Analytics   // All three receive the event</div>
+
+        <p>For the complete arrow reference, see the <a href="arrows.html">Arrows documentation</a>.</p>
+      </div>
+
+      <div class="doc-section" id="control">
+        <h2>6. Control Flow</h2>
+        
+        <h3>If / Elseif / Else</h3>
+        <div class="code-block">score := 85
+
+if score ≥ 90
+    "Grade: A" -> Print
+elseif score ≥ 80
+    "Grade: B" -> Print
+elseif score ≥ 70
+    "Grade: C" -> Print
+else
+    "Grade: F" -> Print</div>
+
+        <div class="card" style="border-left: 4px solid var(--accent); margin: 16px 0;">
+          <h4 style="margin-top: 0;">⌨️ Unicode Operators</h4>
+          <p>Use <code>≥</code> (Alt+242) and <code>≤</code> (Alt+243) for comparisons. You can also use <code>>=</code> and <code><=</code>.</p>
+        </div>
+
+        <h3>While Loop</h3>
+        <div class="code-block">i := 0
+while i < 5
+    "Count: " + i -> Print
+    i++</div>
+
+        <h3>For Loop</h3>
+        <p>Uses <strong>comma-separated</strong> clauses (not semicolons):</p>
+        <div class="code-block">// init, condition, increment
+for i = 0, i < 5, i++
+    "i = " + i -> Print</div>
+
+        <h3>Early Exit with kill</h3>
+        <div class="code-block">for i = 0, i < 100, i++
+    if i == 5
+        kill    // Exit the loop
+    i -> Print</div>
+      </div>
+
+      <div class="doc-section" id="next">
+        <h2>7. Next Steps</h2>
+        <p>You now know the basics! Here's where to go next:</p>
+        <ul class="list">
+          <li><a href="arrows.html"><strong>Arrows</strong></a> — Master all arrow types for reactive programming</li>
+          <li><a href="flows.html"><strong>Flows</strong></a> — Advanced function patterns and multi-return</li>
+          <li><a href="examples.html"><strong>Examples</strong></a> — Real-world code samples</li>
+          <li><a href="stdlib.html"><strong>Standard Library</strong></a> — Built-in functions reference</li>
+          <li><a href="windows.html"><strong>Windowing</strong></a> — Build native GUI applications</li>
+          <li><a href="domains.html"><strong>Domains</strong></a> — Write scientific equations naturally</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <p>Ouroboros Language © 2026</p>
+  </footer>
+
+  <script src="search.js"></script>
+</body>
+</html>
 Greet("World")
 Greet("Ouroboros")
 Greet("User")

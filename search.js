@@ -63,6 +63,11 @@ const searchIndex = [
   { title: "Bytecode", url: "rex_aot.html#bytecode", keywords: "bytecode opcodes instructions vm virtual machine", section: "REX & AOT" },
   { title: "SIMD", url: "rex_aot.html#technologies", keywords: "simd avx sse vectorization parallel performance", section: "REX & AOT" },
   { title: "Compilation", url: "rex_aot.html#compilation", keywords: "compile compilation aot ahead of time", section: "REX & AOT" },
+  { title: "Neural Optimization", url: "rex_aot.html#neural", keywords: "neural network machine learning optimization ai ml training", section: "REX & AOT" },
+  { title: "Inlining Network", url: "rex_aot.html#neural", keywords: "inline function inlining neural network", section: "REX & AOT" },
+  { title: "Loop Unrolling", url: "rex_aot.html#neural", keywords: "unroll loop optimization neural network", section: "REX & AOT" },
+  { title: "Vectorization", url: "rex_aot.html#neural", keywords: "vectorize simd neural network optimization", section: "REX & AOT" },
+  { title: "Hot Path Detection", url: "rex_aot.html#neural", keywords: "hot path profiling neural network optimization", section: "REX & AOT" },
   
   // Arrows
   { title: "Arrows", url: "arrows.html", keywords: "arrows operators flow data direction", section: "" },
@@ -74,6 +79,10 @@ const searchIndex = [
   { title: "Async Arrow", url: "arrows.html#async", keywords: "async arrow asynchronous await promise", section: "Arrows" },
   { title: "Funnel Arrow", url: "arrows.html#funnel", keywords: "funnel arrow merge combine collect", section: "Arrows" },
   { title: "Gate Arrow", url: "arrows.html#gate", keywords: "gate arrow conditional filter guard", section: "Arrows" },
+  { title: "If-Else with Gates", url: "arrows.html#gates", keywords: "if else conditional gate arrow pattern branch", section: "Arrows" },
+  { title: "Conditional Gates", url: "arrows.html#gates", keywords: "gate condition filter route transform", section: "Arrows" },
+  { title: "Gate Success/Failure (:: ||)", url: "arrows.html#gates", keywords: "gate success failure then else error handler :: ||", section: "Arrows" },
+  { title: "Flow Labels", url: "flows.html#flow-labels", keywords: "flow label decorator condition action success failure :: ||", section: "Flows" },
   
   // Tokens
   { title: "Tokens", url: "tokens.html", keywords: "tokens lexer syntax grammar parsing", section: "" },
@@ -302,6 +311,93 @@ function hideResults() {
   selectedIndex = -1;
 }
 
+// ============================================
+// Page Loading Screen
+// ============================================
+
+function createLoader() {
+  // Don't create if already exists
+  if (document.getElementById('page-loader')) return;
+  
+  const loader = document.createElement('div');
+  loader.id = 'page-loader';
+  loader.innerHTML = `
+    <div class="loader-spinner"></div>
+    <div class="loader-text">Loading...</div>
+    <div class="loader-progress">
+      <div class="loader-progress-bar"></div>
+    </div>
+  `;
+  document.body.appendChild(loader);
+}
+
+function showLoader() {
+  const loader = document.getElementById('page-loader');
+  if (loader) {
+    loader.classList.add('active');
+    // Start progress animation
+    const progressBar = loader.querySelector('.loader-progress-bar');
+    if (progressBar) {
+      progressBar.style.width = '0%';
+      // Animate to ~80% quickly, then slow down (simulates real loading)
+      setTimeout(() => progressBar.style.width = '30%', 50);
+      setTimeout(() => progressBar.style.width = '60%', 150);
+      setTimeout(() => progressBar.style.width = '80%', 300);
+      // Slow crawl after 80% until page actually loads
+      setTimeout(() => progressBar.style.width = '90%', 600);
+      setTimeout(() => progressBar.style.width = '95%', 1200);
+    }
+  }
+}
+
+function hideLoader() {
+  const loader = document.getElementById('page-loader');
+  if (loader) {
+    const progressBar = loader.querySelector('.loader-progress-bar');
+    if (progressBar) progressBar.style.width = '100%';
+    setTimeout(() => loader.classList.remove('active'), 100);
+  }
+}
+
+function initPageLoader() {
+  createLoader();
+  
+  // Show loader on navigation link clicks
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (!link) return;
+    
+    const href = link.getAttribute('href');
+    if (!href) return;
+    
+    // Skip if it's an anchor link on the same page
+    if (href.startsWith('#')) return;
+    
+    // Skip if it's an external link
+    if (href.startsWith('http://') || href.startsWith('https://')) return;
+    
+    // Skip if modifier keys are pressed (new tab, etc.)
+    if (e.ctrlKey || e.metaKey || e.shiftKey) return;
+    
+    // Skip if it's a download link
+    if (link.hasAttribute('download')) return;
+    
+    // Skip if target is _blank
+    if (link.getAttribute('target') === '_blank') return;
+    
+    // Show the loader
+    showLoader();
+  });
+  
+  // Hide loader when page is fully loaded (for back/forward navigation)
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+      // Page was restored from bfcache
+      hideLoader();
+    }
+  });
+}
+
 // Global keyboard shortcut (Ctrl+K or Cmd+K to focus search)
 function initGlobalShortcut() {
   document.addEventListener('keydown', (e) => {
@@ -321,10 +417,12 @@ function initGlobalShortcut() {
 document.addEventListener('DOMContentLoaded', () => {
   initSearch();
   initGlobalShortcut();
+  initPageLoader();
 });
 
 // Also init if script loads after DOM
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
   initSearch();
   initGlobalShortcut();
+  initPageLoader();
 }
