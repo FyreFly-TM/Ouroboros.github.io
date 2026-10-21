@@ -1,334 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ouroboros - Flow-Oriented Programming Language</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Learn Ouroboros: language syntax, arrows and flows, nodes, native compilation, systems memory, ECS, engine APIs, and practical examples.">
+  <meta name="keywords" content="Ouroboros programming language, beginner guide, syntax reference, compiler, systems programming">
+  <meta name="theme-color" content="#0e1311">
+  <link rel="icon" type="image/png" href="logo-64.png">
+  <title>Ouroboros — Language documentation</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="content.js"></script>
+  <script defer src="reference.js"></script>
+  <script defer src="app.js"></script>
 </head>
 <body>
-  <nav>
-    <div class="nav-inner">
-      <a href="index.html" class="brand"><img src="OuroborosLogo.png" alt="Ouroboros" class="logo"><span class="brand-text">Ouroboros</span></a>
-      <div class="search-container">
-        <div class="search-wrapper">
-          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
-          </svg>
-          <input type="text" id="doc-search" class="search-input" placeholder="Search (Ctrl+K)" autocomplete="off" />
-          <div id="search-results" class="search-results"></div>
-        </div>
-      </div>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <div class="nav-dropdown">
-          <span class="nav-dropdown-trigger">Learn</span>
-          <div class="nav-dropdown-menu">
-            <a href="getting_started.html">Get Started</a>
-            <a href="cheatsheet.html">Cheat Sheet</a>
-            <a href="examples.html">Examples</a>
-          </div>
-        </div>
-        <div class="nav-dropdown">
-          <span class="nav-dropdown-trigger">Language</span>
-          <div class="nav-dropdown-menu">
-            <a href="arrows.html">Arrows</a>
-            <a href="flows.html">Flows</a>
-            <a href="tokens.html">Tokens</a>
-            <div class="menu-divider"></div>
-            <a href="reference.html">Full Reference</a>
-          </div>
-        </div>
-        <div class="nav-dropdown">
-          <span class="nav-dropdown-trigger">Libraries</span>
-          <div class="nav-dropdown-menu">
-            <a href="stdlib.html">Standard Library</a>
-            <a href="windows.html">Windowing</a>
-            <a href="keycodes.html">Key Codes</a>
-            <div class="menu-divider"></div>
-            <a href="domains.html">Domains</a>
-            <a href="files.html">File Types</a>
-          </div>
-        </div>
-        <div class="nav-dropdown">
-          <span class="nav-dropdown-trigger">Tools</span>
-          <div class="nav-dropdown-menu">
-            <a href="rex_aot.html">REX &amp; AOT</a>
-            <a href="downloads.html">Downloads</a>
-          </div>
-        </div>
-      </div>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="#overview" aria-label="Ouroboros documentation home"><img class="brand-logo" src="logo-64.png" alt="" width="30" height="32"> ouroboros<span class="brand-divider"></span><span class="brand-docs">docs</span></a>
+    <div class="top-actions">
+      <span class="version">DEVELOPMENT EDITION</span>
+      <button id="search-open" class="search-trigger" aria-label="Search documentation"><span aria-hidden="true">⌕</span><span>Search documentation</span><kbd>Ctrl K</kbd></button>
+      <button id="theme-toggle" class="icon-button" aria-label="Switch to light theme">☼</button>
+      <button id="menu-toggle" class="icon-button mobile-menu" aria-label="Open navigation" aria-expanded="false">☰</button>
     </div>
-  </nav>
-
-  <section class="hero">
-    <div class="hero-card hero-main">
-      <div class="badge">The Flow-Oriented Language</div>
-      <h1>Write code the way data moves.</h1>
-      <p class="lead">In most languages, data flow is invisible—hidden behind assignments and return values. <strong>Ouroboros makes it explicit.</strong> Arrows trace every value's journey, making your code self-documenting and instantly understandable.</p>
-      <div class="hero-code" style="background: var(--panel); border-radius: 8px; padding: 16px; margin: 20px 0; font-family: 'Fira Code', monospace; font-size: 14px; border: 1px solid var(--border);">
-        <code style="color: var(--muted);">// Traditional: Where does 'result' come from?</code><br>
-        <code style="color: var(--text-secondary);">result = process(transform(fetch(data)))</code><br><br>
-        <code style="color: var(--muted);">// Ouroboros: Follow the arrows</code><br>
-        <code><span style="color: var(--accent);">data</span> <span style="color: var(--success);">-></span> <span style="color: var(--accent);">Fetch</span> <span style="color: var(--success);">-></span> <span style="color: var(--accent);">Transform</span> <span style="color: var(--success);">-></span> <span style="color: var(--accent);">Process</span> <span style="color: var(--success);">-></span> <span style="color: var(--accent);">result</span></code>
-      </div>
-      <div class="button-row">
-        <a class="btn primary" href="getting_started.html">Get Started</a>
-        <a class="btn secondary" href="examples.html">See Examples</a>
-        <a class="btn secondary" href="downloads.html">Download</a>
-      </div>
-    </div>
-    <div class="hero-card">
-      <h2>Why Ouroboros?</h2>
-      <div class="why-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
-        <div class="why-item" style="display: flex; align-items: flex-start; gap: 12px;">
-          <span style="font-size: 24px;">🎯</span>
-          <div>
-            <strong style="color: var(--accent);">See Where Data Goes</strong>
-            <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-secondary);">Arrows visually trace data flow — no more hunting through assignments</p>
-          </div>
-        </div>
-        <div class="why-item" style="display: flex; align-items: flex-start; gap: 12px;">
-          <span style="font-size: 24px;">⚡</span>
-          <div>
-            <strong style="color: var(--success);">Reactive by Default</strong>
-            <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-secondary);">Variables auto-update when dependencies change — no manual subscriptions</p>
-          </div>
-        </div>
-        <div class="why-item" style="display: flex; align-items: flex-start; gap: 12px;">
-          <span style="font-size: 24px;">🔄</span>
-          <div>
-            <strong style="color: var(--warning);">Bidirectional Sync</strong>
-            <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-secondary);">Keep values synchronized automatically with <code><-></code> arrows</p>
-          </div>
-        </div>
-        <div class="why-item" style="display: flex; align-items: flex-start; gap: 12px;">
-          <span style="font-size: 24px;">🚀</span>
-          <div>
-            <strong style="color: #9b59b6;">Native Performance</strong>
-            <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-secondary);">REX Engine with SIMD — outperforms hand-tuned C on parallel workloads</p>
-          </div>
-        </div>
-        <div class="why-item" style="display: flex; align-items: flex-start; gap: 12px;">
-          <span style="font-size: 24px;">📐</span>
-          <div>
-            <strong style="color: var(--accent);">Natural Math</strong>
-            <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-secondary);">Write <code>E = ½mv²</code> exactly as in textbooks — domains parse it natively</p>
-          </div>
-        </div>
-        <div class="why-item" style="display: flex; align-items: flex-start; gap: 12px;">
-          <span style="font-size: 24px;">🖼️</span>
-          <div>
-            <strong style="color: var(--success);">Built-in Windowing</strong>
-            <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-secondary);">Create GUIs, draw graphics, handle input — zero dependencies</p>
-          </div>
-        </div>
-      </div>
-      <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);">
-        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">
-          <strong style="color: var(--text);">30+ arrow types</strong> for every data pattern — sync, async, conditional, fuzzy, transfer, fork, and more.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>🆕 What's New</h2>
-    <p style="color: var(--text-secondary); margin-bottom: 24px;">Major features added to Ouroboros since the initial release:</p>
-    <div class="grid">
-      <div class="card" style="border-left: 3px solid #e74c3c;">
-        <h3>🧠 Neural Optimization System</h3>
-        <p>The compiler now includes a <strong>built-in neural network</strong> that learns to optimize your code based on runtime behavior:</p>
-        <ul class="list" style="margin-top: 12px; font-size: 13px;">
-          <li><strong>Self-Learning</strong> — Improves optimization decisions over time</li>
-          <li><strong>4 Specialized Networks</strong> — Inlining, unrolling, vectorization, hot paths</li>
-          <li><strong>32-Feature Analysis</strong> — Analyzes code patterns and memory access</li>
-          <li><strong>Runtime Profiling</strong> — Collects execution data to guide training</li>
-          <li><strong>Model Persistence</strong> — Saves learned optimizations across sessions</li>
-        </ul>
-        <a href="rex_aot.html#neural" class="card-link" style="margin-top: 12px; display: inline-block;">Learn about Neural Optimization →</a>
-      </div>
-      <div class="card" style="border-left: 3px solid var(--success);">
-        <h3>🚀 REX Engine & AOT Compilation</h3>
-        <p>The new <strong>Rhombille Execution Engine</strong> delivers native performance through ahead-of-time compilation to optimized bytecode. Features include:</p>
-        <ul class="list" style="margin-top: 12px; font-size: 13px;">
-          <li><strong>8x faster</strong> than equivalent C for data-parallel workloads</li>
-          <li><strong>NaN-boxing</strong> — All values in 8 bytes with no pointer indirection</li>
-          <li><strong>SIMD Vectorization</strong> — SSE2 batch operations with 8-way unrolling</li>
-          <li><strong>Computed Goto</strong> — Zero-overhead opcode dispatch</li>
-          <li><strong>.orex Caching</strong> — Save compiled bytecode for instant startup</li>
-        </ul>
-        <a href="rex_aot.html" class="card-link" style="margin-top: 12px; display: inline-block;">Learn about REX & AOT →</a>
-      </div>
-      <div class="card" style="border-left: 3px solid var(--accent);">
-        <h3>🖼️ Native Windowing System</h3>
-        <p>Build interactive GUI applications without external libraries. The windowing system is fully integrated:</p>
-        <ul class="list" style="margin-top: 12px; font-size: 13px;">
-          <li><strong>Window Management</strong> — Create, resize, move, and style windows</li>
-          <li><strong>Drawing Primitives</strong> — Rectangles, circles, lines, and text rendering</li>
-          <li><strong>Input Handling</strong> — Mouse position, clicks, and keyboard events</li>
-          <li><strong>Double Buffering</strong> — Flicker-free rendering that persists on resize</li>
-          <li><strong>Anchor System</strong> — Auto-scaling UI that adapts to any window size</li>
-        </ul>
-        <a href="windows.html" class="card-link" style="margin-top: 12px; display: inline-block;">Explore windowing →</a>
-      </div>
-      <div class="card" style="border-left: 3px solid var(--warning);">
-        <h3>📐 Domain System</h3>
-        <p>Write scientific equations in their natural notation—copy formulas directly from textbooks:</p>
-        <ul class="list" style="margin-top: 12px; font-size: 13px;">
-          <li><strong>Natural Math</strong> — Write <code>E = ½mv²</code> instead of <code>E = 0.5 * m * v * v</code></li>
-          <li><strong>16+ Domains</strong> — Physics, Chemistry, Math, Statistics, and more</li>
-          <li><strong>Unicode Support</strong> — Greek letters, superscripts, subscripts, √, ∑, ∫</li>
-          <li><strong>Built-in Constants</strong> — c, g, G, π, e automatically available</li>
-          <li><strong>Bidirectional Solving</strong> — Solve for any variable in an equation</li>
-        </ul>
-        <a href="domains.html" class="card-link" style="margin-top: 12px; display: inline-block;">Discover domains →</a>
-      </div>
-      <div class="card" style="border-left: 3px solid #9b59b6;">
-        <h3>🔍 Documentation Search</h3>
-        <p>Find what you need instantly with the new client-side search:</p>
-        <ul class="list" style="margin-top: 12px; font-size: 13px;">
-          <li><strong>150+ Indexed Topics</strong> — Every function, concept, and example</li>
-          <li><strong>Keyboard Navigation</strong> — Arrow keys and Enter to select</li>
-          <li><strong>Ranked Results</strong> — Most relevant matches appear first</li>
-          <li><strong>No Server Required</strong> — Works offline and loads instantly</li>
-        </ul>
-        <p style="margin-top: 12px; font-size: 13px; color: var(--muted);">Try it now — press <kbd style="background: var(--panel-light); padding: 2px 6px; border-radius: 3px; font-size: 11px;">Ctrl+K</kbd> or click the search bar above.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>What is Ouroboros?</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>A New Paradigm</h3>
-        <p>Ouroboros is a <strong>flow-oriented programming language</strong> designed from the ground up to make data movement explicit and visual. Instead of hiding how values travel through your program, arrows show the exact path data takes—making code easier to read, debug, and reason about.</p>
-      </div>
-      <div class="card">
-        <h3>Built for Clarity</h3>
-        <p>Traditional languages obscure data flow behind assignments and return values. Ouroboros uses directional arrows (<code>-></code>, <code><-</code>, <code><-></code>) to make every data transfer visible at a glance. You'll always know where your data came from and where it's going.</p>
-      </div>
-      <div class="card">
-        <h3>Native Performance</h3>
-        <p>Powered by the <strong>REX Engine</strong> (Rhombille Execution), Ouroboros compiles to optimized bytecode with SIMD acceleration. Whether you're building games, simulations, or tools, your code runs fast without sacrificing the language's expressive syntax.</p>
-      </div>
-      <div class="card">
-        <h3>Integrated Windowing</h3>
-        <p>Create native windows, draw graphics, and handle input—all with built-in functions. No external libraries required. Build interactive applications, visualizations, and games directly in Ouroboros.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>The Arrow System</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Forward Arrow <code>-></code></h3>
-        <p>Push data to a destination. Send values to functions, print to console, or chain operations together in a clear left-to-right flow.</p>
-        <div class="code-block">"Hello, World!" -> Print
-value -> Transform -> Process -> Output</div>
-      </div>
-      <div class="card">
-        <h3>Pull Arrow <code><-</code></h3>
-        <p>Capture results into variables. Also creates reactive bindings—when source values change, the bound variable updates automatically.</p>
-        <div class="code-block">result <- Calculate(x, y)
-area <- width * height  // Reactive!</div>
-      </div>
-      <div class="card">
-        <h3>Sync Arrow <code><-></code></h3>
-        <p>Bidirectional binding keeps two values perfectly synchronized. Change either side and the other updates instantly—ideal for UI state.</p>
-        <div class="code-block">player_health <-> health_display
-// Either change reflects on both</div>
-      </div>
-      <div class="card">
-        <h3>Fork Arrow <code>-<</code></h3>
-        <p>Broadcast a single value to multiple destinations simultaneously. Perfect for event systems, logging, and parallel processing.</p>
-        <div class="code-block">event -< Logger, Analytics, UI</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>Language Highlights</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Flows, Not Functions</h3>
-        <p>In Ouroboros, reusable code blocks are called <strong>Flows</strong>. They can return multiple values without tuples, accept any number of parameters, and chain naturally with arrows.</p>
-        <div class="code-block">Flow Stats(a, b, c)
-    sum := a + b + c
-    avg := sum / 3
-    return sum, avg
-
-total, average <- Stats(4, 6, 10)</div>
-      </div>
-      <div class="card">
-        <h3>Domain System</h3>
-        <p>Organize data with an <strong>Entity-Component</strong> architecture. Define reusable data structures in <code>.var</code> files, behaviors in <code>.comp</code> files, and compose them into entities with <code>.ent</code> files.</p>
-        <div class="code-block">// Player.ent
-@use Position, Health, Inventory
-name := "Hero"
-max_health := 100</div>
-      </div>
-      <div class="card">
-        <h3>Constants with <code>=:</code></h3>
-        <p>Declare immutable values using the constant assignment operator. These values are set once and cannot be changed—perfect for configuration and magic numbers.</p>
-        <div class="code-block">MAX_PLAYERS =: 4
-PI =: 3.14159
-WINDOW_TITLE =: "My Game"</div>
-      </div>
-      <div class="card">
-        <h3>Clean Control Flow</h3>
-        <p>Familiar <code>if</code>/<code>else</code>, <code>while</code>, and <code>for</code> loops with clean syntax. Use <code>&</code> for AND, <code>|</code> for OR, and compound operators like <code>+=</code>.</p>
-        <div class="code-block">for i := 0, i < 10, i += 1
-    if i > 5 & IsEven(i)
-        i -> Print</div>
-      </div>
-      <div class="card">
-        <h3>Built-in Graphics</h3>
-        <p>Create windows, draw shapes, render text, and handle mouse/keyboard input with native functions. Double buffering and anchor-based layouts included.</p>
-        <div class="code-block">win <- WindowCreate("App", 800, 600)
-WindowDrawRect(win, 10, 10, 100, 50, 0x3498db)
-WindowDrawText(win, "Hello!", 20, 25, 0xFFFFFF)</div>
-      </div>
-      <div class="card">
-        <h3>Async Operations</h3>
-        <p>Fire-and-forget with <code>->></code> or await results with <code><<-</code>. Run tasks in background threads without callback complexity.</p>
-        <div class="code-block">"background task" ->> Worker
-result <<- LongComputation(data)</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>Explore the Language</h2>
-    <div class="grid">
-      <div class="card">
-        <strong>Getting Started</strong>
-        <p>Install the compiler and write your first script in minutes.</p>
-        <a href="getting_started.html" class="card-link">Start the tutorial →</a>
-      </div>
-      <div class="card">
-        <strong>Examples</strong>
-        <p>From Hello World to complex simulations—learn by example.</p>
-        <a href="examples.html" class="card-link">Browse examples →</a>
-      </div>
-      <div class="card">
-        <strong>Arrow Reference</strong>
-        <p>Complete guide to every arrow type and variant.</p>
-        <a href="arrows.html" class="card-link">View arrow guide →</a>
-      </div>
-      <div class="card">
-        <strong>Token Reference</strong>
-        <p>Keywords, operators, and syntax—all in one place.</p>
-        <a href="tokens.html" class="card-link">View token guide →</a>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <p>Ouroboros Language © 2026</p>
-  </footer>
-  <script src="search.js"></script>
+  </header>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar" aria-label="Documentation navigation">
+      <input id="nav-filter" class="nav-filter" type="search" placeholder="Filter pages…" aria-label="Filter pages" autocomplete="off">
+      <div class="nav-tools"><button id="nav-expand" type="button">Expand all</button><button id="nav-collapse" type="button">Collapse all</button></div>
+      <nav id="navigation"></nav>
+      <div class="sidebar-note"><span class="status-dot"></span> Built for the current checkout<br><small>Experimental language · explicit limitations</small><br><small class="shortcut-hint"><kbd>/</kbd> filter · <kbd>Ctrl K</kbd> search · <kbd>[</kbd> <kbd>]</kbd> previous / next page</small></div>
+    </aside>
+    <main id="main" tabindex="-1">
+      <div id="breadcrumb" class="breadcrumb"></div>
+      <article id="article"></article>
+      <nav class="page-navigation" id="page-navigation" aria-label="Adjacent pages"></nav>
+      <footer><span class="footer-brand"><img src="logo-64.png" alt="" width="15" height="16"> Ouroboros language documentation</span> <span>Learn the model. Keep control.</span></footer>
+    </main>
+    <aside class="toc" aria-label="On this page"><div class="toc-heading">ON THIS PAGE</div><nav id="toc"></nav><div class="toc-foot">Prefer the typed IR backends.<br>Verify the features you ship.</div></aside>
+  </div>
+  <button id="to-top" class="to-top" type="button" aria-label="Back to top">↑</button>
+  <dialog id="search-dialog" aria-labelledby="search-title">
+    <div class="search-head"><label id="search-title" for="search-input">Search the handbook</label><button id="search-close" class="icon-button" aria-label="Close search">×</button></div>
+    <input id="search-input" type="search" placeholder="Try “arrows”, “Spawn”, “when to use”, or “backend”…" autocomplete="off">
+    <div id="search-results" aria-live="polite"></div>
+    <div class="search-footer"><span>↑ ↓ to navigate · Enter to open</span><kbd>Esc</kbd></div>
+  </dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <noscript><div class="noscript">This handbook uses JavaScript for navigation and search. Enable JavaScript to read the site, or consult NOTES.txt, FEATURES.txt and ENGINE_FOUNDATION.md in the repository.</div></noscript>
 </body>
 </html>
