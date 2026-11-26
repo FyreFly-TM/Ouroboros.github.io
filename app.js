@@ -80,9 +80,9 @@
   function highlight(node) {
     if (node.dataset.language !== 'ouro') return;
     const source = node.textContent;
-    const pattern = /\/\/[^\n]*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:mut|let|fn|void|return|if|elseif|elif|else|end|while|for|to|by|in|each|where|entity|record|struct|enum|trait|impl|node|on|use|include|export|break|continue|with|then|as|and|or|true|false|switch|case)\b|\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?(?:i8|i16|i32|i64|u8|u16|u32|u64|f16|f32|f64|f128|f)?\b|\b[A-Za-z_][A-Za-z_0-9]*(?=\()/g;
+    const pattern = /\/\/[^\n]*|\/\*[\s\S]*?\*\/|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:mut|let|fn|void|return|if|elseif|elif|else|end|while|for|to|by|in|each|where|entity|record|struct|enum|trait|impl|node|on|use|include|export|break|continue|with|then|as|and|or|true|false|switch|case)\b|\b0[xX][0-9A-Fa-f_]+(?:i8|i16|i32|i64|u8|u16|u32|u64)?\b|\b0[bBoO][0-7_]+(?:i8|i16|i32|i64|u8|u16|u32|u64)?\b|\b\d[\d_]*(?:\.\d[\d_]*)?(?:[eE][+-]?\d[\d_]*)?(?:i8|i16|i32|i64|u8|u16|u32|u64|f16|f32|f64|f128|f)?\b|\b[A-Za-z_][A-Za-z_0-9]*(?=\()/g;
     let result = '', last = 0;
-    for (const m of source.matchAll(pattern)) { const token = m[0]; let kind = token.startsWith('//') ? 'comment' : /^["']/.test(token) ? 'string' : /^\d/.test(token) ? 'number' : /\(/.test(source.slice(m.index + token.length, m.index + token.length + 1)) ? 'call' : 'keyword'; result += esc(source.slice(last, m.index)) + `<span class="tok-${kind}">${esc(token)}</span>`; last = m.index + token.length; }
+    for (const m of source.matchAll(pattern)) { const token = m[0]; let kind = token.startsWith('//') || token.startsWith('/*') ? 'comment' : /^["']/.test(token) ? 'string' : /^\d/.test(token) ? 'number' : /\(/.test(source.slice(m.index + token.length, m.index + token.length + 1)) ? 'call' : 'keyword'; result += esc(source.slice(last, m.index)) + `<span class="tok-${kind}">${esc(token)}</span>`; last = m.index + token.length; }
     node.innerHTML = result + esc(source.slice(last));
   }
   function renderApi(query = '') {

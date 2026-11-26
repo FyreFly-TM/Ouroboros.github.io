@@ -1,0 +1,13 @@
+# Example project manifest for the graph dialect.
+# Place as `ouroboros.project` in the project root. When present, side-file
+# discovery uses only the listed paths (plus same-folder *.var) instead of
+# the silent 3-ancestor walk.
+
+entities:
+  - entities/player.ent
+components:
+  - components/combat.com
+nodes:
+  - nodes/damage.nod
+domains:
+  - domains/vec.dom

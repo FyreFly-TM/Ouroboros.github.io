@@ -23,3 +23,13 @@ Candidates for that next pass:
 2. Unify declaration/assignment and parameter-default spellings while keeping legacy aliases documented.
 3. Improve source-snippet diagnostics with expected forms and a concise correction example.
 4. Publish a deliberately small beginner subset before introducing systems types, pipes, and engine DSLs.
+
+## Graph dialect (2026-11)
+
+The whole-language graph-in-text overhaul is underway. Canonical forms are in
+`docs/SYNTAX_GRAPH.md`. New edge spellings (`|>`, `||>`, `||>>`, `|?`, `|!`,
+`| when`, `|=>`, …), `match` / `outer` / `from` / `parallel`, `Id[T]`,
+`node in[] out[]`, namespaced builtins (`Http.*`, …), and `ouroboros.project`
+manifests are implemented with dual-accept. Set `OURO_GRAPH_STRICT=1` to reject
+legacy arrows, ambient `each`, `include`, and `[x]` abs. Handbook What’s new
+and decisions pages point at the graph dialect first.
